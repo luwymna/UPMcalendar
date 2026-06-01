@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPM - Academic Calendar & GPA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-brand" id="toggleSidebarBtn">
+            <span class="toggle-icon">◀</span>
+            <span>UPM</span>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="nav-btn active" data-view="calendar">
+                <span class="nav-icon">📅</span>
+                <span>Calendar</span>
+            </button>
+            <button class="nav-btn" data-view="gpa">
+                <span class="nav-icon">📊</span>
+                <span>GPA Calculator</span>
+            </button>
+        </nav>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <!-- Calendar View -->
+        <div id="calendar-view" class="view-pane active">
+            <div class="container">
+                <div class="info-row">
+                    <div class="info-left">
+                        <h1>UPM Academic Year 2025/2026</h1>
+                    </div>
+                    <div class="today-block">
+                        <div class="today-date" id="todayDate">--</div>
+                        <div class="today-time" id="todayTime">--</div>
+                    </div>
+                </div>
+                <div class="legend" id="legend"></div>
+                <div class="calendar-summary" id="calendarSummary"></div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+        </div>
+
+        <!-- GPA Calculator View -->
+        <!-- GPA Calculator View -->
+<div id="gpa-view" class="view-pane">
+    <div class="gpa-container">
+        <h1>📊 Semester GPA Calculator</h1>
+        <button class="add-semester-btn" id="addSemesterBtn">➕ Add New Semester</button>
+        <div id="semestersContainer"></div>
+        <div class="cgpa-section" id="cgpaSection">
+            <div class="cgpa-item">
+                <h3>🎓 CGPA (All Semesters)</h3>
+                <div class="cgpa-value" id="cgpaValue">0.00</div>
+            </div>
+            <div class="cgpa-item">
+                <h3>🏆 Status</h3>
+                <div class="cgpa-value" id="cgpaStatus">—</div>
+            </div>
+        </div>
+
+        <!-- Add UPM Grade System Reference -->
+        <div class="grade-system">
+            <h3>📜 UPM Grade System</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Grade</th>
+                        <th>Pointer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>A</td><td>4.00</td></tr>
+                    <tr><td>A-</td><td>3.75</td></tr>
+                    <tr><td>B+</td><td>3.50</td></tr>
+                    <tr><td>B</td><td>3.00</td></tr>
+                    <tr><td>B-</td><td>2.75</td></tr>
+                    <tr><td>C+</td><td>2.50</td></tr>
+                    <tr><td>C</td><td>2.00</td></tr>
+                    <tr><td>C-</td><td>1.75</td></tr>
+                    <tr><td>D+</td><td>1.50</td></tr>
+                    <tr><td>D</td><td>1.00</td></tr>
+                    <tr><td>F</td><td>0.00</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    </div>
+
+    <div id="dayInfo" class="day-info"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
