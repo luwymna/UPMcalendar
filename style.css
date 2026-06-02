@@ -137,10 +137,6 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding: 8px 16px;
     z-index: 1000;
-}
-
-.tab-bar.active {
-    display: flex;
     gap: 8px;
 }
 
@@ -683,7 +679,7 @@ body:has(.sidebar.collapsed) .main-content {
 /* Additional mobile adjustments */
 @media (max-width: 768px) {
     .sidebar { display: none; }
-    .tab-bar { display: flex; }
+    .tab-bar { display: flex; gap: 8px; }
     .main-content { margin-left: 0; padding: 12px 12px 80px 12px; }
     body:has(.sidebar.collapsed) .main-content { margin-left: 0; }
     .container, .gpa-container { padding: 0 8px; width: 100%; max-width: 100%; }
