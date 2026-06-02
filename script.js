@@ -793,7 +793,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const durationTimeEl = document.getElementById('durationTime');
     if (musicBtn && bgMusic && musicProgress) {
         bgMusic.addEventListener('play', () => {
-            musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+            musicBtn.textContent = '⏸️';
+        });
+        bgMusic.addEventListener('pause', () => {
+            musicBtn.textContent = '▶️';
+        });
+        let isDragging = false;
+        musicBtn.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicBtn.textContent = '⏸️';
+            } else {
+                bgMusic.pause();
+                musicBtn.textContent = '▶️';
+            }
         });
         bgMusic.addEventListener('pause', () => {
             musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>';
