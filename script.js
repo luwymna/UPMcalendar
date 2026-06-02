@@ -694,6 +694,10 @@ document.addEventListener('DOMContentLoaded', () => {
     loadFromStorage();
     renderAllSemesters();
     updateCGPA();
+    semesters.forEach((s, idx) => {
+        const content = document.getElementById(`semester_content_${s.id}`);
+        if (content && idx !== 0) content.classList.add('collapsed');
+    });
     
     loadSchedulesFromStorage();
     
@@ -781,12 +785,16 @@ document.addEventListener('DOMContentLoaded', () => {
     updateClock();
     setInterval(updateClock, 1000);
     
+    // Music player
     const musicBtn = document.getElementById('musicPlayBtn');
     const bgMusic = document.getElementById('bgMusic');
     const musicProgress = document.getElementById('musicProgress');
     const currentTimeEl = document.getElementById('currentTime');
     const durationTimeEl = document.getElementById('durationTime');
     if (musicBtn && bgMusic && musicProgress) {
+        bgMusic.play().then(() => {
+            musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+        }).catch(() => {});
         let isDragging = false;
         musicBtn.addEventListener('click', () => {
             if (bgMusic.paused) {

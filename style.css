@@ -1110,6 +1110,14 @@ html {
     display: inline-block;
 }
 
+.sidebar-credit {
+    text-align: center;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.6);
+    padding: 10px 0 8px 0;
+    letter-spacing: 0.5px;
+}
+
 /* Class Code on Calendar */
 .class-code {
     font-size: 0.6rem;
