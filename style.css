@@ -813,7 +813,7 @@ html {
 @media (max-width: 768px) {
     .main-content {
         margin-left: 0;
-        padding: 12px 12px 80px 12px;
+        padding: 80px 12px 80px 12px;
         background: #d60a50;
     }
     .container, .gpa-container {
@@ -821,8 +821,9 @@ html {
         width: 100%;
         max-width: 100%;
     }
-    .info-left h1 { font-size: 1.8rem; }
-    .today-date, .today-time { font-size: 1.6rem; }
+    .info-left { text-align: center; }
+    .info-left h1 { font-size: 1.6rem; }
+    .today-date { font-size: 1.4rem; text-align: center; }
     .calendar-grid {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 15px;
