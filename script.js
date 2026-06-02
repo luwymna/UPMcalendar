@@ -158,16 +158,11 @@ function getWeekNumberForDate(date, event) {
 function createMonthCard(year, month, today) {
     const card = document.createElement('div');
     card.className = 'month-card';
-    const sem = getSemesterLabel(year, month);
-    if (sem) {
-        let b = document.createElement('div');
-        b.className = 'semester-badge';
-        b.textContent = sem;
-        card.appendChild(b);
-    }
+
     let mdiv = document.createElement('div');
     mdiv.className = 'month-name';
     mdiv.textContent = new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' });
+
     let wdiv = document.createElement('div');
     wdiv.className = 'calendar-days';
     ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].forEach(d => {
@@ -175,16 +170,20 @@ function createMonthCard(year, month, today) {
         x.textContent = d;
         wdiv.appendChild(x);
     });
+
     let gdiv = document.createElement('div');
     gdiv.className = 'month-grid';
-    let firstDay = new Date(year, month, 1),
-        startOffset = (firstDay.getDay() + 6) % 7,
-        daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    let firstDay = new Date(year, month, 1);
+    let startOffset = (firstDay.getDay() + 6) % 7;
+    let daysInMonth = new Date(year, month + 1, 0).getDate();
+
     for (let i = 0; i < startOffset; i++) {
         let e = document.createElement('div');
         e.className = 'date-cell empty-cell';
         gdiv.appendChild(e);
     }
+
     for (let d = 1; d <= daysInMonth; d++) {
         let date = new Date(year, month, d),
             cell = document.createElement('div');
@@ -192,11 +191,12 @@ function createMonthCard(year, month, today) {
         let span = document.createElement('span');
         span.textContent = d;
         cell.appendChild(span);
+
         let event = getEventForDate(date);
         if (event) cell.classList.add(`event-${event.type}`);
         if (getHolidayForDate(date)) cell.classList.add('event-holiday');
         if (date.toDateString() === today.toDateString()) cell.classList.add('today');
-        
+
         const weekNum = getWeekNumberForDate(date, event);
         if (weekNum) {
             let weekSpan = document.createElement('span');
@@ -204,10 +204,20 @@ function createMonthCard(year, month, today) {
             weekSpan.textContent = `W${weekNum}`;
             cell.appendChild(weekSpan);
         }
-        
+
         cell.onclick = () => showDayInfo(date);
         gdiv.appendChild(cell);
     }
+
+    // Add trailing empty cells to fill the last week
+    let totalCells = startOffset + daysInMonth;
+    let trailingCells = (7 - (totalCells % 7)) % 7;
+    for (let i = 0; i < trailingCells; i++) {
+        let e = document.createElement('div');
+        e.className = 'date-cell empty-cell';
+        gdiv.appendChild(e);
+    }
+
     card.appendChild(mdiv);
     card.appendChild(wdiv);
     card.appendChild(gdiv);
@@ -474,12 +484,10 @@ function addNewSemester() {
 
 function initializeNav() {
     const navBtns = document.querySelectorAll('.nav-btn');
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const allNavBtns = [...navBtns, ...tabBtns];
-    
-    allNavBtns.forEach(btn => {
+    const mainContent = document.getElementById('mainContent');
+    navBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            allNavBtns.forEach(b => b.classList.remove('active'));
+            navBtns.forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.view-pane').forEach(p => p.classList.remove('active'));
             btn.classList.add('active');
             const viewId = `${btn.dataset.view}-view`;
@@ -495,22 +503,24 @@ function initializeSidebar() {
     const mainContent = document.getElementById('mainContent');
     const tabExpandBtn = document.getElementById('tabExpandBtn');
     const tabBar = document.querySelector('.tab-bar');
-    
+
     if (!toggleBtn || !sidebar) return;
-    
+
     // Click toggle button to expand/collapse
     toggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         sidebar.classList.toggle('collapsed');
     });
-    
-    // Click on main content area to collapse sidebar
+
+    // Click on main content area to collapse sidebar (desktop only)
     if (mainContent) {
         mainContent.addEventListener('click', () => {
-            sidebar.classList.add('collapsed');
+            if (window.innerWidth > 768) { // Only collapse on desktop
+                sidebar.classList.add('collapsed');
+            }
         });
     }
-    
+
     // Mobile tab bar expand/collapse
     if (tabExpandBtn && tabBar) {
         tabExpandBtn.addEventListener('click', () => {
@@ -518,6 +528,7 @@ function initializeSidebar() {
         });
     }
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     renderCalendar();
