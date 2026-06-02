@@ -571,7 +571,7 @@ function renderSemester(semesterId) {
     </div>
     <div class="semester-content" id="semester_content_${semesterId}">
         <div class="gpa-form">
-            <input type="text" id="code_${semesterId}" placeholder="Course Code (auto uppercase)">
+            <input type="text" id="code_${semesterId}" placeholder="Course Code">
             <input type="text" id="name_${semesterId}" placeholder="Course Name">
             <input type="number" id="credit_${semesterId}" placeholder="Credit Hours" min="1" max="6">
             <select id="grade_${semesterId}">
