@@ -687,6 +687,7 @@ function initializeSidebar() {
 
 document.addEventListener('DOMContentLoaded', () => {
     renderCalendar();
+    renderTodayBlock();
     renderLegend();
     renderCalendarSummary();
     

@@ -821,7 +821,7 @@ html {
         width: 100%;
         max-width: 100%;
     }
-    .info-left { text-align: center; }
+    .info-left { text-align: right; }
     .info-left h1 { font-size: 1.6rem; }
     .today-date { font-size: 1.4rem; text-align: center; }
     .calendar-grid {
