@@ -400,16 +400,16 @@ body:has(.sidebar.collapsed) .main-content {
 }
 
 .period-badge {
+    margin-bottom: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
     border-radius: 24px;
     padding: 10px 18px;
     font-weight: 700;
     background: rgba(255,255,255,0.12);
     color: #e9f5ff;
-    display: inline-block;
-}
-
-.period-badge {
-    display: none; /* Hides the period badge */
 }
 
 .legend {
