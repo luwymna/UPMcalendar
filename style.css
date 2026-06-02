@@ -138,6 +138,7 @@ body {
     display: none;
     background: linear-gradient(135deg, #b53b3b 0%, #8b2c2c 100%);
     min-height: 100vh;
+    height: 100%;
 }
 
 .view-pane.active {
@@ -159,6 +160,7 @@ body:has(.sidebar.collapsed) .main-content {
     margin: auto;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 
 .gpa-container h1 {
