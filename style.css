@@ -1210,3 +1210,30 @@ html {
     cursor: pointer;
     border: 2px solid rgba(0,0,0,0.2);
 }
+/* Semester Marker Badges on Calendar */
+.semester-marker {
+    display: block;
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    background: rgba(255,255,255,0.85);
+    color: #0f2c56;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.semester-marker.sem-start {
+    background: rgba(46,204,113,0.9);
+    color: white;
+}
+
+.semester-marker.sem-end {
+    background: rgba(231,76,60,0.9);
+    color: white;
+}
