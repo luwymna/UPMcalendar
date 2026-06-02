@@ -355,17 +355,23 @@ body:has(.sidebar.collapsed) .main-content {
     max-width: 100%;
 }
 
-.cgpa-section .cgpa-item {
-    min-width: 0;
-}
-
 .cgpa-section .cgpa-value {
     display: block;
     width: 100%;
+    padding: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    font-size: 1.5rem;
 }
 
-.cgpa-item h3 {
-    font-size: 0.85rem;
+.cgpa-section .cgpa-item {
+    min-width: 0;
+    flex: 1;
+}
+
+.cgpa-section .cgpa-item h3 {
+    font-size: 0.9rem;
     opacity: 0.9;
     margin-bottom: 6px;
 }
