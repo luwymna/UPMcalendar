@@ -813,7 +813,7 @@ html {
 @media (max-width: 768px) {
     .main-content {
         margin-left: 0;
-        padding: 80px 12px 80px 12px;
+        padding: 40px 12px 80px 12px;
         background: #d60a50;
     }
     .container, .gpa-container {
