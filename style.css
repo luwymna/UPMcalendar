@@ -28,6 +28,8 @@ body {
     overflow-y: auto;
     z-index: 100;
     transition: width 0.3s ease;
+    top: 0;
+    left: 0;
 }
 
 .sidebar.collapsed {
@@ -124,6 +126,12 @@ body {
     padding: 20px;
     overflow-y: auto;
     transition: margin-left 0.3s ease;
+    background: transparent;
+}
+
+.view-pane {
+    display: none;
+    background: transparent;
 }
 
 body:has(.sidebar.collapsed) .main-content {
@@ -235,43 +243,36 @@ body:has(.sidebar.collapsed) .main-content {
 
 .gpa-form {
     display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
+    gap: 10px;
+    margin-bottom: 20px;
     background: rgba(0,0,0,0.2);
-    padding: 16px;
-    border-radius: 12px;
+    padding: 12px;
+    border-radius: 10px;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .gpa-form input, .gpa-form select {
-    padding: 10px 12px;
+    padding: 8px 10px;
     border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
+    border-radius: 6px;
     background: rgba(255,255,255,0.05);
     color: #ffffff;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     flex: 1;
-    min-width: 150px;
-}
-
-.gpa-form input::placeholder {
-    color: rgba(255,255,255,0.6);
-}
-
-.gpa-form select option {
-    background: #0f2c56;
-    color: white;
+    min-width: 120px;
 }
 
 .btn-primary {
     background: linear-gradient(90deg, #ff9a46, #ff6f3d);
     border: none;
     color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 8px;
+    padding: 8px 16px;
+    border-radius: 6px;
     cursor: pointer;
     font-weight: 700;
     transition: all 200ms ease;
+    height: 40px;
 }
 
 .btn-primary:hover {
@@ -340,17 +341,17 @@ body:has(.sidebar.collapsed) .main-content {
 .cgpa-item {
     text-align: center;
     flex: 1;
-}
-
-.cgpa-item h3 {
-    font-size: 0.9rem;
-    opacity: 0.9;
-    margin-bottom: 8px;
+    min-width: 120px;
+    word-break: break-word;
+    overflow: hidden;
 }
 
 .cgpa-value {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Calendar Styles */
@@ -591,27 +592,16 @@ body:has(.sidebar.collapsed) .main-content {
 
 /* Additional mobile adjustments */
 @media (max-width: 768px) {
-    .sidebar { width: 200px; }
-    .sidebar.collapsed { width: 65px; }
-    .main-content { margin-left: 200px; }
-    body:has(.sidebar.collapsed) .main-content { margin-left: 65px; }
-    .info-left h1 { font-size: 1.5rem; }
-    .main-content {
-        padding: 15px;
+    .sidebar { width: 80px; }
+    .sidebar.collapsed { width: 80px; }
+    .main-content { margin-left: 80px; }
+    body:has(.sidebar.collapsed) .main-content { margin-left: 80px; }
+    .cgpa-section {
+        flex-direction: column;
+        gap: 10px;
     }
-    .container,
-    .gpa-container {
-        padding: 0 10px;
+    .cgpa-item {
         width: 100%;
-        max-width: 100%;
-    }
-    .today-date,
-    .today-time {
-        font-size: 1.8rem;
-    }
-    .calendar-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 15px;
     }
     .gpa-form {
         flex-direction: column;
@@ -619,6 +609,10 @@ body:has(.sidebar.collapsed) .main-content {
     .gpa-form input,
     .gpa-form select {
         min-width: 100%;
+        margin-bottom: 8px;
+    }
+    .btn-primary {
+        width: 100%;
     }
 }
 
