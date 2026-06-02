@@ -770,18 +770,63 @@ document.addEventListener('DOMContentLoaded', () => {
     
     renderWeeklySchedule();
     
-    // Music player
+    // Sidebar clock
+    function updateClock() {
+        const now = new Date();
+        const dateEl = document.getElementById('clockDate');
+        const timeEl = document.getElementById('clockTime');
+        if (dateEl) dateEl.textContent = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+    
     const musicBtn = document.getElementById('musicPlayBtn');
     const bgMusic = document.getElementById('bgMusic');
-    if (musicBtn && bgMusic) {
+    const musicProgress = document.getElementById('musicProgress');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationTimeEl = document.getElementById('durationTime');
+    if (musicBtn && bgMusic && musicProgress) {
+        let isDragging = false;
         musicBtn.addEventListener('click', () => {
             if (bgMusic.paused) {
                 bgMusic.play();
-                musicBtn.textContent = '⏸️';
+                musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
             } else {
                 bgMusic.pause();
-                musicBtn.textContent = '▶️';
+                musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>';
             }
         });
+        bgMusic.addEventListener('loadedmetadata', () => {
+            musicProgress.max = bgMusic.duration;
+            durationTimeEl.textContent = formatTime(bgMusic.duration);
+        });
+        bgMusic.addEventListener('timeupdate', () => {
+            if (!isDragging) {
+                musicProgress.value = bgMusic.currentTime;
+                currentTimeEl.textContent = formatTime(bgMusic.currentTime);
+            }
+        });
+        bgMusic.addEventListener('ended', () => {
+            musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>';
+        });
+        musicProgress.addEventListener('input', () => {
+            bgMusic.currentTime = musicProgress.value;
+            currentTimeEl.textContent = formatTime(musicProgress.value);
+        });
+        musicProgress.addEventListener('mousedown', () => { isDragging = true; });
+        musicProgress.addEventListener('touchstart', () => { isDragging = true; });
+        musicProgress.addEventListener('change', () => {
+            bgMusic.currentTime = musicProgress.value;
+            isDragging = false;
+        });
+        musicProgress.addEventListener('mouseup', () => { isDragging = false; });
+        musicProgress.addEventListener('touchend', () => { isDragging = false; });
+    }
+    function formatTime(sec) {
+        if (isNaN(sec)) return '0:00';
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return `${m}:${s.toString().padStart(2, '0')}`;
     }
 });
