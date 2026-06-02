@@ -497,7 +497,7 @@ function addSubject(semesterId) {
     let gradeSelect = document.getElementById(`grade_${semesterId}`);
 
     let code = codeInput.value.trim().toUpperCase();
-    let name = nameInput.value.trim();
+    let name = nameInput.value.trim().toUpperCase();
     let credit = parseFloat(creditInput.value);
     let grade = gradeSelect.value;
 
