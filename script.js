@@ -796,7 +796,7 @@ document.addEventListener('DOMContentLoaded', () => {
             musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
         });
         bgMusic.addEventListener('pause', () => {
-            musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+            musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>';
         });
         let isDragging = false;
         musicBtn.addEventListener('click', () => {
@@ -805,20 +805,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
             } else {
                 bgMusic.pause();
-                musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
-            }
-        });
-        bgMusic.addEventListener('pause', () => {
-            musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
-        });
-        let isDragging = false;
-        musicBtn.addEventListener('click', () => {
-            if (bgMusic.paused) {
-                bgMusic.play();
-                musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
-            } else {
-                bgMusic.pause();
-                musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+                musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>';
             }
         });
         bgMusic.addEventListener('loadedmetadata', () => {
@@ -832,7 +819,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         bgMusic.addEventListener('ended', () => {
-            musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+            musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>';
         });
         musicProgress.addEventListener('input', () => {
             bgMusic.currentTime = musicProgress.value;
