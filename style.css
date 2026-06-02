@@ -128,12 +128,13 @@ body {
     overflow-y: auto;
     transition: margin-left 0.3s ease;
     background: transparent;
+    min-height: 100vh;
 }
 
 .view-pane {
     display: none;
     background: transparent;
-    min-height: 100%;
+    min-height: 100vh;
 }
 
 .view-pane.active {
@@ -155,14 +156,12 @@ body:has(.sidebar.collapsed) .main-content {
 .container {
     max-width: 1400px;
     margin: auto;
-    min-height: 100%;
 }
 
 /* GPA STYLES */
 .gpa-container {
     max-width: 1200px;
     margin: auto;
-    min-height: 100%;
     display: flex;
     flex-direction: column;
 }
