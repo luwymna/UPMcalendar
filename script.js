@@ -769,4 +769,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     renderWeeklySchedule();
+    
+    // Music player
+    const musicBtn = document.getElementById('musicPlayBtn');
+    const bgMusic = document.getElementById('bgMusic');
+    if (musicBtn && bgMusic) {
+        musicBtn.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicBtn.textContent = '⏸️';
+            } else {
+                bgMusic.pause();
+                musicBtn.textContent = '▶️';
+            }
+        });
+    }
 });
