@@ -638,7 +638,7 @@ html {
     .main-content {
         margin-left: 0;
         padding: 12px 12px 80px 12px;
-        background: linear-gradient(135deg, #ff3b3b 0%, #cc2c2c 100%);
+        background: #d60a50;
     }
     .container, .gpa-container {
         padding: 0 8px;
