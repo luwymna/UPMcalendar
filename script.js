@@ -205,6 +205,17 @@ function createMonthCard(year, month, today) {
             cell.appendChild(weekSpan);
         }
 
+        // Add class codes for lecture weeks only
+        const classes = getClassForDate(date);
+        if (classes.length && !isBreakOrHoliday(date) && !isExamWeek(date) && !isRevisionWeek(date)) {
+            classes.forEach(cls => {
+                let codeSpan = document.createElement('span');
+                codeSpan.className = 'class-code';
+                codeSpan.textContent = cls.code;
+                cell.appendChild(codeSpan);
+            });
+        }
+
         cell.onclick = () => showDayInfo(date);
         gdiv.appendChild(cell);
     }
@@ -281,6 +292,153 @@ function renderCalendarSummary() {
     const nextEvent = academicPeriods.find(event => event.startDate > today);
     summary.innerHTML = (currentPeriod ? `Current academic period: <strong>${currentPeriod.label}</strong>. ` : 'No active academic period today. ') +
         (nextEvent ? `Next: <strong>${nextEvent.label}</strong> period starts on ${nextEvent.startDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}.` : 'No upcoming academic periods in this academic year.');
+}
+
+// ========== CLASS SCHEDULE SYSTEM ==========
+let classSchedules = [];
+let exams = [];
+
+function loadSchedulesFromStorage() {
+    const stored = localStorage.getItem('upmClassSchedules');
+    if (stored) {
+        const data = JSON.parse(stored);
+        classSchedules = data.schedules || [];
+        exams = data.exams || [];
+    }
+}
+
+function saveSchedulesToStorage() {
+    localStorage.setItem('upmClassSchedules', JSON.stringify({ schedules: classSchedules, exams }));
+}
+
+function isLectureWeek(date) {
+    const event = getEventForDate(date);
+    if (!event) return false;
+    return event.type === 'lecture';
+}
+
+function isBreakOrHoliday(date) {
+    const event = getEventForDate(date);
+    if (!event) return false;
+    return event.type === 'break' || getHolidayForDate(date);
+}
+
+function isExamWeek(date) {
+    const event = getEventForDate(date);
+    return event && event.type === 'exam';
+}
+
+function isRevisionWeek(date) {
+    const event = getEventForDate(date);
+    return event && event.type === 'revision';
+}
+
+function getClassForDate(date) {
+    const dayOfWeek = date.getDay();
+    const semesterNum = date >= parseDate('2025-10-13') && date < parseDate('2026-03-23') ? 1 : 2;
+    return classSchedules.filter(s => s.day === dayOfWeek && s.semester === semesterNum && !isBreakOrHoliday(date) && !isExamWeek(date) && !isRevisionWeek(date));
+}
+
+function saveClassSchedule() {
+    const code = document.getElementById('classCodeInput').value.trim().toUpperCase();
+    const semester = parseInt(document.getElementById('classSemesterInput').value);
+    const day = parseInt(document.getElementById('classDayInput').value);
+    const timeFrom = document.getElementById('classTimeFrom').value;
+    const timeUntil = document.getElementById('classTimeUntil').value;
+    
+    if (!code || !timeFrom || !timeUntil) {
+        alert('Please fill all fields');
+        return;
+    }
+    
+    classSchedules.push({
+        code,
+        semester,
+        day,
+        timeFrom,
+        timeUntil
+    });
+    
+    saveSchedulesToStorage();
+    renderCalendar();
+    renderWeeklySchedule();
+    
+    document.getElementById('classCodeInput').value = '';
+    document.getElementById('classTimeFrom').value = '';
+    document.getElementById('classTimeUntil').value = '';
+    
+    const modal = document.getElementById('classScheduleModal');
+    if (modal) modal.classList.remove('visible');
+}
+
+function saveExamination() {
+    const code = document.getElementById('examCodeInput').value.trim().toUpperCase();
+    const semester = parseInt(document.getElementById('examSemesterInput').value);
+    const day = parseInt(document.getElementById('examDayInput').value);
+    const timeFrom = document.getElementById('examTimeFrom').value;
+    const timeUntil = document.getElementById('examTimeUntil').value;
+    
+    if (!code || !timeFrom || !timeUntil) {
+        alert('Please fill all fields');
+        return;
+    }
+    
+    exams.push({
+        code,
+        semester,
+        day,
+        timeFrom,
+        timeUntil
+    });
+    
+    saveSchedulesToStorage();
+    renderCalendar();
+    renderWeeklySchedule();
+    
+    document.getElementById('examCodeInput').value = '';
+    document.getElementById('examTimeFrom').value = '';
+    document.getElementById('examTimeUntil').value = '';
+    
+    const modal = document.getElementById('examModal');
+    if (modal) modal.classList.remove('visible');
+}
+
+function renderWeeklySchedule() {
+    const container = document.getElementById('scheduleBody');
+    if (!container) return;
+    
+    const currentSemester = (new Date() >= parseDate('2025-10-13') && new Date() < parseDate('2026-03-23')) ? 1 : 2;
+    const semesterClasses = classSchedules.filter(s => s.semester === currentSemester);
+    const semesterExams = exams.filter(s => s.semester === currentSemester);
+    
+    // Generate hourly slots from 7am to 6pm
+    const hours = [];
+    for (let h = 7; h <= 18; h++) {
+        hours.push(`${h.toString().padStart(2, '0')}:00`);
+    }
+    
+    let html = '';
+    hours.forEach(time => {
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        html += `<div class="schedule-row">`;
+        html += `<div class="schedule-time">${time}</div>`;
+        
+        for (let day = 1; day <= 7; day++) {
+            const dayClasses = semesterClasses.filter(c => c.day === day && c.timeFrom <= time && c.timeUntil >= time);
+            const dayExams = semesterExams.filter(e => e.day === day && e.timeFrom <= time && e.timeUntil >= time);
+            const combined = [...dayClasses, ...dayExams];
+            
+            html += `<div class="schedule-cell">`;
+            combined.forEach(item => {
+                html += `<div class="schedule-item">${item.code}</div>`;
+            });
+            html += `</div>`;
+        }
+        
+        html += `</div>`;
+    });
+    
+    container.innerHTML = html;
 }
 
 // ========== GPA SYSTEM - DYNAMIC SEMESTERS ==========
@@ -483,7 +641,7 @@ function addNewSemester() {
 }
 
 function initializeNav() {
-    const navBtns = document.querySelectorAll('.nav-btn');
+    const navBtns = document.querySelectorAll('.nav-btn[data-view]');
     const mainContent = document.getElementById('mainContent');
     navBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -501,32 +659,29 @@ function initializeSidebar() {
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('toggleSidebarBtn');
     const mainContent = document.getElementById('mainContent');
-    const tabExpandBtn = document.getElementById('tabExpandBtn');
-    const tabBar = document.querySelector('.tab-bar');
 
-    if (!toggleBtn || !sidebar) return;
+    if (!toggleBtn || !sidebar || !mainContent) return;
 
-    // Click toggle button to expand/collapse
+    function updateToggleBtnIcon() {
+        toggleBtn.textContent = sidebar.classList.contains('expanded') ? '×' : '☰';
+    }
+
+    // Toggle sidebar expansion
     toggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        sidebar.classList.toggle('collapsed');
+        sidebar.classList.toggle('expanded');
+        mainContent.classList.toggle('sidebar-expanded');
+        toggleBtn.classList.toggle('sidebar-expanded');
+        updateToggleBtnIcon();
     });
 
-    // Click on main content area to collapse sidebar (desktop only)
-    if (mainContent) {
-        mainContent.addEventListener('click', () => {
-            if (window.innerWidth > 768) { // Only collapse on desktop
-                sidebar.classList.add('collapsed');
-            }
-        });
-    }
-
-    // Mobile tab bar expand/collapse
-    if (tabExpandBtn && tabBar) {
-        tabExpandBtn.addEventListener('click', () => {
-            tabBar.classList.toggle('collapsed');
-        });
-    }
+    // Collapse sidebar when clicking outside (on main content)
+    mainContent.addEventListener('click', () => {
+        sidebar.classList.remove('expanded');
+        mainContent.classList.remove('sidebar-expanded');
+        toggleBtn.classList.remove('sidebar-expanded');
+        updateToggleBtnIcon();
+    });
 }
 
 
@@ -543,6 +698,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAllSemesters();
     updateCGPA();
     
+    loadSchedulesFromStorage();
+    
     const addSemesterBtn = document.getElementById('addSemesterBtn');
     if (addSemesterBtn) {
         addSemesterBtn.addEventListener('click', addNewSemester);
@@ -550,4 +707,69 @@ document.addEventListener('DOMContentLoaded', () => {
     
     initializeNav();
     initializeSidebar();
+    
+    // Class Schedule Modal
+    const modal = document.getElementById('classScheduleModal');
+    const examModal = document.getElementById('examModal');
+    const openClassModalBtn = document.getElementById('addClassBtn');
+    const openExamModalBtn = document.getElementById('addExamBtn');
+    const closeModalBtns = document.querySelectorAll('.close-modal');
+    
+    if (openClassModalBtn) {
+        openClassModalBtn.addEventListener('click', () => {
+            if (modal) modal.classList.add('visible');
+        });
+    }
+    
+    if (openExamModalBtn) {
+        openExamModalBtn.addEventListener('click', () => {
+            if (examModal) examModal.classList.add('visible');
+        });
+    }
+    
+    closeModalBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modalParent = btn.closest('.modal');
+            if (modalParent) modalParent.classList.remove('visible');
+        });
+    });
+    
+    // Close modal when clicking outside
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('visible');
+        });
+    }
+    if (examModal) {
+        examModal.addEventListener('click', (e) => {
+            if (e.target === examModal) examModal.classList.remove('visible');
+        });
+    }
+    
+    const saveClassScheduleBtn = document.getElementById('saveClassScheduleBtn');
+    if (saveClassScheduleBtn) {
+        saveClassScheduleBtn.addEventListener('click', saveClassSchedule);
+    }
+    
+    const saveExamBtn = document.getElementById('saveExamBtn');
+    if (saveExamBtn) {
+        saveExamBtn.addEventListener('click', saveExamination);
+    }
+    
+    // Add class buttons only on schedule view (removed from calendar)
+    const addClassScheduleBtn = document.getElementById('addClassScheduleBtn');
+    if (addClassScheduleBtn) {
+        addClassScheduleBtn.addEventListener('click', () => {
+            if (modal) modal.classList.add('visible');
+        });
+    }
+    
+    const addExamScheduleBtn = document.getElementById('addExamScheduleBtn');
+    if (addExamScheduleBtn) {
+        addExamScheduleBtn.addEventListener('click', () => {
+            if (examModal) examModal.classList.add('visible');
+        });
+    }
+    
+    renderWeeklySchedule();
 });
