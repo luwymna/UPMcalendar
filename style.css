@@ -13,6 +13,7 @@ body {
     -webkit-font-smoothing: antialiased;
     display: flex;
     min-height: 100vh;
+    height: 100%;
 }
 
 /* ===== SIDEBAR - COLLAPSIBLE ===== */
@@ -132,6 +133,11 @@ body {
 .view-pane {
     display: none;
     background: transparent;
+    min-height: 100%;
+}
+
+.view-pane.active {
+    display: block;
 }
 
 body:has(.sidebar.collapsed) .main-content {
@@ -149,34 +155,38 @@ body:has(.sidebar.collapsed) .main-content {
 .container {
     max-width: 1400px;
     margin: auto;
+    min-height: 100%;
 }
 
 /* GPA STYLES */
 .gpa-container {
     max-width: 1200px;
     margin: auto;
+    min-height: 100%;
 }
 
 .gpa-container h1 {
     color: #ffffff;
     margin-top: 0;
-    font-size: 2rem;
-    margin-bottom: 20px;
+    font-size: 1.8rem;
+    margin-bottom: 16px;
 }
 
 .add-semester-btn {
     background: rgba(255,255,255,0.15);
     border: 2px dashed rgba(255,255,255,0.3);
     color: white;
-    padding: 12px 24px;
+    padding: 10px 20px;
     border-radius: 12px;
     cursor: pointer;
     font-weight: 600;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     transition: all 0.2s;
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    font-size: 0.95rem;
+    white-space: nowrap;
 }
 
 .add-semester-btn:hover {
