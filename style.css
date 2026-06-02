@@ -137,8 +137,184 @@ html {
 .gpa-container h1 {
     color: #ffffff;
     margin-top: 0;
-    font-size: 2rem;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+}
+
+.add-semester-btn {
+    background: rgba(255,255,255,0.15);
+    border: 2px dashed rgba(255,255,255,0.3);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 16px;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+}
+
+.add-semester-btn:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.5);
+}
+
+.semester-card {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
     margin-bottom: 20px;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+}
+
+.semester-header {
+    background: linear-gradient(90deg, #0f2c56, #1a3d6e);
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.semester-title {
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.semester-gpa {
+    background: #ff9a46;
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.delete-semester {
+    background: rgba(255,71,87,0.8);
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    transition: all 0.2s;
+}
+
+.delete-semester:hover {
+    background: #ff4757;
+}
+
+.semester-content {
+    padding: 14px;
+    display: block;
+}
+
+.semester-content.collapsed {
+    display: none;
+}
+
+.gpa-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    background: rgba(0,0,0,0.2);
+    padding: 12px;
+    border-radius: 10px;
+    flex-wrap: wrap;
+}
+
+.gpa-form input, .gpa-form select {
+    padding: 8px 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    color: #ffffff;
+    font-size: 0.85rem;
+    flex: 1;
+    min-width: 120px;
+}
+
+.gpa-form input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.gpa-form select option {
+    background: #0f2c56;
+    color: white;
+}
+
+.gpa-table {
+    background: linear-gradient(180deg, #082942 0%, #0f2c56 100%);
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.gpa-table table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #ffffff;
+    min-width: 400px;
+}
+
+.gpa-table thead {
+        background: linear-gradient(90deg, #082942, #0f2c56);
+}
+
+.gpa-table th, .gpa-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.8rem;
+}
+
+.gpa-table th {
+    font-weight: 700;
+}
+
+.gpa-table tbody tr:hover {
+        background: linear-gradient(90deg, #082942, #0f2c56);
+}
+
+.cgpa-section {
+    background: linear-gradient(135deg, #ff9a46, #ff6f3d);
+    border-radius: 14px;
+    padding: 16px;
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.cgpa-item {
+    text-align: center;
+    flex: 1;
+}
+
+.cgpa-item h3 {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    margin-bottom: 6px;
+}
+
+.cgpa-value {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+/* Calendar Actions */
+.calendar-actions {
+    margin-bottom: 16px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .add-semester-btn {
@@ -678,7 +854,12 @@ html {
         padding: 8px 16px;
         white-space: normal;
     }
-    .gpa-container h1 { font-size: 1.6rem; }
+    .gpa-container h1 { font-size: 1.2rem; }
+    .cgpa-value {
+        font-size: 1.3rem !important;
+        line-height: 1.3;
+    }
+    .semester-title { font-size: 0.9rem; }
 }
 
 /* ===== SMALL MOBILE (PORTRAIT) FIXES ===== */

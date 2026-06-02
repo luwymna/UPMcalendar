@@ -567,7 +567,7 @@ function renderSemester(semesterId) {
             📚 ${semester.name}
             <span class="semester-gpa">GPA: ${gpa.toFixed(2)}</span>
         </div>
-        <button class="delete-semester" onclick="event.stopPropagation(); deleteSemester(${semesterId})">🗑 Delete Semester</button>
+        <button class="delete-semester" onclick="event.stopPropagation(); deleteSemester(${semesterId})">✕ Delete</button>
     </div>
     <div class="semester-content" id="semester_content_${semesterId}">
         <div class="gpa-form">
@@ -688,11 +688,7 @@ function initializeSidebar() {
 document.addEventListener('DOMContentLoaded', () => {
     renderCalendar();
     renderLegend();
-    renderTodayBlock();
     renderCalendarSummary();
-    renderPeriodBadge();
-    setInterval(renderTodayBlock, 1000);
-    setInterval(renderPeriodBadge, 60000);
     
     loadFromStorage();
     renderAllSemesters();
