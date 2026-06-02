@@ -474,10 +474,12 @@ function addNewSemester() {
 
 function initializeNav() {
     const navBtns = document.querySelectorAll('.nav-btn');
-    const mainContent = document.getElementById('mainContent');
-    navBtns.forEach(btn => {
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const allNavBtns = [...navBtns, ...tabBtns];
+    
+    allNavBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            navBtns.forEach(b => b.classList.remove('active'));
+            allNavBtns.forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.view-pane').forEach(p => p.classList.remove('active'));
             btn.classList.add('active');
             const viewId = `${btn.dataset.view}-view`;
