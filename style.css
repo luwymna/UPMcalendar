@@ -131,13 +131,12 @@ body {
     padding: 20px;
     overflow-y: auto;
     transition: margin-left 0.3s ease;
-    background: transparent;
-    min-height: 100vh;
+    background: linear-gradient(135deg, #b53b3b 0%, #8b2c2c 100%);
 }
 
 .view-pane {
     display: none;
-    background: transparent;
+    background: linear-gradient(135deg, #b53b3b 0%, #8b2c2c 100%);
     min-height: 100vh;
 }
 
