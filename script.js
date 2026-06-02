@@ -493,6 +493,8 @@ function initializeSidebar() {
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('toggleSidebarBtn');
     const mainContent = document.getElementById('mainContent');
+    const tabExpandBtn = document.getElementById('tabExpandBtn');
+    const tabBar = document.querySelector('.tab-bar');
     
     if (!toggleBtn || !sidebar) return;
     
@@ -506,6 +508,13 @@ function initializeSidebar() {
     if (mainContent) {
         mainContent.addEventListener('click', () => {
             sidebar.classList.add('collapsed');
+        });
+    }
+    
+    // Mobile tab bar expand/collapse
+    if (tabExpandBtn && tabBar) {
+        tabExpandBtn.addEventListener('click', () => {
+            tabBar.classList.toggle('collapsed');
         });
     }
 }

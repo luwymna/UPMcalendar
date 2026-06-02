@@ -1,10 +1,3 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    min-height: 100vh;
-}
-
 * {
     margin: 0;
     padding: 0;
@@ -13,7 +6,7 @@ html, body {
 
 body {
     font-family: 'Poppins', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: linear-gradient(135deg, #b53b3b 0%, #8b2c2c 100%);
+    background: linear-gradient(135deg, #ff3b3b 0%, #cc2c2c 100%);
     color: #ffffff;
     -webkit-font-smoothing: antialiased;
     display: flex;
@@ -23,7 +16,7 @@ body {
 /* ===== SIDEBAR - COLLAPSIBLE ===== */
 .sidebar {
     width: 260px;
-    background: linear-gradient(180deg, #082942 0%, #0f2c56 100%);
+    background: linear-gradient(180deg, #cc2c2c 0%, #ff3b3b 100%);
     display: flex;
     flex-direction: column;
     padding: 20px 16px;
@@ -33,8 +26,6 @@ body {
     overflow-y: auto;
     z-index: 100;
     transition: width 0.3s ease;
-    top: 0;
-    left: 0;
 }
 
 .sidebar.collapsed {
@@ -125,70 +116,95 @@ body {
     color: #ffffff;
 }
 
-/* Mobile Tab Bar - iOS style */
-.tab-bar {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(8, 41, 66, 0.95);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 8px 16px;
-    z-index: 1000;
-    gap: 8px;
-}
-
-.tab-btn {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: #e9f5ff;
-    padding: 12px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 600;
-    transition: all 200ms ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-}
-
-.tab-btn.active {
-    background: linear-gradient(90deg, #ff9a46, #ff6f3d);
-    color: #ffffff;
-}
-
-.tab-icon {
-    font-size: 1.3rem;
-}
-
 .main-content {
     flex: 1;
     margin-left: 260px;
     padding: 20px;
     overflow-y: auto;
     transition: margin-left 0.3s ease;
-    background: linear-gradient(135deg, #b53b3b 0%, #8b2c2c 100%);
+    background: linear-gradient(135deg, #ff3b3b 0%, #cc2c2c 100%);
 }
 
-.view-pane {
+/* Mobile Tab Bar */
+.tab-bar {
     display: none;
-    background: linear-gradient(135deg, #b53b3b 0%, #8b2c2c 100%);
-    min-height: 100vh;
-    height: 100%;
-    padding-bottom: 80px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 8px;
+    z-index: 1000;
+    gap: 4px;
+    transition: all 0.3s ease;
 }
 
-.view-pane.active {
-    display: block;
+.tab-bar.collapsed {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.tab-bar.collapsed .tab-btn span:not(.tab-icon) {
+    display: none;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: #cc2c2c;
+    padding: 8px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 200ms ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 50px;
+}
+
+.tab-btn.active {
+    background: #ff3b3b;
+    color: white;
+}
+
+.tab-icon {
+    font-size: 1.1rem;
+}
+
+.tab-expand-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    color: #cc2c2c;
+    font-size: 1.5rem;
 }
 
 body:has(.sidebar.collapsed) .main-content {
     margin-left: 80px;
+}
+
+.view-pane {
+    display: none;
+}
+
+.view-pane.active {
+    display: block;
 }
 
 .container {
@@ -200,35 +216,28 @@ body:has(.sidebar.collapsed) .main-content {
 .gpa-container {
     max-width: 1200px;
     margin: auto;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
 }
 
 .gpa-container h1 {
     color: #ffffff;
     margin-top: 0;
-    font-size: 1.8rem;
-    margin-bottom: 16px;
+    font-size: 2rem;
+    margin-bottom: 20px;
 }
 
 .add-semester-btn {
     background: rgba(255,255,255,0.15);
     border: 2px dashed rgba(255,255,255,0.3);
     color: white;
-    padding: 10px 20px;
+    padding: 12px 24px;
     border-radius: 12px;
     cursor: pointer;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     transition: all 0.2s;
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    font-size: 0.95rem;
-    flex-shrink: 0;
-    word-break: break-word;
-    white-space: normal;
 }
 
 .add-semester-btn:hover {
@@ -246,7 +255,7 @@ body:has(.sidebar.collapsed) .main-content {
 
 .semester-header {
     background: linear-gradient(90deg, #0f2c56, #1a3d6e);
-    padding: 12px 16px;
+    padding: 16px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -254,21 +263,11 @@ body:has(.sidebar.collapsed) .main-content {
 }
 
 .semester-title {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 8px;
-    min-width: 0;
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-.semester-title span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    gap: 10px;
 }
 
 .semester-gpa {
@@ -305,38 +304,43 @@ body:has(.sidebar.collapsed) .main-content {
 
 .gpa-form {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 24px;
     background: rgba(0,0,0,0.2);
-    padding: 12px;
-    border-radius: 10px;
+    padding: 16px;
+    border-radius: 12px;
     flex-wrap: wrap;
-    align-items: center;
 }
 
 .gpa-form input, .gpa-form select {
-    padding: 8px 10px;
+    padding: 10px 12px;
     border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 6px;
+    border-radius: 8px;
     background: rgba(255,255,255,0.05);
     color: #ffffff;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     flex: 1;
-    min-width: 120px;
+    min-width: 150px;
+}
+
+.gpa-form input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.gpa-form select option {
+    background: #0f2c56;
+    color: white;
 }
 
 .btn-primary {
     background: linear-gradient(90deg, #ff9a46, #ff6f3d);
     border: none;
     color: #ffffff;
-    padding: 10px 16px;
-    border-radius: 6px;
+    padding: 10px 20px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 700;
     transition: all 200ms ease;
-    min-height: 40px;
-    width: auto;
-    flex-shrink: 0;
 }
 
 .btn-primary:hover {
@@ -393,53 +397,29 @@ body:has(.sidebar.collapsed) .main-content {
 .cgpa-section {
     background: linear-gradient(135deg, #ff9a46, #ff6f3d);
     border-radius: 16px;
-    padding: 20px;
+    padding: 24px;
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 15px;
-    max-width: 100%;
+    gap: 20px;
 }
 
 .cgpa-item {
     text-align: center;
     flex: 1;
-    min-width: 120px;
-    word-break: break-word;
-    overflow: hidden;
+}
+
+.cgpa-item h3 {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: 8px;
 }
 
 .cgpa-value {
-    font-size: 1.8rem;
+    font-size: 2.5rem;
     font-weight: 800;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-}
-
-.cgpa-section .cgpa-value {
-    display: block;
-    width: 100%;
-    padding: 0 5px;
-    font-size: 1.3rem !important;
-    word-break: break-word;
-    white-space: normal !important;
-    line-height: 1.3;
-    overflow-wrap: break-word;
-}
-
-.cgpa-section .cgpa-item {
-    min-width: 0;
-    flex: 1;
-}
-
-.cgpa-section .cgpa-item h3 {
-    font-size: 0.9rem;
-    opacity: 0.9;
-    margin-bottom: 6px;
 }
 
 /* Calendar Styles */
@@ -489,16 +469,16 @@ body:has(.sidebar.collapsed) .main-content {
 }
 
 .period-badge {
-    margin-bottom: 12px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.95rem;
     border-radius: 24px;
     padding: 10px 18px;
     font-weight: 700;
     background: rgba(255,255,255,0.12);
     color: #e9f5ff;
+    display: inline-block;
+}
+
+.period-badge {
+    display: none; /* Hides the period badge */
 }
 
 .legend {
@@ -681,7 +661,8 @@ body:has(.sidebar.collapsed) .main-content {
 /* Additional mobile adjustments */
 @media (max-width: 768px) {
     .sidebar { display: none; }
-    .tab-bar { display: flex; gap: 8px; }
+    .tab-bar { display: flex; }
+    .tab-expand-btn { display: flex; }
     .main-content { margin-left: 0; padding: 12px 12px 80px 12px; }
     body:has(.sidebar.collapsed) .main-content { margin-left: 0; }
     .container, .gpa-container { padding: 0 8px; width: 100%; max-width: 100%; }
@@ -695,7 +676,6 @@ body:has(.sidebar.collapsed) .main-content {
     .gpa-form input, .gpa-form select { min-width: 100%; margin-bottom: 4px; }
     .btn-primary { width: 100%; }
     .add-semester-btn { font-size: 0.85rem; padding: 8px 16px; white-space: normal; }
-    .add-semester-btn, .btn-primary { flex-shrink: 0; }
     .gpa-container h1 { font-size: 1.6rem; }
 }
 
@@ -763,17 +743,68 @@ body:has(.sidebar.collapsed) .main-content {
 .grade-system tr:hover {
     background: rgba(255, 255, 255, 0.05);
 }
-
-/* Additional mobile adjustments for small screens */
+/* ===== MOBILE PORTRAIT FIXES ===== */
 @media (max-width: 480px) {
-    .sidebar { width: 60px; }
-    .sidebar.collapsed { width: 60px; }
-    .main-content { margin-left: 60px; padding: 10px; }
-    body:has(.sidebar.collapsed) .main-content { margin-left: 60px; }
-    .info-left h1 { font-size: 1.5rem; }
-    .today-date, .today-time { font-size: 1.4rem; }
-    .calendar-grid { grid-template-columns: 1fr; gap: 10px; }
-    .month-card { margin: 5px; }
-    .cgpa-section { flex-direction: column; gap: 15px; text-align: center; }
-    .cgpa-value { font-size: 1.4rem !important; line-height: 1.3; white-space: normal !important; }
+    /* CGPA Section Fixes */
+    .cgpa-section {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .cgpa-item {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .cgpa-item h3 {
+        font-size: 0.8rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .cgpa-value {
+        font-size: 2rem;
+    }
+
+    /* GPA Form Fixes */
+    .gpa-form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .gpa-form input,
+    .gpa-form select {
+        min-width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+
+    /* Grade System Table Fixes */
+    .grade-system table {
+        width: 100%;
+        font-size: 0.8rem;
+    }
+
+    .grade-system th,
+    .grade-system td {
+        padding: 8px;
+    }
+
+    /* General Mobile Fixes */
+    .gpa-container {
+        padding: 10px;
+    }
+
+    .semester-card {
+        margin-bottom: 15px;
+    }
+
+    .gpa-table {
+        overflow-x: auto;
+    }
 }
