@@ -261,9 +261,11 @@ body:has(.sidebar.collapsed) .main-content {
     gap: 8px;
     min-width: 0;
     flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
-.semester-title span:first-child {
+.semester-title span {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
