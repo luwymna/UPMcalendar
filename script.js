@@ -26,8 +26,8 @@ const academicPeriods = [
     { start: '2026-01-12', end: '2026-01-18', label: 'Week 13 - Lectures', type: 'lecture' },
     { start: '2026-01-19', end: '2026-01-25', label: 'Week 14 - Lectures', type: 'lecture' },
     { start: '2026-01-26', end: '2026-02-01', label: 'Week 15 - Revision Week', type: 'revision' },
-    { start: '2026-02-02', end: '2026-02-08', label: 'Week 16 - Final Exam', type: 'exam' },
-    { start: '2026-02-09', end: '2026-02-15', label: 'Week 17 - Final Exam', type: 'exam' },
+    { start: '2026-02-02', end: '2026-02-08', label: 'Week 16 - Final exam', type: 'exam' },
+    { start: '2026-02-09', end: '2026-02-15', label: 'Week 17 - Final exam', type: 'exam' },
     { start: '2026-02-16', end: '2026-03-22', label: 'End Semester Break', type: 'break' },
     // SEMESTER 2
     { start: '2026-03-23', end: '2026-03-29', label: 'Week 1 - Lectures', type: 'lecture' },
@@ -46,8 +46,8 @@ const academicPeriods = [
     { start: '2026-06-22', end: '2026-06-28', label: 'Week 13 - Lectures', type: 'lecture' },
     { start: '2026-06-29', end: '2026-07-05', label: 'Week 14 - Lectures', type: 'lecture' },
     { start: '2026-07-06', end: '2026-07-12', label: 'Week 15 - Revision Week', type: 'revision' },
-    { start: '2026-07-13', end: '2026-07-19', label: 'Week 16 - Final Exam', type: 'exam' },
-    { start: '2026-07-20', end: '2026-07-26', label: 'Week 17 - Final Exam', type: 'exam' },
+    { start: '2026-07-13', end: '2026-07-19', label: 'Week 16 - Final exam', type: 'exam' },
+    { start: '2026-07-20', end: '2026-07-26', label: 'Week 17 - Final exam', type: 'exam' },
     { start: '2026-07-27', end: '2026-10-04', label: 'End Semester Break', type: 'break' }
 ].map(p => ({ ...p, startDate: parseDate(p.start), endDate: parseDate(p.end) }));
 
@@ -211,18 +211,7 @@ function createMonthCard(year, month, today) {
             weekSpan.textContent = `W${weekNum}`;
             cell.appendChild(weekSpan);
         }
-
-        // Add class codes for lecture weeks only
-        const classes = getClassForDate(date);
-        if (classes.length && !isBreakOrHoliday(date) && !isExamWeek(date) && !isRevisionWeek(date)) {
-            classes.forEach(cls => {
-                let codeSpan = document.createElement('span');
-                codeSpan.className = 'class-code';
-                codeSpan.textContent = cls.code;
-                cell.appendChild(codeSpan);
-            });
-        }
-
+        
         if (semesterMarkers.find(m => m.dateObj.toDateString() === date.toDateString())) {
             let markerSpan = document.createElement('span');
             let marker = semesterMarkers.find(m => m.dateObj.toDateString() === date.toDateString());
@@ -230,8 +219,11 @@ function createMonthCard(year, month, today) {
             markerSpan.textContent = marker.label;
             cell.appendChild(markerSpan);
         }
-
-        cell.onclick = () => showDayInfo(date);
+        
+        cell.addEventListener('click', () => {
+            showDayInfo(date);
+        });
+        
         gdiv.appendChild(cell);
     }
 
@@ -261,10 +253,47 @@ function renderCalendar() {
 
 function showDayInfo(date) {
     let info = document.getElementById('dayInfo');
-    let ev = getEventForDate(date),
-        hol = getHolidayForDate(date);
-    info.innerHTML = `<div class="day-info-panel"><button class="day-info-close" onclick="document.getElementById('dayInfo').classList.remove('visible')">×</button><h2>${date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}</h2><p><strong>Period:</strong> ${ev ? ev.label : 'None'}</p>${hol ? `<p><strong>Holiday:</strong> ${hol.label}</p>` : ''}</div>`;
+    let ev = getEventForDate(date);
+    let hol = getHolidayForDate(date);
+    
+    const formattedDate = date.toLocaleDateString('en-GB', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+
+    const periodLabel = ev ? ev.label : 'No Period';
+    const holidayLabel = hol ? hol.label : '';
+
+    let html = `<div class="day-info-panel-overlay"></div>
+        <div class="day-info-panel">
+            <h3>${formattedDate}</h3>
+            <p><strong>Period:</strong> ${periodLabel}</p>
+            ${holidayLabel ? `<p class="holiday-line"><strong>Holiday:</strong> ${holidayLabel}</p>` : ''}
+        </div>`;
+    
+    info.innerHTML = html;
     info.classList.add('visible');
+    
+    const overlay = info.querySelector('.day-info-panel-overlay');
+    if (overlay) {
+        overlay.addEventListener('click', hideDayInfo);
+    }
+}
+
+function hideDayInfo() {
+    let info = document.getElementById('dayInfo');
+    if (info) {
+        info.classList.remove('visible');
+        setTimeout(() => {
+            info.innerHTML = '';
+        }, 300);
+    }
+}
+
+function hideMobileDayInfo() {
+    hideDayInfo();
 }
 
 function renderLegend() {
@@ -272,7 +301,7 @@ function renderLegend() {
     if (!legend) return;
     legend.innerHTML = `
         <div class="legend-chip lecture">Lecture / Semester</div>
-        <div class="legend-chip exam">Exam / Test</div>
+        <div class="legend-chip exam">Final Exam</div>
         <div class="legend-chip revision">Revision Week</div>
         <div class="legend-chip break">Break / Holiday Period</div>
         <div class="legend-chip holiday">Public Holiday</div>
@@ -307,153 +336,6 @@ function renderCalendarSummary() {
     const nextEvent = academicPeriods.find(event => event.startDate > today);
     summary.innerHTML = (currentPeriod ? `Current academic period: <strong>${currentPeriod.label}</strong>. ` : 'No active academic period today. ') +
         (nextEvent ? `Next: <strong>${nextEvent.label}</strong> period starts on ${nextEvent.startDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}.` : 'No upcoming academic periods in this academic year.');
-}
-
-// ========== CLASS SCHEDULE SYSTEM ==========
-let classSchedules = [];
-let exams = [];
-
-function loadSchedulesFromStorage() {
-    const stored = localStorage.getItem('upmClassSchedules');
-    if (stored) {
-        const data = JSON.parse(stored);
-        classSchedules = data.schedules || [];
-        exams = data.exams || [];
-    }
-}
-
-function saveSchedulesToStorage() {
-    localStorage.setItem('upmClassSchedules', JSON.stringify({ schedules: classSchedules, exams }));
-}
-
-function isLectureWeek(date) {
-    const event = getEventForDate(date);
-    if (!event) return false;
-    return event.type === 'lecture';
-}
-
-function isBreakOrHoliday(date) {
-    const event = getEventForDate(date);
-    if (!event) return false;
-    return event.type === 'break' || getHolidayForDate(date);
-}
-
-function isExamWeek(date) {
-    const event = getEventForDate(date);
-    return event && event.type === 'exam';
-}
-
-function isRevisionWeek(date) {
-    const event = getEventForDate(date);
-    return event && event.type === 'revision';
-}
-
-function getClassForDate(date) {
-    const dayOfWeek = date.getDay();
-    const semesterNum = date >= parseDate('2025-10-13') && date < parseDate('2026-03-23') ? 1 : 2;
-    return classSchedules.filter(s => s.day === dayOfWeek && s.semester === semesterNum && !isBreakOrHoliday(date) && !isExamWeek(date) && !isRevisionWeek(date));
-}
-
-function saveClassSchedule() {
-    const code = document.getElementById('classCodeInput').value.trim().toUpperCase();
-    const semester = parseInt(document.getElementById('classSemesterInput').value);
-    const day = parseInt(document.getElementById('classDayInput').value);
-    const timeFrom = document.getElementById('classTimeFrom').value;
-    const timeUntil = document.getElementById('classTimeUntil').value;
-    
-    if (!code || !timeFrom || !timeUntil) {
-        alert('Please fill all fields');
-        return;
-    }
-    
-    classSchedules.push({
-        code,
-        semester,
-        day,
-        timeFrom,
-        timeUntil
-    });
-    
-    saveSchedulesToStorage();
-    renderCalendar();
-    renderWeeklySchedule();
-    
-    document.getElementById('classCodeInput').value = '';
-    document.getElementById('classTimeFrom').value = '';
-    document.getElementById('classTimeUntil').value = '';
-    
-    const modal = document.getElementById('classScheduleModal');
-    if (modal) modal.classList.remove('visible');
-}
-
-function saveExamination() {
-    const code = document.getElementById('examCodeInput').value.trim().toUpperCase();
-    const semester = parseInt(document.getElementById('examSemesterInput').value);
-    const day = parseInt(document.getElementById('examDayInput').value);
-    const timeFrom = document.getElementById('examTimeFrom').value;
-    const timeUntil = document.getElementById('examTimeUntil').value;
-    
-    if (!code || !timeFrom || !timeUntil) {
-        alert('Please fill all fields');
-        return;
-    }
-    
-    exams.push({
-        code,
-        semester,
-        day,
-        timeFrom,
-        timeUntil
-    });
-    
-    saveSchedulesToStorage();
-    renderCalendar();
-    renderWeeklySchedule();
-    
-    document.getElementById('examCodeInput').value = '';
-    document.getElementById('examTimeFrom').value = '';
-    document.getElementById('examTimeUntil').value = '';
-    
-    const modal = document.getElementById('examModal');
-    if (modal) modal.classList.remove('visible');
-}
-
-function renderWeeklySchedule() {
-    const container = document.getElementById('scheduleBody');
-    if (!container) return;
-    
-    const currentSemester = (new Date() >= parseDate('2025-10-13') && new Date() < parseDate('2026-03-23')) ? 1 : 2;
-    const semesterClasses = classSchedules.filter(s => s.semester === currentSemester);
-    const semesterExams = exams.filter(s => s.semester === currentSemester);
-    
-    // Generate hourly slots from 7am to 6pm
-    const hours = [];
-    for (let h = 7; h <= 18; h++) {
-        hours.push(`${h.toString().padStart(2, '0')}:00`);
-    }
-    
-    let html = '';
-    hours.forEach(time => {
-        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        html += `<div class="schedule-row">`;
-        html += `<div class="schedule-time">${time}</div>`;
-        
-        for (let day = 1; day <= 7; day++) {
-            const dayClasses = semesterClasses.filter(c => c.day === day && c.timeFrom <= time && c.timeUntil >= time);
-            const dayExams = semesterExams.filter(e => e.day === day && e.timeFrom <= time && e.timeUntil >= time);
-            const combined = [...dayClasses, ...dayExams];
-            
-            html += `<div class="schedule-cell">`;
-            combined.forEach(item => {
-                html += `<div class="schedule-item">${item.code}</div>`;
-            });
-            html += `</div>`;
-        }
-        
-        html += `</div>`;
-    });
-    
-    container.innerHTML = html;
 }
 
 // ========== GPA SYSTEM - DYNAMIC SEMESTERS ==========
@@ -498,7 +380,7 @@ function calculateCGPA() {
 function updateCGPA() {
     let cgpa = calculateCGPA();
     document.getElementById('cgpaValue').textContent = cgpa.toFixed(2);
-    let status = cgpa >= 3.75 ? '🏆 Dean\'s List' : (cgpa >= 3.0 ? '✅ Good Standing' : (cgpa >= 2.0 ? '📚 Satisfactory' : '⚠️ Need Improvement'));
+    let status = cgpa >= 4.00 ? 'TNC Award' : cgpa >= 3.75 ? 'Dean\'s List' : (cgpa >= 3.0 ? 'Good Standing' : (cgpa >= 2.0 ? 'Satisfactory' : '⚠️ Need Improvement'));
     document.getElementById('cgpaStatus').textContent = status;
 }
 
@@ -579,7 +461,7 @@ function renderSemester(semesterId) {
     container.innerHTML = `
     <div class="semester-header" onclick="toggleSemesterContent(${semesterId})">
         <div class="semester-title">
-            📚 ${semester.name}
+            📚${semester.name}
             <span class="semester-gpa">GPA: ${gpa.toFixed(2)}</span>
         </div>
         <button class="delete-semester" onclick="event.stopPropagation(); deleteSemester(${semesterId})">✕ Delete</button>
@@ -714,8 +596,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (content && idx !== 0) content.classList.add('collapsed');
     });
     
-    loadSchedulesFromStorage();
-    
     const addSemesterBtn = document.getElementById('addSemesterBtn');
     if (addSemesterBtn) {
         addSemesterBtn.addEventListener('click', addNewSemester);
@@ -723,71 +603,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     initializeNav();
     initializeSidebar();
-    
-    // Class Schedule Modal
-    const modal = document.getElementById('classScheduleModal');
-    const examModal = document.getElementById('examModal');
-    const openClassModalBtn = document.getElementById('addClassBtn');
-    const openExamModalBtn = document.getElementById('addExamBtn');
-    const closeModalBtns = document.querySelectorAll('.close-modal');
-    
-    if (openClassModalBtn) {
-        openClassModalBtn.addEventListener('click', () => {
-            if (modal) modal.classList.add('visible');
-        });
-    }
-    
-    if (openExamModalBtn) {
-        openExamModalBtn.addEventListener('click', () => {
-            if (examModal) examModal.classList.add('visible');
-        });
-    }
-    
-    closeModalBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const modalParent = btn.closest('.modal');
-            if (modalParent) modalParent.classList.remove('visible');
-        });
-    });
-    
-    // Close modal when clicking outside
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) modal.classList.remove('visible');
-        });
-    }
-    if (examModal) {
-        examModal.addEventListener('click', (e) => {
-            if (e.target === examModal) examModal.classList.remove('visible');
-        });
-    }
-    
-    const saveClassScheduleBtn = document.getElementById('saveClassScheduleBtn');
-    if (saveClassScheduleBtn) {
-        saveClassScheduleBtn.addEventListener('click', saveClassSchedule);
-    }
-    
-    const saveExamBtn = document.getElementById('saveExamBtn');
-    if (saveExamBtn) {
-        saveExamBtn.addEventListener('click', saveExamination);
-    }
-    
-    // Add class buttons only on schedule view (removed from calendar)
-    const addClassScheduleBtn = document.getElementById('addClassScheduleBtn');
-    if (addClassScheduleBtn) {
-        addClassScheduleBtn.addEventListener('click', () => {
-            if (modal) modal.classList.add('visible');
-        });
-    }
-    
-    const addExamScheduleBtn = document.getElementById('addExamScheduleBtn');
-    if (addExamScheduleBtn) {
-        addExamScheduleBtn.addEventListener('click', () => {
-            if (examModal) examModal.classList.add('visible');
-        });
-    }
-    
-    renderWeeklySchedule();
     
     // Sidebar clock
     function updateClock() {

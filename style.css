@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Poppins', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: linear-gradient(135deg, #ff3b3b 0%, #cc2c2c 100%);
+    background: #d60a50;
     color: #ffffff;
     -webkit-font-smoothing: antialiased;
     display: flex;
@@ -42,13 +42,14 @@ html {
 }
 
 .sidebar-toggle.sidebar-expanded {
-    left: 260px; /* Move button when sidebar is expanded */
+    left: 260px; 
     background: #b40743;
+    border-radius: 0 10px 10px 0;
 }
 
 .sidebar {
     width: 260px;
-        background: linear-gradient(180deg, #082942 0%, #0f2c56 100%);
+    background: linear-gradient(180deg, #082942 0%, #0f2c56 100%);
 
     display: flex;
     flex-direction: column;
@@ -166,6 +167,38 @@ html {
 .gpa-container {
     max-width: 1200px;
     margin: auto;
+    display: grid;
+    gap: 20px;
+}
+
+/* For larger screens, show grade system below the add semester button */
+@media (min-width: 768px) {
+    .gpa-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    /* Make title and button span full width */
+    .gpa-container h1,
+    .add-semester-btn {
+        grid-column: 1 / -1;
+    }
+    /* Order the elements */
+    .gpa-container h1 {
+        order: 1;
+    }
+    .add-semester-btn {
+        order: 2;
+    }
+    .grade-system {
+        order: 3;
+        width: 100%;
+    }
+    #semestersContainer {
+        order: 4;
+    }
+    #cgpaSection {
+        order: 5;
+    }
 }
 
 .gpa-container h1 {
@@ -351,43 +384,6 @@ html {
     flex-wrap: wrap;
 }
 
-.add-semester-btn {
-    background: rgba(255,255,255,0.15);
-    border: 2px dashed rgba(255,255,255,0.3);
-    color: white;
-    padding: 12px 24px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-bottom: 24px;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.add-semester-btn:hover {
-    background: rgba(255,255,255,0.25);
-    border-color: rgba(255,255,255,0.5);
-}
-
-.semester-card {
-    background: rgba(255,255,255,0.08);
-    border-radius: 16px;
-    margin-bottom: 30px;
-    overflow: hidden;
-    backdrop-filter: blur(5px);
-}
-
-.semester-header {
-    background: linear-gradient(90deg, #0f2c56, #1a3d6e);
-    padding: 16px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-}
-
 .semester-title {
     font-size: 1.3rem;
     font-weight: 700;
@@ -397,11 +393,14 @@ html {
 }
 
 .semester-gpa {
+    position: relative;
+    overflow: hidden;
     background: #ff9a46;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.9rem;
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 0.75rem;
     font-weight: 700;
+    display: inline-block;
 }
 
 .delete-semester {
@@ -422,20 +421,6 @@ html {
 .semester-content {
     padding: 20px;
     display: block;
-}
-
-.semester-content.collapsed {
-    display: none;
-}
-
-.gpa-form {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-    background: rgba(0,0,0,0.2);
-    padding: 16px;
-    border-radius: 12px;
-    flex-wrap: wrap;
 }
 
 .gpa-form input, .gpa-form select {
@@ -707,31 +692,45 @@ html {
 .empty-cell { background: white; }
 
 .today {
-    background: linear-gradient(135deg, #ff6f3d, #ff4757);
-    color: white;
+    color: #0f2c56;
     font-weight: 800;
-    font-size: 1.1rem; /* Slightly bigger font for the number */
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(255, 111, 61, 0.4);
-    transform: scale(1.05);
+    font-size: 0.85rem;
     position: relative;
-    z-index: 1;
+    border: 2px solid #ffffff;
+    border-radius: 0;
 }
 
 .today::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border: 2px solid white;
-    border-radius: 12px;
-    z-index: -1;
+    display: none;
 }
 
+.today.event-lecture { background: #b8e2ff; border-color: #68b8f1; }
+.today.event-exam { background: #ffb4b4; border-color: #f89595; }
+.today.event-revision { background: #ffd28c; border-color: #fcc976; }
+.today.event-break { background: #fff1a8; border-color: #ffe78c; }
+.today.event-holiday { background: #bfe7b9; border-color: #95d88b; }
+
 .date-cell.event-lecture { background: #b8e2ff; }
+.date-cell.event-lecture:hover { background: #68b8f1; }
 .date-cell.event-exam { background: #ffb4b4; }
+.date-cell.event-exam:hover { background: #f89595; }
 .date-cell.event-revision { background: #ffd28c; }
+.date-cell.event-revision:hover { background: #fcc976; }
 .date-cell.event-break { background: #fff1a8; }
+.date-cell.event-break:hover { background: #ffe78c; }
 .date-cell.event-holiday { background: #bfe7b9; }
+.date-cell.event-holiday:hover { background: #95d88b; }
+
+.today:hover {
+    filter: brightness(0.95);
+}
+
+.today.event-lecture:hover { filter: brightness(0.95); }
+.today.event-exam:hover { filter: brightness(0.95); }
+.today.event-revision:hover { filter: brightness(0.95); }
+.today.event-break:hover { filter: brightness(0.95); }
+.today.event-holiday:hover { filter: brightness(0.95); }
+
 
 .week-number {
     position: absolute;
@@ -739,42 +738,82 @@ html {
     bottom: 4px;
     background: rgba(15,44,86,0.85);
     color: #fff;
-    padding: 2px 6px;
+    padding: 3px 3px;
     border-radius: 8px;
-    font-size: 0.55rem;
+    font-size: 0.40rem;
     font-weight: 700;
 }
 
+/* Day Info Panel (Slide-up, all devices) */
 .day-info {
-    display: none;
     position: fixed;
-    inset: 0;
-    background: rgba(7, 10, 25, 0.6);
-    backdrop-filter: blur(5px);
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 300ms ease;
 }
 
-.day-info.visible { display: flex; }
+.day-info.visible {
+    opacity: 1;
+}
+
+.day-info-panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    pointer-events: none;
+}
+
+.day-info.visible .day-info-panel-overlay {
+    pointer-events: auto;
+}
 
 .day-info-panel {
-    width: min(500px, 90%);
-    background: #ffffff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 20px 20px 0 0;
+    padding: 24px 20px;
+    max-width: 100%;
+    pointer-events: auto;
+    transform: translateY(100%);
+    transition: transform 300ms ease-out;
+    z-index: 9999;
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.15);
     color: #0f2c56;
-    border-radius: 20px;
-    padding: 24px;
-    position: relative;
 }
 
-.day-info-close {
-    position: absolute;
-    right: 16px;
-    top: 16px;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
+.day-info.visible .day-info-panel {
+    transform: translateY(0);
+}
+
+.day-info-panel h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    color: #0f2c56;
+    font-weight: 700;
+}
+
+.day-info-panel p {
+    margin: 6px 0;
+    font-size: 0.95rem;
+    color: #1c2b3c;
+}
+
+.day-info-panel .holiday-line {
+    color: #2d8a4e;
+    font-weight: 700;
 }
 
 /* Grade System Table */
@@ -818,17 +857,17 @@ html {
 .grade-system th:first-child,
 .grade-system td:first-child {
     border-left: none; /* Remove left border for first cell */
-    border-radius: 12px 0 0 12px; /* Rounded corners for first cell (left side) */
+    border-radius: 12 0 0 12px; /* Rounded corners for first cell (left side) */
 }
 
 .grade-system th:last-child,
 .grade-system td:last-child {
     border-right: none; /* Remove right border for last cell */
-    border-radius: 0 12px 12px 0; /* Rounded corners for last cell (right side) */
+    border-radius: 0 12px 0px 0; /* Rounded corners for last cell (right side) */
 }
 
 .grade-system th {
-    background: linear-gradient(90deg, #082942, #0f2c56);
+    background: #0f2c56;
     font-weight: 600;
 }
 
@@ -845,10 +884,19 @@ html {
 }
 
 @media (max-width: 768px) {
+    .sidebar {
+        z-index: 1000;
+    }
+    .sidebar-toggle {
+        z-index: 1001;
+    }
     .main-content {
         margin-left: 0;
         padding: 40px 12px 80px 12px;
         background: #d60a50;
+    }
+    .main-content.sidebar-expanded {
+        margin-left: 0;
     }
     .container, .gpa-container {
         padding: 0 8px;
@@ -1030,108 +1078,6 @@ html {
     box-shadow: 0 6px 16px rgba(255,106,61,0.3);
 }
 
-/* Class Code on Calendar - Small */
-.class-code {
-    font-size: 0.6rem;
-    color: #0f2c56;
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    text-align: left;
-    padding: 2px 4px;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 4px;
-}
-
-/* Schedule View Styles */
-.schedule-container {
-    max-width: 1200px;
-    margin: auto;
-}
-
-.schedule-container h1 {
-    color: #ffffff;
-    margin-top: 40px;
-    margin-bottom: 20px;
-}
-
-.schedule-table {
-    background: rgba(8, 41, 66, 0.95);
-    border-radius: 16px;
-    padding: 5px;
-    margin-top: 20px;
-}
-
-.schedule-header {
-    display: grid;
-    grid-template-columns: 100px repeat(7, 1fr);
-    gap: 1px;
-    background: rgba(8, 41, 66, 0.5);
-    font-weight: 700;
-    text-align: center;
-    padding: 10px;
-}
-
-.schedule-header div {
-    padding: 8px;
-    background: rgba(8, 41, 66, 0.5);
-}
-
-.schedule-row {
-    display: grid;
-    grid-template-columns: 100px repeat(7, 1fr);
-    gap: 1px;
-}
-
-.schedule-time {
-    background: rgba(8, 41, 66, 0.5);
-    padding: 8px;
-    font-weight: 600;
-    text-align: center;
-    color: #ffffff;
-    font-size: 0.85rem;
-}
-
-.schedule-cell {
-    background: rgba(255,255,255,0.05);
-    min-height: 40px;
-    padding: 4px;
-    font-size: 0.75rem;
-}
-
-.schedule-cell .schedule-item {
-    background: linear-gradient(90deg, #ff9a46, #ff6f3d);
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-bottom: 2px;
-    display: inline-block;
-}
-
-.sidebar-credit {
-    text-align: center;
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.6);
-    padding: 10px 0 8px 0;
-    letter-spacing: 0.5px;
-}
-
-/* Class Code on Calendar */
-.class-code {
-    font-size: 0.6rem;
-    color: #0f2c56;
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    text-align: left;
-    padding: 2px 4px;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 4px;
-}
 /* Sidebar Clock */
 .sidebar-clock {
     text-align: center;
@@ -1218,7 +1164,7 @@ html {
     text-align: center;
     border-radius: 8px;
     padding: 0.5px 2px;
-    margin-top: -1px;
+    margin-top: -2px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
