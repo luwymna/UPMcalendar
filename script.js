@@ -1,13 +1,6 @@
 // ========== ACADEMIC CALENDAR DATA ==========
 function parseDate(text) { return new Date(`${text}T00:00:00`); }
 
-const semesterMarkers = [
-    { date: '2025-10-13', label: 'Start Sem 1', cls: 'sem-start' },
-    { date: '2026-02-15', label: 'End Sem 1', cls: 'sem-end' },
-    { date: '2026-03-23', label: 'Start Sem 2', cls: 'sem-start' },
-    { date: '2026-07-26', label: 'End Sem 2', cls: 'sem-end' }
-].map(m => ({ ...m, dateObj: parseDate(m.date) }));
-
 const academicPeriods = [
     // SEMESTER 1
     { start: '2025-10-13', end: '2025-10-19', label: 'Week 1 - Lectures', type: 'lecture' },
@@ -210,14 +203,6 @@ function createMonthCard(year, month, today) {
             weekSpan.className = 'week-number';
             weekSpan.textContent = `W${weekNum}`;
             cell.appendChild(weekSpan);
-        }
-        
-        if (semesterMarkers.find(m => m.dateObj.toDateString() === date.toDateString())) {
-            let markerSpan = document.createElement('span');
-            let marker = semesterMarkers.find(m => m.dateObj.toDateString() === date.toDateString());
-            markerSpan.className = `semester-marker ${marker.cls}`;
-            markerSpan.textContent = marker.label;
-            cell.appendChild(markerSpan);
         }
         
         cell.addEventListener('click', () => {
