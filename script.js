@@ -393,7 +393,7 @@ function addSubject(semesterId) {
         name,
         credit,
         grade,
-        qp: gradePoints[grade] * credit // Quality Points = Grade Points × Credit Hours
+        qp: gradePoints[grade] * credit
     });
 
     saveToStorage();
@@ -475,7 +475,7 @@ function renderSemester(semesterId) {
         <div class="gpa-table">
             <table>
                 <thead>
-                    <tr><th>Code</th><th>Subject</th><th>Credit Hours</th><th>Grade</th><th>Quality Points</th><th>Action</th></tr>
+                    <tr><th>Subject</th><th>Code</th><th>Credit Hours</th><th>Grade</th><th>Action</th></tr>
                 </thead>
                 <tbody id="table_${semesterId}"></tbody>
             </table>
@@ -487,14 +487,13 @@ function renderSemester(semesterId) {
 tbody.innerHTML = '';
 semester.subjects.forEach((subj, idx) => {
     let row = tbody.insertRow();
-    row.insertCell(0).textContent = subj.code;
-    row.insertCell(1).textContent = subj.name;
-    row.insertCell(2).textContent = subj.credit; // Credit Hours
+    row.insertCell(0).textContent = subj.name;
+    row.insertCell(1).textContent = subj.code;
+    row.insertCell(2).textContent = subj.credit;
     row.insertCell(3).textContent = subj.grade;
-    row.insertCell(4).textContent = subj.qp.toFixed(2); // Quality Points
-    let btnCell = row.insertCell(5);
+    let btnCell = row.insertCell(4);
     let btn = document.createElement('button');
-    btn.textContent = 'Remove';
+    btn.innerHTML = '🗑️';
     btn.className = 'btn-danger';
     btn.onclick = () => deleteSubject(semesterId, idx);
     btnCell.appendChild(btn);
