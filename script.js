@@ -543,17 +543,12 @@ function initializeSidebar() {
 
     if (!toggleBtn || !sidebar || !mainContent) return;
 
-    function updateToggleBtnIcon() {
-        toggleBtn.textContent = sidebar.classList.contains('expanded') ? '×' : '☰';
-    }
-
     // Toggle sidebar expansion
     toggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         sidebar.classList.toggle('expanded');
         mainContent.classList.toggle('sidebar-expanded');
         toggleBtn.classList.toggle('sidebar-expanded');
-        updateToggleBtnIcon();
     });
 
     // Collapse sidebar when clicking outside (on main content)
@@ -561,7 +556,6 @@ function initializeSidebar() {
         sidebar.classList.remove('expanded');
         mainContent.classList.remove('sidebar-expanded');
         toggleBtn.classList.remove('sidebar-expanded');
-        updateToggleBtnIcon();
     });
 }
 

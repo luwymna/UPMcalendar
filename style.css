@@ -48,6 +48,37 @@ html {
     border-radius: 0 10px 10px 0;
 }
 
+.sidebar-toggle.mobile-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    top: 12px;
+    right: 12px;
+    left: auto;
+    background: rgba(8, 41, 66, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    font-size: 0; /* Hide text, show svg */
+}
+
+.sidebar-toggle.mobile-toggle:hover {
+    background: #b40743;
+    transform: rotate(180deg);
+}
+
+.sidebar-toggle.mobile-toggle.sidebar-expanded {
+    transform: rotate(180deg);
+    background: #b40743;
+}
+
+.sidebar-toggle.mobile-toggle svg {
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.sidebar-toggle.mobile-toggle.sidebar-expanded svg {
+    transform: rotate(180deg);
+}
+
 .sidebar {
     width: 260px;
     background: linear-gradient(180deg, #082942 0%, #0f2c56 100%);
@@ -888,7 +919,10 @@ html {
         z-index: 1000;
     }
     .sidebar-toggle {
-        z-index: 1001;
+        display: none;
+    }
+    .sidebar-toggle.mobile-toggle {
+        display: flex;
     }
     .gpa-table thead {
         display: none;
