@@ -539,23 +539,40 @@ function initializeNav() {
 function initializeSidebar() {
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('toggleSidebarBtn');
+    const mobileToggleBtn = document.getElementById('mobileToggleBtn');
     const mainContent = document.getElementById('mainContent');
 
-    if (!toggleBtn || !sidebar || !mainContent) return;
+    if (!sidebar || !mainContent) return;
 
-    // Toggle sidebar expansion
-    toggleBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+    function toggleSidebar() {
         sidebar.classList.toggle('expanded');
         mainContent.classList.toggle('sidebar-expanded');
-        toggleBtn.classList.toggle('sidebar-expanded');
-    });
+        if (toggleBtn) toggleBtn.classList.toggle('sidebar-expanded');
+        if (mobileToggleBtn) mobileToggleBtn.classList.toggle('sidebar-expanded');
+    }
+
+    // Desktop toggle button
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleSidebar();
+        });
+    }
+
+    // Mobile toggle button
+    if (mobileToggleBtn) {
+        mobileToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleSidebar();
+        });
+    }
 
     // Collapse sidebar when clicking outside (on main content)
     mainContent.addEventListener('click', () => {
         sidebar.classList.remove('expanded');
         mainContent.classList.remove('sidebar-expanded');
-        toggleBtn.classList.remove('sidebar-expanded');
+        if (toggleBtn) toggleBtn.classList.remove('sidebar-expanded');
+        if (mobileToggleBtn) mobileToggleBtn.classList.remove('sidebar-expanded');
     });
 }
 
