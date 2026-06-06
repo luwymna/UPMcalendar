@@ -482,7 +482,11 @@ function renderSemester(semesterId) {
         <div class="gpa-table">
             <table>
                 <thead>
-                    <tr><th>Subject</th><th>Code</th><th>Credit Hours</th><th>Grade</th><th>Action</th></tr>
+                    <tr><th>Subject</th>
+                    <th>Code</th>
+                    <th>Credit Hours</th>
+                    <th>Grade</th>
+                    <th>Action</th></tr>
                 </thead>
                 <tbody id="table_${semesterId}"></tbody>
             </table>

@@ -198,45 +198,75 @@ html {
 /* GPA STYLES */
 .gpa-container {
     width: 100%;
-    max-width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
     overflow-x: hidden;
 }
 
-/* For larger screens, show grade system below the add semester button */
 @media (min-width: 768px) {
     .gpa-container {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 20px;
-    }
-    /* Make title and button span full width */
-    .gpa-container h1,
-    .add-semester-btn {
-        grid-column: 1 / -1;
-    }
-    /* Order the elements */
-    .gpa-container h1 {
-        order: 1;
-    }
-    .add-semester-btn {
-        order: 2;
-    }
-    .grade-system {
-        order: 3;
-        width: 100%;
-    }
-    #semestersContainer {
-        order: 4;
-    }
-    #cgpaSection {
-        order: 5;
     }
 }
 
-.gpa-container h1 {
+.gpa-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.gpa-header-row h1 {
     color: #ffffff;
     margin-top: 0;
     font-size: 1.4rem;
-    margin-bottom: 12px;
+    margin-bottom: 0;
+}
+
+.gpa-header-row .add-semester-btn {
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+#gpa-view {
+    position: relative;
+}
+
+#gpa-view .gpa-header-row {
+    position: relative;
+}
+
+#gpa-view .gpa-container > .grade-system,
+#gpa-view #semestersContainer,
+#gpa-view #cgpaSection {
+    padding-top: 0;
+}
+
+@media (min-width: 768px) {
+    #gpa-view .gpa-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 768px) {
+    .grade-system table {
+        font-size: 0.7rem;
+        min-width: 500px; /* Ensure scrollability on smaller screens */
+    }
+
+    .grade-system th,
+    .grade-system td {
+        padding: 6px 8px;
+    }
 }
 
 .add-semester-btn {
@@ -362,10 +392,12 @@ html {
 }
 
 .gpa-table {
+    width: 100%;
     background: #000000;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    margin-top: 12px;
 }
 
 .gpa-table table {
@@ -377,31 +409,25 @@ html {
 }
 
 .gpa-table thead {
-    background: #1a1a1a;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: #000000;
 }
 
 .gpa-table th, .gpa-table td {
-    padding: 6px 4px;
+    padding: 12px 3px 4px 3px;
     font-size: clamp(0.6rem, 2vw, 0.85rem);
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: normal;
+    text-align: center;
 }
 
 .gpa-table th {
     font-weight: 700;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.gpa-table tbody tr:hover {
-    background: #1a1a1a;
+    white-space: nowrap;
 }
 
 .cgpa-section {
     background: #000000;
-    border-radius: 16px;
-    border: 1px solid rgb(255, 255, 255);
     padding: 24px;
     margin-top: 20px;
     display: flex;
@@ -418,8 +444,7 @@ html {
 
 .cgpa-item h3 {
     font-size: 0.75rem;
-    opacity: 0.9;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 }
 
 .cgpa-value {
@@ -515,23 +540,49 @@ html {
 .delete-semester { font-size: 0.7rem; padding: 4px 8px; }
 
 .grade-system {
-    padding: 12px;
-    margin-top: 20px;
-}
-
-.grade-system table {
     width: 100%;
-    font-size: 0.72rem;
-    display: block;
-    overflow-x: auto;
+    margin: 20px auto;
+    padding: 16px;
+    background: rgb(0, 0, 0);
+    backdrop-filter: blur(5px);
+    max-width: 100%;
+    text-align: center;
 }
 
-.grade-system th, .grade-system td {
-    padding: 6px 4px;
+.grade-system h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap; /* Prevent title wrapping */
 }
-    
-.gpa-container {
-    padding: 6px;
+
+.grade-table-container {
+    overflow-x: auto; /* Enable horizontal scrolling for the table only */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    width: 100%;
+}
+
+.grade-table-container table {
+    width: auto; /* Let the table expand naturally */
+    min-width: 600px; /* Minimum width to ensure scrollability */
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    table-layout: fixed;
+    margin: 0 auto; /* Center the table within the container */
+}
+
+.grade-system th,
+.grade-system td {
+    padding: 8px 12px;
+    text-align: center;
+    color: #ffffff;
+    white-space: nowrap; /* Prevent cell wrapping */
+}
+
+.grade-system th {
+    background: rgb(0, 0, 0);
+    font-weight: 600;
 }
     
 .semester-card { margin-bottom: 14px; }
@@ -541,6 +592,7 @@ html {
 
 /* ===== SMALL MOBILE (PORTRAIT) FIXES ===== */
 @media (max-width: 480px) {
+    /* Ensure the delete button fits */
     .gpa-table thead {
         display: none;
     }
@@ -593,24 +645,14 @@ html {
         width: 100%;
     }
     /* Grade System Table Fixes */
-    .grade-system {
-        padding: 12px;
-        margin-top: 20px;
-        overflow-x: hidden;
-    }
     .grade-system table {
-        width: 100%;
-        font-size: 0.7rem;
-        table-layout: fixed;
-        border-collapse: collapse;
+        font-size: 0.6rem;
+        min-width: 400px; /* Minimum width for very small screens */
     }
+
     .grade-system th,
     .grade-system td {
-        padding: 6px 4px;
-        font-size: 0.7rem;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        text-align: center;
+        padding: 4px 6px;
     }
 }
 /* Modal Styles */

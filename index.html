@@ -68,8 +68,49 @@
         <!-- GPA Calculator -->
         <div id="gpa-view" class="view-pane">
             <div class="gpa-container">
-                <h1>📊 Semester GPA Calculator</h1>
-                <button class="add-semester-btn" id="addSemesterBtn">➕ Add New Semester</button>
+                <div class="grade-system">
+                    <h3>UPM Grade System</h3>
+                    <div class="grade-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Grade</th>
+                                    <th>A</th>
+                                    <th>A-</th>
+                                    <th>B+</th>
+                                    <th>B</th>
+                                    <th>B-</th>
+                                    <th>C+</th>
+                                    <th>C</th>
+                                    <th>C-</th>
+                                    <th>D+</th>
+                                    <th>D</th>
+                                    <th>F</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Pointer</th>
+                                    <td>4.00</td>
+                                    <td>3.75</td>
+                                    <td>3.50</td>
+                                    <td>3.00</td>
+                                    <td>2.75</td>
+                                    <td>2.50</td>
+                                    <td>2.00</td>
+                                    <td>1.75</td>
+                                    <td>1.50</td>
+                                    <td>1.00</td>
+                                    <td>0.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="gpa-header-row">
+                    <h1>Semester GPA Calculator</h1>
+                    <button class="add-semester-btn" id="addSemesterBtn">➕ Add New Semester</button>
+                </div>
                 <div id="semestersContainer"></div>
                 <div class="cgpa-section" id="cgpaSection">
                     <div class="cgpa-item">
@@ -82,45 +123,7 @@
                     </div>
                 </div>
 
-                 <!-- UPM Grade System -->
-                 <div class="grade-system">
-                     <h3>UPM Grade System</h3>
-                     <table>
-                         <thead>
-                             <tr>
-                                 <th>Grade</th>
-                                 <th>A</th>
-                                 <th>A-</th>
-                                 <th>B+</th>
-                                 <th>B</th>
-                                 <th>B-</th>
-                                 <th>C+</th>
-                                 <th>C</th>
-                                 <th>C-</th>
-                                 <th>D+</th>
-                                 <th>D</th>
-                                 <th>F</th>
-                             </tr>
-                         </thead>
-                         <tbody>
-                             <tr>
-                                 <th>Pointer</th>
-                                 <td>4.00</td>
-                                 <td>3.75</td>
-                                 <td>3.50</td>
-                                 <td>3.00</td>
-                                 <td>2.75</td>
-                                 <td>2.50</td>
-                                 <td>2.00</td>
-                                 <td>1.75</td>
-                                 <td>1.50</td>
-                                 <td>1.00</td>
-                                 <td>0.00</td>
-                             </tr>
-                         </tbody>
-                     </table>
-                 </div>
-                </div>
+
             </div>
         </div>
 
