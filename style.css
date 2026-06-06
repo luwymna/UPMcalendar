@@ -86,15 +86,15 @@ html {
      position: fixed;
      top: 0;
      left: 0;
-     bottom: 0; /* Ensure it stretches to the bottom */
+     bottom: 0;
      overflow-y: auto;
      z-index: 100;
-     transition: transform 0.3s ease;
-     transform: translateX(-100%);
- }
+     transition: left 0.3s ease;
+     left: -260px;
+   }
 
 .sidebar.expanded {
-    transform: translateX(0); /* Slide in when expanded */
+    left: 0;
 }
 
 .sidebar-nav {
@@ -167,16 +167,18 @@ html {
 
 .main-content {
     flex: 1;
-    transform: translateX(0); /* Default: no margin (sidebar is hidden) */
+    margin-left: 0;
     padding: 20px;
     overflow-y: auto;
-    transition: transform 0.3s ease;
+    transition: margin-left 0.3s ease;
     background: #000000;
     min-height: 100vh;
 }
 
-.main-content.sidebar-expanded {
-    background: #000000;
+@media (min-width: 769px) {
+    .main-content.sidebar-expanded {
+        margin-left: 260px;
+    }
 }
 
 .view-pane {
@@ -238,11 +240,11 @@ html {
 }
 
 .add-semester-btn {
-    background: rgba(255,255,255,0.15);
-    border: 1px solid #808080;
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid #ffffff;
     color: white;
     padding: 8px 14px;
-    border-radius: 10px;
+    border-radius: 20px;
     cursor: pointer;
     font-weight: 600;
     margin-bottom: 16px;
@@ -254,25 +256,34 @@ html {
 }
 
 .add-semester-btn:hover {
-    background: rgba(255,255,255,0.25);
-    border-color: rgba(255,255,255,0.5);
+    background: rgb(255, 255, 255);
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3);
 }
 
 .semester-card {
-    background: rgba(255,255,255,0.08);
-    border-radius: 12px;
+    background: rgb(0, 0, 0);
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 20px;
     margin-bottom: 20px;
-    overflow: hidden;
     backdrop-filter: blur(5px);
 }
 
 .semester-header {
-    background: #1a1a1a;
-    padding: 10px 14px;
+    background: #000000;
+    padding: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    border-radius: 20px;
+}
+
+.semester-card:not(:has(.semester-content.collapsed)) .semester-header {
+    border-bottom: 1px solid rgb(255, 255, 255);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 .semester-title {
@@ -284,11 +295,20 @@ html {
 }
 
 .semester-gpa {
-    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    background: #000000;
     padding: 4px 10px;
     border-radius: 16px;
     font-size: 0.75rem;
     font-weight: 700;
+    display: inline-block;
+    border: 1px solid rgb(255, 255, 255);
+}
+.semester-gpa:hover {
+    background: #ffffff;
+    color: #000000;
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3);
 }
 
 .delete-semester {
@@ -318,10 +338,6 @@ html {
 .gpa-form {
     display: flex;
     gap: 8px;
-    margin-bottom: 16px;
-    background: #1a1a1a;
-    padding: 12px;
-    border-radius: 10px;
     flex-wrap: wrap;
 }
 
@@ -346,8 +362,7 @@ html {
 }
 
 .gpa-table {
-    background: #1a1a1a;
-    border-radius: 10px;
+    background: #000000;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
@@ -362,7 +377,8 @@ html {
 }
 
 .gpa-table thead {
-        background: #1a1a1a;
+    background: #1a1a1a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .gpa-table th, .gpa-table td {
@@ -375,22 +391,24 @@ html {
 
 .gpa-table th {
     font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .gpa-table tbody tr:hover {
-        background: #1a1a1a;
+    background: #1a1a1a;
 }
 
 .cgpa-section {
-    background: linear-gradient(135deg, #ffffff, #ffffff);
-    border-radius: 14px;
-    padding: 16px;
-    margin-top: 16px;
+    background: #000000;
+    border-radius: 16px;
+    border: 1px solid rgb(255, 255, 255);
+    padding: 24px;
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 20px;
 }
 
 .cgpa-item {
@@ -425,17 +443,6 @@ html {
     gap: 10px;
 }
 
-.semester-gpa {
-    position: relative;
-    overflow: hidden;
-    background: #ffffff;
-    padding: 4px 10px;
-    border-radius: 16px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    display: inline-block;
-}
-
 .delete-semester {
     background: rgba(255,71,87,0.8);
     border: none;
@@ -451,33 +458,8 @@ html {
     background: #ff4757;
 }
 
-.semester-content {
-    padding: 20px;
-    display: block;
-}
-
-.gpa-form input, .gpa-form select {
-    padding: 10px 12px;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
-    background: rgba(255,255,255,0.05);
-    color: #ffffff;
-    font-size: 0.95rem;
-    flex: 1;
-    min-width: 150px;
-}
-
-.gpa-form input::placeholder {
-    color: rgba(255,255,255,0.6);
-}
-
-.gpa-form select option {
-    background: #1a1a1a;
-    color: white;
-}
-
 .btn-primary {
-    background: linear-gradient(90deg, #ffffff, #ffffff);
+    background: #000000;
     border: none;
     color: #ffffff;
     padding: 10px 20px;
@@ -489,621 +471,73 @@ html {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(255,106,61,0.3);
 }
 
 .btn-danger {
     background: #ff4757;
     border: none;
-    color: #ffffff;
-    padding: 6px 12px;
-    border-radius: 6px;
+    background: #ff4757;
+    padding: 6px 10px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 0.85rem;
     transition: all 150ms ease;
 }
 
 .btn-danger:hover {
-    background: #ff3838;
+    background: #ff4757;
 }
 
-.gpa-table {
-    background: #1a1a1a;
-
-    border-radius: 12px;
-    overflow-x: auto;
-}
-
-.gpa-table table {
-    width: 100%;
-    border-collapse: collapse;
+.btn-primary {
+    background: #000000;
+    border: none;
     color: #ffffff;
-    table-layout: fixed;
-    min-width: auto;
-}
-
-.gpa-table thead {
-        background: #1a1a1a;
-
-}
-
-.gpa-table th, .gpa-table td {
-    padding: 6px 4px;
-    text-align: left;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    font-size: clamp(0.55rem, 2vw, 0.85rem);
-    white-space: normal;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
-
-.gpa-table th {
-    font-weight: 700;
-    font-size: clamp(0.55rem, 2vw, 0.85rem);
-}
-
-.gpa-table tbody tr:hover {
-        background: #1a1a1a;
-}
-
-.cgpa-section {
-    background: linear-gradient(135deg, #ffffff, #ffffff);
-    border-radius: 16px;
-    padding: 24px;
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.cgpa-item {
-    text-align: center;
-    flex: 1;
-}
-
-.cgpa-item h3 {
-    font-size: 0.9rem;
-    opacity: 0.9;
-    margin-bottom: 8px;
-}
-
-.cgpa-value {
-    font-size: 2.5rem;
-    font-weight: 800;
-}
-
-/* Calendar Styles */
-.info-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-.info-left h1 {
-    margin-top: 40px;
-    font-size: 3rem; /* Increased from 2.4rem to 3rem */
-    line-height: 1.2;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional: Adds a subtle shadow for better readability */
-}
-
-.today-block {
-    text-align: center;
-    min-width: 220px;
-}
-
-.today-date, .today-time {
-    border-radius: 12px;
-    padding: 10px 12px;
-    font-weight: 700;
-    text-align: center;
-}
-
-.today-date {
-    color: #ffffff;
-    font-size: 2.1rem;
-}
-
-.today-time {
-    margin-top: 6px;
-    color: #f4f8ff;
-    font-size: 2rem;
-    animation: heartbeat 1.5s ease-in-out infinite alternate;
-}
-
-@keyframes heartbeat {
-    from { transform: translateY(0); opacity: 0.92; }
-    to { transform: translateY(-2px); opacity: 1; }
-}
-
-.period-badge {
-    border-radius: 24px;
-    padding: 10px 18px;
-    font-weight: 700;
-    background: rgba(255,255,255,0.12);
-    color: #e9f5ff;
-    display: inline-block;
-}
-
-.period-badge {
-    display: none; /* Hides the period badge */
-}
-
-.legend {
-    margin-top: 24px;
-    margin-bottom: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.legend-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 14px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.16);
-    color: #eef7ff;
-    font-size: 0.85rem;
-}
-
-.legend-chip::before {
-    content: '';
-    width: 14px;
-    height: 14px;
-    border-radius: 4px;
-    display: inline-block;
-}
-
-.legend-chip.lecture::before { background: #9fd7ff; }
-.legend-chip.exam::before { background: #ff9b9b; }
-.legend-chip.revision::before { background: #ffc569; }
-.legend-chip.break::before { background: #ffec98; }
-.legend-chip.holiday::before { background: #a9e6a9; }
-
-.calendar-summary {
-    margin-bottom: 20px;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: rgba(255,255,255,0.92);
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    background: #000000;
-    padding: 0;
-}
-
-.month-card {
-    background: #000000;
-    border-radius: 0;
-    box-shadow: none;
-    overflow: hidden;
-}
-
-.month-card:hover {
-    transform: none;
-}
-
-.month-name {
-    background: #000000;
-    color: #ffffff;
-    text-align: left;
-    padding: 14px;
-    font-weight: 700;
-    font-size: 1.1rem;
-}
-
-.calendar-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    background: #000000;
-    font-weight: 700;
-    text-align: center;
-    padding: 8px 0;
-    color: #e0e0e0;
-    font-size: 0.85rem;
-}
-
-.month-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-}
-
-.date-cell {
-    min-height: 49.5px;
-    padding: 8px 6px;
-    text-align: right;
-    font-size: 0.85rem;
-    color: #e0e0e0;
-    position: relative;
+    padding: 10px 20px;
+    border-radius: 8px;
     cursor: pointer;
-    background: #000000;
-    border: 2px solid #333333;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-start;
-}
-
-.date-cell:hover {
-    background: #ffffff;
-    color: #000000;
-    border-color: #ffffff;
-}
-
-.date-cell.event-lecture {
-    border-color: #4a90e2;
-}
-.date-cell.event-exam {
-    border-color: #e24a4a;
-}
-.date-cell.event-revision {
-    border-color: #e2904a;
-}
-.date-cell.event-break {
-    border-color: #c9e24a;
-}
-.date-cell.event-holiday {
-    border-color: #4ae28a;
-}
-
-.date-cell.event-lecture:hover {
-    background: #4a90e2;
-    border-color: #4a90e2;
-    color: #000000;
-}
-.date-cell.event-exam:hover {
-    background: #e24a4a;
-    border-color: #e24a4a;
-    color: #000000;
-}
-.date-cell.event-revision:hover {
-    background: #e2904a;
-    border-color: #e2904a;
-    color: #000000;
-}
-.date-cell.event-break:hover {
-    background: #c9e24a;
-    border-color: #c9e24a;
-    color: #000000;
-}
-.date-cell.event-holiday:hover {
-    background: #4ae28a;
-    border-color: #4ae28a;
-    color: #000000;
-}
-
-.date-cell:hover .period-indicator,
-.date-cell:hover .week-number {
-    color: #000000;
-}
-
-
-.empty-cell {
-    background: #000000;
-    border: 2px solid #000000;
-    border-radius: 8px;
-    cursor: default;
-    pointer-events: none;
-}
-
-.period-indicator {
-    position: absolute;
-    top: 25px;
-    right: 4.15px;
-    font-size: 0.5rem;
     font-weight: 700;
-    color: #e0e0e0;
-    padding: 1px 3px;
-    border-radius: 3px;
+    transition: all 200ms ease;
 }
 
-.week-number {
-    position: absolute;
-    left: 1.5px;
-    top: 22%;
-    transform: translateY(-50%);
-    font-size: 0.4rem;
-    font-weight: 700;
-    color: #e0e0e0;
-    padding: 1px 3px;
-    border-radius: 3px;
+.btn-primary:hover {
+    transform: translateY(-2px);
 }
 
-/* Day Info Panel (Slide-up, all devices) */
-.day-info {
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 300ms ease;
+.add-semester-btn {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    white-space: normal;
 }
 
-.day-info.visible {
-    opacity: 1;
-}
+.gpa-container h1 { font-size: 1.2rem; }
+.semester-title { font-size: 0.9rem; gap: 6px; }
+.semester-gpa { font-size: 0.7rem; padding: 3px 8px; }
+.delete-semester { font-size: 0.7rem; padding: 4px 8px; }
 
-.day-info-panel-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 9998;
-    pointer-events: none;
-}
-
-.day-info.visible .day-info-panel-overlay {
-    pointer-events: auto;
-}
-
-.day-info-panel {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #000000fa;
-    backdrop-filter: blur(10px);
-    border-radius: 20px 20px 0 0;
-    padding: 30px 20px;
-    max-width: 100%;
-    pointer-events: auto;
-    transform: translateY(100%);
-    transition: transform 300ms ease-out;
-    z-index: 9999;
-    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.15);
-    color: #ffffff;
-    min-height: 200px;
-}
-
-.day-info.visible .day-info-panel {
-    transform: translateY(0);
-}
-
-.day-info-panel h3 {
-    margin: 0 0 8px 0;
-    font-size: 1.1rem;
-    color: #ffffff;
-    font-weight: 700;
-}
-
-.day-info-panel p {
-    margin: 6px 0;
-    font-size: 0.95rem;
-    color: #e0e0e0;
-}
-
-.day-info-panel .holiday-line {
-    color: #4ae28a;
-    font-weight: 700;
-}
-
-/* Grade System Table */
 .grade-system {
-    margin-top: 35px;
-    padding: 20px;
-    border-radius: 16px; /* Rounded corners for the container */
-    background: #1a1a1a;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.grade-system h3 {
-    color: #ffffff;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-    text-align: center;
+    padding: 12px;
+    margin-top: 20px;
 }
 
 .grade-system table {
-    width: auto;
-    border-collapse: collapse; /* Use collapse to remove spacing between cells */
-    color: #ffffff;
-    background: #1a1a1a;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-size: 0.9rem;
-    margin: 0 auto;
-    border-radius: 12px; /* Rounded corners for the table */
-    overflow: hidden;
+    width: 100%;
+    font-size: 0.72rem;
+    display: block;
+    overflow-x: auto;
 }
 
-.grade-system th,
-.grade-system td {
-    padding: 10px 15px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    border-left: none; /* Remove left border */
-    border-right: none; /* Remove right border */
+.grade-system th, .grade-system td {
+    padding: 6px 4px;
 }
-
-.grade-system th:first-child,
-.grade-system td:first-child {
-    border-left: none; /* Remove left border for first cell */
-    border-radius: 12px 0 0 12px;
+    
+.gpa-container {
+    padding: 6px;
 }
-
-.grade-system th:last-child,
-.grade-system td:last-child {
-    border-right: none; /* Remove right border for last cell */
-    border-radius: 0 12px 12px 0;
-}
-
-.grade-system th {
-    background: #1a1a1a;
-    font-weight: 600;
-}
-
-.grade-system tr:last-child td:first-child {
-    border-radius: 0 0 0 12px;
-}
-
-.grade-system tr:last-child td:last-child {
-    border-radius: 0 0 12px 0;
-}
-
-.grade-system tr {
-    background: #1a1a1a;
-}
-
-@media (max-width: 768px) {
-    .sidebar {
-        z-index: 1000;
-    }
-    .sidebar-toggle:not(.mobile-toggle) {
-        display: none;
-    }
-    .sidebar-toggle.mobile-toggle {
-        display: flex;
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        top: 12px;
-        right: 12px;
-        left: auto;
-        background: #1a1a1a;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        border: none;
-        cursor: pointer;
-        align-items: center;
-        justify-content: center;
-    }
-    .sidebar-toggle.mobile-toggle:hover {
-        background: #2a2a2a;
-    }
-    .sidebar-toggle:not(.mobile-toggle) {
-        display: none;
-    }
-    .sidebar-toggle.mobile-toggle {
-        display: flex;
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        top: 12px;
-        right: 12px;
-        left: auto;
-        background: #1a1a1a;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        border: none;
-        cursor: pointer;
-        align-items: center;
-        justify-content: center;
-    }
-    .sidebar-toggle.mobile-toggle:hover {
-        background: #2a2a2a;
-    }
-    .sidebar-toggle.mobile-toggle svg {
-        transition: transform 0.3s ease;
-        fill: white;
-    }
-    .sidebar-toggle.mobile-toggle.sidebar-expanded svg {
-        transform: rotate(180deg);
-    }
-    .gpa-table thead {
-        display: none;
-    }
-    .gpa-table tbody tr {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        gap: 4px;
-    }
-    .gpa-table tbody td {
-        padding: 6px 4px;
-        text-align: center;
-        font-size: 0.72rem;
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    .main-content {
-        transform: translateX(0);
-        padding: 40px 12px 80px 12px;
-        background: #000000;
-    }
-    .main-content.sidebar-expanded {
-    background: #000000;
-}
-    .container, .gpa-container {
-        padding: 0 8px;
-        width: 100%;
-        max-width: 100%;
-    }
-    .info-left { text-align: center; }
-    .info-left h1 { font-size: 2rem; font-weight: 800; }
-    .today-date { font-size: 1.4rem; text-align: center; }
-    .calendar-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 15px;
-    }
-    .cgpa-section {
-        flex-direction: column;
-        gap: 15px;
-    }
-    .cgpa-item {
-        width: 100%;
-        min-width: auto;
-    }
-    .cgpa-value {
-        font-size: 1.3rem !important;
-        line-height: 1.3;
-    }
-    .gpa-form {
-        flex-direction: column;
-        padding: 10px;
-        gap: 6px;
-    }
-    .gpa-form input, .gpa-form select {
-        min-width: 100%;
-        margin-bottom: 2px;
-        padding: 8px 10px;
-        font-size: 0.85rem;
-    }
-    .btn-primary { width: 100%; font-size: 0.85rem; padding: 8px 16px; }
-    .add-semester-btn {
-        font-size: 0.85rem;
-        padding: 8px 16px;
-        white-space: normal;
-    }
-    .gpa-container h1 { font-size: 1.2rem; }
-    .semester-title { font-size: 0.9rem; gap: 6px; }
-    .semester-gpa { font-size: 0.7rem; padding: 3px 8px; }
-    .delete-semester { font-size: 0.7rem; padding: 4px 8px; }
-    .grade-system {
-        padding: 12px;
-        margin-top: 20px;
-    }
-    .grade-system table {
-        width: 100%;
-        font-size: 0.72rem;
-        display: block;
-        overflow-x: auto;
-    }
-    .grade-system th, .grade-system td {
-        padding: 6px 4px;
-    }
-    .gpa-container {
-        padding: 6px;
-    }
-    .semester-card { margin-bottom: 14px; }
-    .semester-header { padding: 10px 12px; }
-    .semester-content { padding: 12px; }
-    .cgpa-value { font-size: 1.3rem !important; }
-}
+    
+.semester-card { margin-bottom: 14px; }
+.semester-header { padding: 10px 12px; }
+.semester-content { padding: 12px; }
+.cgpa-value { font-size: 1.3rem !important; }
 
 /* ===== SMALL MOBILE (PORTRAIT) FIXES ===== */
 @media (max-width: 480px) {
@@ -1250,8 +684,8 @@ html {
 }
 
 .btn-primary {
-    background: linear-gradient(90deg, #ffffff, #ffffff);
-    border: none;
+    background: #000000;
+    border: 1px solid #ffffff;
     color: #ffffff;
     padding: 10px 20px;
     border-radius: 8px;
@@ -1262,7 +696,9 @@ html {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(255,106,61,0.3);
+    background: #ffffff;
+    color: #000000;
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3);
 }
 
 /* Sidebar Clock */
