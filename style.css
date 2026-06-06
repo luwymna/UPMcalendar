@@ -780,7 +780,325 @@ html {
     border: 2px solid rgba(0,0,0,0.2);
 }
 
+/*CALENDAR STYLES*/
+/* Calendar Styles */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
 
+.info-left h1 {
+    margin-top: 40px;
+    font-size: 3rem; /* Increased from 2.4rem to 3rem */
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional: Adds a subtle shadow for better readability */
+}
+
+.today-block {
+    text-align: center;
+    min-width: 220px;
+}
+
+.today-date, .today-time {
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.today-date {
+    color: #ffffff;
+    font-size: 2.1rem;
+}
+
+.today-time {
+    margin-top: 6px;
+    color: #f4f8ff;
+    font-size: 2rem;
+    animation: heartbeat 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes heartbeat {
+    from { transform: translateY(0); opacity: 0.92; }
+    to { transform: translateY(-2px); opacity: 1; }
+}
+
+.period-badge {
+    border-radius: 24px;
+    padding: 10px 18px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.12);
+    color: #e9f5ff;
+    display: inline-block;
+}
+
+.period-badge {
+    display: none; /* Hides the period badge */
+}
+
+.legend {
+    margin-top: 24px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.legend-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.16);
+    color: #eef7ff;
+    font-size: 0.85rem;
+}
+
+.legend-chip::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.legend-chip.lecture::before { background: #9fd7ff; }
+.legend-chip.exam::before { background: #ff9b9b; }
+.legend-chip.revision::before { background: #ffc569; }
+.legend-chip.break::before { background: #ffec98; }
+.legend-chip.holiday::before { background: #a9e6a9; }
+
+.calendar-summary {
+    margin-bottom: 20px;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.92);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    background: #000000;
+    padding: 0;
+}
+
+.month-card {
+    background: #000000;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+}
+
+.month-card:hover {
+    transform: none;
+}
+
+.month-name {
+    background: #000000;
+    color: #ffffff;
+    text-align: left;
+    padding: 14px;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: #000000;
+    font-weight: 700;
+    text-align: center;
+    padding: 8px 0;
+    color: #e0e0e0;
+    font-size: 0.85rem;
+}
+
+.month-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.date-cell {
+    min-height: 49.5px;
+    padding: 8px 6px;
+    text-align: right;
+    font-size: 0.85rem;
+    color: #e0e0e0;
+    position: relative;
+    cursor: pointer;
+    background: #000000;
+    border: 2px solid #333333;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.date-cell:hover {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+}
+
+.date-cell.event-lecture {
+    border-color: #4a90e2;
+}
+.date-cell.event-exam {
+    border-color: #e24a4a;
+}
+.date-cell.event-revision {
+    border-color: #e2904a;
+}
+.date-cell.event-break {
+    border-color: #c9e24a;
+}
+.date-cell.event-holiday {
+    border-color: #4ae28a;
+}
+
+.date-cell.event-lecture:hover {
+    background: #4a90e2;
+    border-color: #4a90e2;
+    color: #000000;
+}
+.date-cell.event-exam:hover {
+    background: #e24a4a;
+    border-color: #e24a4a;
+    color: #000000;
+}
+.date-cell.event-revision:hover {
+    background: #e2904a;
+    border-color: #e2904a;
+    color: #000000;
+}
+.date-cell.event-break:hover {
+    background: #c9e24a;
+    border-color: #c9e24a;
+    color: #000000;
+}
+.date-cell.event-holiday:hover {
+    background: #4ae28a;
+    border-color: #4ae28a;
+    color: #000000;
+}
+
+.date-cell:hover .period-indicator,
+.date-cell:hover .week-number {
+    color: #000000;
+}
+
+
+.empty-cell {
+    background: #000000;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    cursor: default;
+    pointer-events: none;
+}
+
+.period-indicator {
+    position: absolute;
+    top: 25px;
+    right: 4.15px;
+    font-size: 0.5rem;
+    font-weight: 700;
+    color: #e0e0e0;
+    padding: 1px 3px;
+    border-radius: 3px;
+}
+
+.week-number {
+    position: absolute;
+    left: 1.5px;
+    top: 22%;
+    transform: translateY(-50%);
+    font-size: 0.4rem;
+    font-weight: 700;
+    color: #e0e0e0;
+    padding: 1px 3px;
+    border-radius: 3px;
+}
+
+/* Day Info Panel (Slide-up, all devices) */
+.day-info {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 300ms ease;
+}
+
+.day-info.visible {
+    opacity: 1;
+}
+
+.day-info-panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    pointer-events: none;
+}
+
+.day-info.visible .day-info-panel-overlay {
+    pointer-events: auto;
+}
+
+.day-info-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #000000fa;
+    backdrop-filter: blur(10px);
+    border-radius: 20px 20px 0 0;
+    padding: 30px 20px;
+    max-width: 100%;
+    pointer-events: auto;
+    transform: translateY(100%);
+    transition: transform 300ms ease-out;
+    z-index: 9999;
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.15);
+    color: #ffffff;
+    min-height: 200px;
+}
+
+.day-info.visible .day-info-panel {
+    transform: translateY(0);
+}
+
+.day-info-panel h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.day-info-panel p {
+    margin: 6px 0;
+    font-size: 0.95rem;
+    color: #e0e0e0;
+}
+
+.day-info-panel .holiday-line {
+    color: #4ae28a;
+    font-weight: 700;
+}
 
 
 
