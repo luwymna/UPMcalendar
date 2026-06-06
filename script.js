@@ -192,10 +192,17 @@ function createMonthCard(year, month, today) {
         span.textContent = d;
         cell.appendChild(span);
 
-        let event = getEventForDate(date);
-        if (event) cell.classList.add(`event-${event.type}`);
-        if (getHolidayForDate(date)) cell.classList.add('event-holiday');
-        if (date.toDateString() === today.toDateString()) cell.classList.add('today');
+let event = getEventForDate(date);
+         if (event) {
+             cell.classList.add(`event-${event.type}`);
+             // Add period type as visual indicator
+             let periodSpan = document.createElement('span');
+             periodSpan.className = 'period-indicator';
+             periodSpan.textContent = event.type.substring(0, 3).toUpperCase();
+             cell.appendChild(periodSpan);
+         }
+         if (getHolidayForDate(date)) cell.classList.add('event-holiday');
+         if (date.toDateString() === today.toDateString()) cell.classList.add('today');
 
         const weekNum = getWeekNumberForDate(date, event);
         if (weekNum) {
