@@ -1037,11 +1037,6 @@ html {
     color: #000000;
 }
 
-body.day-info-open .date-cell {
-    pointer-events: none;
-}
-
-
 .date-cell.today.event-lecture {
     background: #4a90e2;
     color: #000000;

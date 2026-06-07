@@ -243,7 +243,13 @@ function renderCalendar() {
     for (let m = 0; m <= 9; m++) grid.appendChild(createMonthCard(2026, m, today));
 }
 
+let hideDayInfoTimeout = null;
+
 function showDayInfo(date) {
+    if (hideDayInfoTimeout) {
+        clearTimeout(hideDayInfoTimeout);
+        hideDayInfoTimeout = null;
+    }
     let info = document.getElementById('dayInfo');
     let ev = getEventForDate(date);
     let hol = getHolidayForDate(date);
@@ -280,13 +286,15 @@ function hideDayInfo() {
     let info = document.getElementById('dayInfo');
     if (info) {
         info.classList.remove('visible');
-        document.body.classList.remove('day-info-open');
         if (activeDateCell) {
             activeDateCell.classList.remove('active');
             activeDateCell = null;
         }
-        setTimeout(() => {
+        if (hideDayInfoTimeout) clearTimeout(hideDayInfoTimeout);
+        hideDayInfoTimeout = setTimeout(() => {
+            document.body.classList.remove('day-info-open');
             info.innerHTML = '';
+            hideDayInfoTimeout = null;
         }, 300);
     }
 }
