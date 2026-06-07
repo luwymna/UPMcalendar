@@ -213,6 +213,7 @@ let event = getEventForDate(date);
         }
         
         cell.addEventListener('click', () => {
+            if (Date.now() < ignoreCellClickUntil) return;
             showDayInfo(date);
         });
         
@@ -244,12 +245,14 @@ function renderCalendar() {
 }
 
 let hideDayInfoTimeout = null;
+let ignoreCellClickUntil = 0;
 
 function showDayInfo(date) {
     if (hideDayInfoTimeout) {
         clearTimeout(hideDayInfoTimeout);
         hideDayInfoTimeout = null;
     }
+    if (Date.now() < ignoreCellClickUntil) return;
     let info = document.getElementById('dayInfo');
     let ev = getEventForDate(date);
     let hol = getHolidayForDate(date);
@@ -296,6 +299,7 @@ function hideDayInfo() {
             info.innerHTML = '';
             hideDayInfoTimeout = null;
         }, 300);
+        ignoreCellClickUntil = Date.now() + 350;
     }
 }
 
