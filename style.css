@@ -1173,22 +1173,22 @@ html {
 
 @media (hover: none) {
     .date-cell:hover {
-        background: inherit;
-        color: inherit;
-        border-color: inherit;
+        background: #000000 !important;
+        color: #e0e0e0 !important;
+        border-color: #333333 !important;
     }
     .date-cell.event-lecture:hover,
     .date-cell.event-exam:hover,
     .date-cell.event-revision:hover,
     .date-cell.event-break:hover,
     .date-cell.event-holiday:hover {
-        background: inherit;
-        border-color: inherit;
-        color: inherit;
+        background: inherit !important;
+        border-color: inherit !important;
+        color: inherit !important;
     }
     .date-cell:hover .period-indicator,
     .date-cell:hover .week-number {
-        color: inherit;
+        color: #e0e0e0 !important;
     }
 }
 
