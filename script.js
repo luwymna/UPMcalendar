@@ -6,15 +6,15 @@ const academicPeriods = [
     { start: '2025-10-13', end: '2025-10-19', label: 'Week 1 - Lectures', type: 'lecture' },
     { start: '2025-10-20', end: '2025-10-26', label: 'Week 2 - Lectures', type: 'lecture' },
     { start: '2025-10-27', end: '2025-11-02', label: 'Week 3 - Lectures', type: 'lecture' },
-    { start: '2025-11-03', end: '2025-11-09', label: 'Week 4 - Test I', type: 'exam' },
-    { start: '2025-11-10', end: '2025-11-16', label: 'Week 5 - Test I', type: 'exam' },
-    { start: '2025-11-17', end: '2025-11-23', label: 'Week 6 - Test I', type: 'exam' },
+    { start: '2025-11-03', end: '2025-11-09', label: 'Week 4 - Lectures', type: 'lecture' },
+    { start: '2025-11-10', end: '2025-11-16', label: 'Week 5 - Lectures', type: 'lecture' },
+    { start: '2025-11-17', end: '2025-11-23', label: 'Week 6 - Lectures', type: 'lecture' },
     { start: '2025-11-24', end: '2025-11-30', label: 'Week 7 - Lectures', type: 'lecture' },
     { start: '2025-12-01', end: '2025-12-07', label: 'Mid-Semester Break', type: 'break' },
     { start: '2025-12-08', end: '2025-12-14', label: 'Week 8 - Lectures', type: 'lecture' },
-    { start: '2025-12-15', end: '2025-12-21', label: 'Week 9 - Test II', type: 'exam' },
-    { start: '2025-12-22', end: '2025-12-28', label: 'Week 10 - Test II', type: 'exam' },
-    { start: '2025-12-29', end: '2026-01-04', label: 'Week 11 - Test II', type: 'exam' },
+    { start: '2025-12-15', end: '2025-12-21', label: 'Week 9 - Lectures', type: 'lecture' },
+    { start: '2025-12-22', end: '2025-12-28', label: 'Week 10 - Lectures', type: 'lecture' },
+    { start: '2025-12-29', end: '2026-01-04', label: 'Week 11 - Lectures', type: 'lecture' },
     { start: '2026-01-05', end: '2026-01-11', label: 'Week 12 - Lectures', type: 'lecture' },
     { start: '2026-01-12', end: '2026-01-18', label: 'Week 13 - Lectures', type: 'lecture' },
     { start: '2026-01-19', end: '2026-01-25', label: 'Week 14 - Lectures', type: 'lecture' },
@@ -26,15 +26,15 @@ const academicPeriods = [
     { start: '2026-03-23', end: '2026-03-29', label: 'Week 1 - Lectures', type: 'lecture' },
     { start: '2026-03-30', end: '2026-04-05', label: 'Week 2 - Lectures', type: 'lecture' },
     { start: '2026-04-06', end: '2026-04-12', label: 'Week 3 - Lectures', type: 'lecture' },
-    { start: '2026-04-13', end: '2026-04-19', label: 'Week 4 - Test I', type: 'exam' },
-    { start: '2026-04-20', end: '2026-04-26', label: 'Week 5 - Test I', type: 'exam' },
-    { start: '2026-04-27', end: '2026-05-03', label: 'Week 6 - Test I', type: 'exam' },
+    { start: '2026-04-13', end: '2026-04-19', label: 'Week 4 - Lectures', type: 'lecture' },
+    { start: '2026-04-20', end: '2026-04-26', label: 'Week 5 - Lectures', type: 'lecture' },
+    { start: '2026-04-27', end: '2026-05-03', label: 'Week 6 - Lectures', type: 'lecture' },
     { start: '2026-05-04', end: '2026-05-10', label: 'Week 7 - Lectures', type: 'lecture' },
     { start: '2026-05-11', end: '2026-05-17', label: 'Week 8 - Lectures', type: 'lecture' },
     { start: '2026-05-18', end: '2026-05-24', label: 'Week 9 - Lectures', type: 'lecture' },
     { start: '2026-05-25', end: '2026-05-31', label: 'Mid-Semester Break', type: 'break' },
-    { start: '2026-06-01', end: '2026-06-07', label: 'Week 10 - Test II', type: 'exam' },
-    { start: '2026-06-08', end: '2026-06-14', label: 'Week 11 - Test II', type: 'exam' },
+    { start: '2026-06-01', end: '2026-06-07', label: 'Week 10 - Lectures', type: 'lecture' },
+    { start: '2026-06-08', end: '2026-06-14', label: 'Week 11 - Lectures', type: 'lecture' },
     { start: '2026-06-15', end: '2026-06-21', label: 'Week 12 - Lectures', type: 'lecture' },
     { start: '2026-06-22', end: '2026-06-28', label: 'Week 13 - Lectures', type: 'lecture' },
     { start: '2026-06-29', end: '2026-07-05', label: 'Week 14 - Lectures', type: 'lecture' },
@@ -279,7 +279,7 @@ function showDayInfo(date) {
     let html = `<div class="day-info-panel-overlay"></div>
         <div class="day-info-panel">
             <h3>${formattedDate}</h3>
-            <p><strong>Period:</strong> ${periodLabel}</p>
+             <p class="period-line${ev ? ` event-${ev.type}` : ''}"><strong>Period:</strong> ${periodLabel}</p>
             ${holidayLabel ? `<p class="holiday-line"><strong>Holiday:</strong> ${holidayLabel}</p>` : ''}
         </div>`;
     
@@ -327,7 +327,7 @@ function renderLegend() {
     if (!legend) return;
     legend.innerHTML = `
         <div class="legend-chip lecture">Lecture / Semester</div>
-        <div class="legend-chip exam">Final Exam</div>
+        <div class="legend-chip lecture">Final lecture</div>
         <div class="legend-chip revision">Revision Week</div>
         <div class="legend-chip break">Break / Holiday Period</div>
         <div class="legend-chip holiday">Public Holiday</div>
@@ -569,6 +569,7 @@ function addNewSemester() {
 function initializeNav() {
     const navBtns = document.querySelectorAll('.nav-btn[data-view]');
     const mainContent = document.getElementById('mainContent');
+    const oyenSpinner = document.getElementById('oyenSpinner');
     navBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             navBtns.forEach(b => b.classList.remove('active'));
@@ -577,6 +578,9 @@ function initializeNav() {
             const viewId = `${btn.dataset.view}-view`;
             const pane = document.getElementById(viewId);
             if (pane) pane.classList.add('active');
+            if (oyenSpinner) {
+                oyenSpinner.style.display = btn.dataset.view === 'calendar' ? 'block' : 'none';
+            }
         });
     });
 }
