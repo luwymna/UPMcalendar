@@ -253,7 +253,6 @@ function renderCalendar() {
 
 let hideDayInfoTimeout = null;
 let ignoreCellClickUntil = 0;
-let isOverlayTouching = false;
 
 function showDayInfo(date) {
     if (hideDayInfoTimeout) {
@@ -262,8 +261,6 @@ function showDayInfo(date) {
     }
     if (Date.now() < ignoreCellClickUntil) return;
     let info = document.getElementById('dayInfo');
-    
-    // Don't reopen if panel already visible for this date
     if (info.classList.contains('visible')) return;
     
     let ev = getEventForDate(date);
@@ -293,17 +290,13 @@ function showDayInfo(date) {
     const overlay = info.querySelector('.day-info-panel-overlay');
     if (overlay) {
         overlay.addEventListener('click', (e) => {
-            if (isOverlayTouching) return;
             e.stopPropagation();
             hideDayInfo();
         });
         overlay.addEventListener('touchend', (e) => {
-            isOverlayTouching = true;
             e.stopPropagation();
             e.preventDefault();
             hideDayInfo();
-            // Reset after click suppression period
-            setTimeout(() => isOverlayTouching = false, 500);
         });
         overlay.addEventListener('touchstart', (e) => {
             e.stopPropagation();
@@ -315,9 +308,9 @@ function hideDayInfo() {
     let info = document.getElementById('dayInfo');
     if (info) {
         info.classList.remove('visible');
+        document.body.classList.remove('day-info-open');
         if (hideDayInfoTimeout) clearTimeout(hideDayInfoTimeout);
         hideDayInfoTimeout = setTimeout(() => {
-            document.body.classList.remove('day-info-open');
             info.innerHTML = '';
             hideDayInfoTimeout = null;
         }, 300);
