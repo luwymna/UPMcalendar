@@ -1171,6 +1171,27 @@ html {
     font-weight: 700;
 }
 
+@media (hover: none) {
+    .date-cell:hover {
+        background: inherit;
+        color: inherit;
+        border-color: inherit;
+    }
+    .date-cell.event-lecture:hover,
+    .date-cell.event-exam:hover,
+    .date-cell.event-revision:hover,
+    .date-cell.event-break:hover,
+    .date-cell.event-holiday:hover {
+        background: inherit;
+        border-color: inherit;
+        color: inherit;
+    }
+    .date-cell:hover .period-indicator,
+    .date-cell:hover .week-number {
+        color: inherit;
+    }
+}
+
 
 
 
