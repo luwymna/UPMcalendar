@@ -1171,6 +1171,13 @@ html {
     font-weight: 700;
 }
 
+/* Prevent hover state persistence on mobile when day panel is open */
+.day-info-open .date-cell:hover {
+    background: #000000 !important;
+    color: #e0e0e0 !important;
+    border-color: #333333 !important;
+}
+
 
 
 

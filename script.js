@@ -217,9 +217,10 @@ let event = getEventForDate(date);
             showDayInfo(date);
         });
         
-        // Mobile: also handle touch for better responsiveness
+        // Prevent synthetic click after touchend on mobile
         cell.addEventListener('touchend', (e) => {
             if (Date.now() < ignoreCellClickUntil) return;
+            e.preventDefault();
             showDayInfo(date);
         });
         
@@ -254,13 +255,17 @@ let hideDayInfoTimeout = null;
 let ignoreCellClickUntil = 0;
 let isOverlayTouching = false;
 
-function showDayInfo(date, cell) {
+function showDayInfo(date) {
     if (hideDayInfoTimeout) {
         clearTimeout(hideDayInfoTimeout);
         hideDayInfoTimeout = null;
     }
     if (Date.now() < ignoreCellClickUntil) return;
     let info = document.getElementById('dayInfo');
+    
+    // Don't reopen if panel already visible for this date
+    if (info.classList.contains('visible')) return;
+    
     let ev = getEventForDate(date);
     let hol = getHolidayForDate(date);
     
