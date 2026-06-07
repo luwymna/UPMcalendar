@@ -213,7 +213,7 @@ let event = getEventForDate(date);
         }
         
         cell.addEventListener('click', () => {
-            showDayInfo(date);
+            showDayInfo(date, cell);
         });
         
         gdiv.appendChild(cell);
@@ -243,7 +243,9 @@ function renderCalendar() {
     for (let m = 0; m <= 9; m++) grid.appendChild(createMonthCard(2026, m, today));
 }
 
-function showDayInfo(date) {
+let activeDateCell = null;
+
+function showDayInfo(date, cell) {
     let info = document.getElementById('dayInfo');
     let ev = getEventForDate(date);
     let hol = getHolidayForDate(date);
@@ -268,6 +270,12 @@ function showDayInfo(date) {
     info.innerHTML = html;
     info.classList.add('visible');
     document.body.classList.add('day-info-open');
+    
+    if (activeDateCell) {
+        activeDateCell.classList.remove('active');
+    }
+    activeDateCell = cell;
+    activeDateCell.classList.add('active');
     
     const overlay = info.querySelector('.day-info-panel-overlay');
     if (overlay) {
