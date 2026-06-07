@@ -267,10 +267,12 @@ function showDayInfo(date) {
     
     info.innerHTML = html;
     info.classList.add('visible');
+    document.body.classList.add('day-info-open');
     
     const overlay = info.querySelector('.day-info-panel-overlay');
     if (overlay) {
         overlay.addEventListener('click', hideDayInfo);
+        overlay.addEventListener('touchend', hideDayInfo);
     }
 }
 
@@ -278,6 +280,7 @@ function hideDayInfo() {
     let info = document.getElementById('dayInfo');
     if (info) {
         info.classList.remove('visible');
+        document.body.classList.remove('day-info-open');
         setTimeout(() => {
             info.innerHTML = '';
         }, 300);
