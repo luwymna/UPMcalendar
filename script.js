@@ -214,7 +214,13 @@ let event = getEventForDate(date);
         
         cell.addEventListener('click', () => {
             if (Date.now() < ignoreCellClickUntil) return;
-            showDayInfo(date);
+            showDayInfo(date, cell);
+        });
+        
+        // Mobile: also handle touch for better responsiveness
+        cell.addEventListener('touchend', (e) => {
+            if (Date.now() < ignoreCellClickUntil) return;
+            showDayInfo(date, cell);
         });
         
         gdiv.appendChild(cell);
@@ -246,8 +252,9 @@ function renderCalendar() {
 
 let hideDayInfoTimeout = null;
 let ignoreCellClickUntil = 0;
+let activeDateCell = null;
 
-function showDayInfo(date) {
+function showDayInfo(date, cell) {
     if (hideDayInfoTimeout) {
         clearTimeout(hideDayInfoTimeout);
         hideDayInfoTimeout = null;
@@ -256,6 +263,13 @@ function showDayInfo(date) {
     let info = document.getElementById('dayInfo');
     let ev = getEventForDate(date);
     let hol = getHolidayForDate(date);
+    
+    // Track clicked cell
+    if (activeDateCell) {
+        activeDateCell.classList.remove('active');
+    }
+    activeDateCell = cell;
+    if (cell) cell.classList.add('active');
     
     const formattedDate = date.toLocaleDateString('en-GB', {
         weekday: 'long',
@@ -280,8 +294,18 @@ function showDayInfo(date) {
     
     const overlay = info.querySelector('.day-info-panel-overlay');
     if (overlay) {
-        overlay.addEventListener('click', hideDayInfo);
-        overlay.addEventListener('touchend', hideDayInfo);
+        overlay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            hideDayInfo();
+        });
+        overlay.addEventListener('touchend', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            hideDayInfo();
+        });
+        overlay.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+        });
     }
 }
 
