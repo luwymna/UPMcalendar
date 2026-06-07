@@ -1071,6 +1071,7 @@ body.day-info-open .date-cell {
 .date-cell.today .week-number {
     color: #000000 !important;
 }
+
 @media (hover: none) {
     .date-cell:hover {
         background: #000000;
@@ -1106,37 +1107,38 @@ body.day-info-open .date-cell {
         border-color: #4ae28a;
         color: #e0e0e0;
     }
+
+    body.day-info-open .date-cell.active.event-lecture {
+        background: #4a90e2;
+        color: #000000;
+    }
+    body.day-info-open .date-cell.active.event-exam {
+        background: #e24a4a;
+        color: #000000;
+    }
+    body.day-info-open .date-cell.active.event-revision {
+        background: #e2904a;
+        color: #000000;
+    }
+    body.day-info-open .date-cell.active.event-break {
+        background: #c9e24a;
+        color: #000000;
+    }
+    body.day-info-open .date-cell.active.event-holiday {
+        background: #4ae28a;
+        color: #000000;
+    }
+    body.day-info-open .date-cell.active:not(.event-lecture):not(.event-exam):not(.event-revision):not(.event-break):not(.event-holiday) {
+        background: #ffffff;
+        color: #000000;
+    }
+    body.day-info-open .date-cell.active,
+    body.day-info-open .date-cell.active .period-indicator,
+    body.day-info-open .date-cell.active .week-number {
+        color: #000000 !important;
+    }
 }
 
-.date-cell.active.event-lecture {
-    background: #4a90e2;
-    color: #000000;
-}
-.date-cell.active.event-exam {
-    background: #e24a4a;
-    color: #000000;
-}
-.date-cell.active.event-revision {
-    background: #e2904a;
-    color: #000000;
-}
-.date-cell.active.event-break {
-    background: #c9e24a;
-    color: #000000;
-}
-.date-cell.active.event-holiday {
-    background: #4ae28a;
-    color: #000000;
-}
-.date-cell.active:not(.event-lecture):not(.event-exam):not(.event-revision):not(.event-break):not(.event-holiday) {
-    background: #ffffff;
-    color: #000000;
-}
-.date-cell.active,
-.date-cell.active .period-indicator,
-.date-cell.active .week-number {
-    color: #000000 !important;
-}
 .empty-cell {
     background: #000000;
     border: 2px solid #000000;

@@ -289,6 +289,10 @@ function hideDayInfo() {
     if (info) {
         info.classList.remove('visible');
         document.body.classList.remove('day-info-open');
+        if (activeDateCell) {
+            activeDateCell.classList.remove('active');
+            activeDateCell = null;
+        }
         setTimeout(() => {
             info.innerHTML = '';
         }, 300);
