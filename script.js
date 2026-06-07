@@ -214,13 +214,13 @@ let event = getEventForDate(date);
         
         cell.addEventListener('click', () => {
             if (Date.now() < ignoreCellClickUntil) return;
-            showDayInfo(date, cell);
+            showDayInfo(date);
         });
         
         // Mobile: also handle touch for better responsiveness
         cell.addEventListener('touchend', (e) => {
             if (Date.now() < ignoreCellClickUntil) return;
-            showDayInfo(date, cell);
+            showDayInfo(date);
         });
         
         gdiv.appendChild(cell);
@@ -252,7 +252,7 @@ function renderCalendar() {
 
 let hideDayInfoTimeout = null;
 let ignoreCellClickUntil = 0;
-let activeDateCell = null;
+let isOverlayTouching = false;
 
 function showDayInfo(date, cell) {
     if (hideDayInfoTimeout) {
@@ -263,13 +263,6 @@ function showDayInfo(date, cell) {
     let info = document.getElementById('dayInfo');
     let ev = getEventForDate(date);
     let hol = getHolidayForDate(date);
-    
-    // Track clicked cell
-    if (activeDateCell) {
-        activeDateCell.classList.remove('active');
-    }
-    activeDateCell = cell;
-    if (cell) cell.classList.add('active');
     
     const formattedDate = date.toLocaleDateString('en-GB', {
         weekday: 'long',
@@ -295,13 +288,17 @@ function showDayInfo(date, cell) {
     const overlay = info.querySelector('.day-info-panel-overlay');
     if (overlay) {
         overlay.addEventListener('click', (e) => {
+            if (isOverlayTouching) return;
             e.stopPropagation();
             hideDayInfo();
         });
         overlay.addEventListener('touchend', (e) => {
+            isOverlayTouching = true;
             e.stopPropagation();
             e.preventDefault();
             hideDayInfo();
+            // Reset after click suppression period
+            setTimeout(() => isOverlayTouching = false, 500);
         });
         overlay.addEventListener('touchstart', (e) => {
             e.stopPropagation();
@@ -313,10 +310,6 @@ function hideDayInfo() {
     let info = document.getElementById('dayInfo');
     if (info) {
         info.classList.remove('visible');
-        if (activeDateCell) {
-            activeDateCell.classList.remove('active');
-            activeDateCell = null;
-        }
         if (hideDayInfoTimeout) clearTimeout(hideDayInfoTimeout);
         hideDayInfoTimeout = setTimeout(() => {
             document.body.classList.remove('day-info-open');
