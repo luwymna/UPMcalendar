@@ -627,12 +627,21 @@ function initializeSidebar() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderCalendar();
-    renderTodayBlock();
-    renderLegend();
-    renderCalendarSummary();
-    
-    loadFromStorage();
+     renderCalendar();
+     renderTodayBlock();
+     renderLegend();
+     renderCalendarSummary();
+     
+     // Auto-scroll to today after 1 second
+     setTimeout(() => {
+         const todayCell = document.querySelector('.date-cell.today');
+         if (todayCell) {
+             const monthCard = todayCell.closest('.month-card');
+             if (monthCard) monthCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+         }
+     }, 1000);
+     
+     loadFromStorage();
     renderAllSemesters();
     updateCGPA();
     semesters.forEach((s, idx) => {
