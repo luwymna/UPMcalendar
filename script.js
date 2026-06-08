@@ -693,7 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         bgMusic.addEventListener('ended', () => {
-            musicBtn.innerHTML = '<svg class="icon-moon" viewBox="0 0 24 24" width="50" height="24" fill="currentColor"><path d="M8 5l8 7-8 7"/></svg>';
+            musicBtn.innerHTML = '<svg class="icon-play" viewBox="0 0 24 24" width="50" height="24" fill="currentColor"><path d="M8 5l8 7-8 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>';
         });
         musicProgress.addEventListener('input', () => {
             bgMusic.currentTime = musicProgress.value;
