@@ -1,47 +1,104 @@
 // ========== ACADEMIC CALENDAR DATA ==========
 function parseDate(text) { return new Date(`${text}T00:00:00`); }
 
+let currentLevel = 'bachelor';
+
+function getEventForDate(date) {
+    return academicPeriods.find(e =>
+        date >= e.startDate &&
+        date <= e.endDate &&
+        e.level === currentLevel
+    );
+}
+
 const academicPeriods = [
-    // SEMESTER 1
-    { start: '2025-10-13', end: '2025-10-19', label: 'Week 1 - Lectures', type: 'lecture' },
-    { start: '2025-10-20', end: '2025-10-26', label: 'Week 2 - Lectures', type: 'lecture' },
-    { start: '2025-10-27', end: '2025-11-02', label: 'Week 3 - Lectures', type: 'lecture' },
-    { start: '2025-11-03', end: '2025-11-09', label: 'Week 4 - Lectures', type: 'lecture' },
-    { start: '2025-11-10', end: '2025-11-16', label: 'Week 5 - Lectures', type: 'lecture' },
-    { start: '2025-11-17', end: '2025-11-23', label: 'Week 6 - Lectures', type: 'lecture' },
-    { start: '2025-11-24', end: '2025-11-30', label: 'Week 7 - Lectures', type: 'lecture' },
-    { start: '2025-12-01', end: '2025-12-07', label: 'Mid-Semester Break', type: 'break' },
-    { start: '2025-12-08', end: '2025-12-14', label: 'Week 8 - Lectures', type: 'lecture' },
-    { start: '2025-12-15', end: '2025-12-21', label: 'Week 9 - Lectures', type: 'lecture' },
-    { start: '2025-12-22', end: '2025-12-28', label: 'Week 10 - Lectures', type: 'lecture' },
-    { start: '2025-12-29', end: '2026-01-04', label: 'Week 11 - Lectures', type: 'lecture' },
-    { start: '2026-01-05', end: '2026-01-11', label: 'Week 12 - Lectures', type: 'lecture' },
-    { start: '2026-01-12', end: '2026-01-18', label: 'Week 13 - Lectures', type: 'lecture' },
-    { start: '2026-01-19', end: '2026-01-25', label: 'Week 14 - Lectures', type: 'lecture' },
-    { start: '2026-01-26', end: '2026-02-01', label: 'Week 15 - Revision Week', type: 'revision' },
-    { start: '2026-02-02', end: '2026-02-08', label: 'Week 16 - Final exam', type: 'exam' },
-    { start: '2026-02-09', end: '2026-02-15', label: 'Week 17 - Final exam', type: 'exam' },
-    { start: '2026-02-16', end: '2026-03-22', label: 'End Semester Break', type: 'break' },
-    // SEMESTER 2
-    { start: '2026-03-23', end: '2026-03-29', label: 'Week 1 - Lectures', type: 'lecture' },
-    { start: '2026-03-30', end: '2026-04-05', label: 'Week 2 - Lectures', type: 'lecture' },
-    { start: '2026-04-06', end: '2026-04-12', label: 'Week 3 - Lectures', type: 'lecture' },
-    { start: '2026-04-13', end: '2026-04-19', label: 'Week 4 - Lectures', type: 'lecture' },
-    { start: '2026-04-20', end: '2026-04-26', label: 'Week 5 - Lectures', type: 'lecture' },
-    { start: '2026-04-27', end: '2026-05-03', label: 'Week 6 - Lectures', type: 'lecture' },
-    { start: '2026-05-04', end: '2026-05-10', label: 'Week 7 - Lectures', type: 'lecture' },
-    { start: '2026-05-11', end: '2026-05-17', label: 'Week 8 - Lectures', type: 'lecture' },
-    { start: '2026-05-18', end: '2026-05-24', label: 'Week 9 - Lectures', type: 'lecture' },
-    { start: '2026-05-25', end: '2026-05-31', label: 'Mid-Semester Break', type: 'break' },
-    { start: '2026-06-01', end: '2026-06-07', label: 'Week 10 - Lectures', type: 'lecture' },
-    { start: '2026-06-08', end: '2026-06-14', label: 'Week 11 - Lectures', type: 'lecture' },
-    { start: '2026-06-15', end: '2026-06-21', label: 'Week 12 - Lectures', type: 'lecture' },
-    { start: '2026-06-22', end: '2026-06-28', label: 'Week 13 - Lectures', type: 'lecture' },
-    { start: '2026-06-29', end: '2026-07-05', label: 'Week 14 - Lectures', type: 'lecture' },
-    { start: '2026-07-06', end: '2026-07-12', label: 'Week 15 - Revision Week', type: 'revision' },
-    { start: '2026-07-13', end: '2026-07-19', label: 'Week 16 - Final exam', type: 'exam' },
-    { start: '2026-07-20', end: '2026-07-26', label: 'Week 17 - Final exam', type: 'exam' },
-    { start: '2026-07-27', end: '2026-10-04', label: 'End Semester Break', type: 'break' }
+    // SEMESTER 1 (Bachelor)
+    { start: '2025-10-13', end: '2025-10-19', label: 'Week 1 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2025-10-20', end: '2025-10-26', label: 'Week 2 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2025-10-27', end: '2025-11-02', label: 'Week 3 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2025-11-03', end: '2025-11-09', label: 'Week 4 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2025-11-10', end: '2025-11-16', label: 'Week 5 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2025-11-17', end: '2025-11-23', label: 'Week 6 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2025-11-24', end: '2025-11-30', label: 'Week 7 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2025-12-01', end: '2025-12-07', label: 'Mid-Semester Break', type: 'break', level: 'bachelor' },
+    { start: '2025-12-08', end: '2025-12-14', label: 'Week 8 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2025-12-15', end: '2025-12-21', label: 'Week 9 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2025-12-22', end: '2025-12-28', label: 'Week 10 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2025-12-29', end: '2026-01-04', label: 'Week 11 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-01-05', end: '2026-01-11', label: 'Week 12 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-01-12', end: '2026-01-18', label: 'Week 13 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-01-19', end: '2026-01-25', label: 'Week 14 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-01-26', end: '2026-02-01', label: 'Week 15 - Revision Week', type: 'revision', level: 'bachelor' },
+    { start: '2026-02-02', end: '2026-02-08', label: 'Week 16 - Final exam', type: 'exam', level: 'bachelor' },
+    { start: '2026-02-09', end: '2026-02-15', label: 'Week 17 - Final exam', type: 'exam', level: 'bachelor' },
+    { start: '2026-02-16', end: '2026-03-22', label: 'End Semester Break', type: 'break', level: 'bachelor' },
+    // SEMESTER 2 (Bachelor)
+    { start: '2026-03-23', end: '2026-03-29', label: 'Week 1 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-03-30', end: '2026-04-05', label: 'Week 2 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-04-06', end: '2026-04-12', label: 'Week 3 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-04-13', end: '2026-04-19', label: 'Week 4 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-04-20', end: '2026-04-26', label: 'Week 5 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-04-27', end: '2026-05-03', label: 'Week 6 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-05-04', end: '2026-05-10', label: 'Week 7 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-05-11', end: '2026-05-17', label: 'Week 8 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-05-18', end: '2026-05-24', label: 'Week 9 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-05-25', end: '2026-05-31', label: 'Mid-Semester Break', type: 'break', level: 'bachelor' },
+    { start: '2026-06-01', end: '2026-06-07', label: 'Week 10 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-06-08', end: '2026-06-14', label: 'Week 11 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-06-15', end: '2026-06-21', label: 'Week 12 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-06-22', end: '2026-06-28', label: 'Week 13 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-06-29', end: '2026-07-05', label: 'Week 14 - Lectures', type: 'lecture', level: 'bachelor' },
+    { start: '2026-07-06', end: '2026-07-12', label: 'Week 15 - Revision Week', type: 'revision', level: 'bachelor' },
+    { start: '2026-07-13', end: '2026-07-19', label: 'Week 16 - Final exam', type: 'exam', level: 'bachelor' },
+    { start: '2026-07-20', end: '2026-07-26', label: 'Week 17 - Final exam', type: 'exam', level: 'bachelor' },
+    { start: '2026-07-27', end: '2026-10-04', label: 'End Semester Break', type: 'break', level: 'bachelor' },
+    //FOUNDATION SEMESTER 1
+    { start: '2025-07-14', end: '2025-07-20', label: 'Week 1 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-07-21', end: '2025-07-27', label: 'Week 2 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-07-28', end: '2025-08-03', label: 'Week 3 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-08-04', end: '2025-08-10', label: 'Week 4 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-08-11', end: '2025-08-17', label: 'Week 5 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-08-18', end: '2025-08-24', label: 'Week 6 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-08-25', end: '2025-08-31', label: 'Week 7 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-09-01', end: '2025-09-07', label: 'Week 8 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-09-08', end: '2025-09-14', label: 'Week 9 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-09-15', end: '2025-09-21', label: 'Mid-Semester Break', type: 'break', level: 'foundation' },
+    { start: '2025-09-22', end: '2025-09-28', label: 'Week 10 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-09-29', end: '2025-10-05', label: 'Week 11 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-10-06', end: '2025-10-12', label: 'Week 12 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-10-13', end: '2025-10-19', label: 'Week 13 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-10-20', end: '2025-10-26', label: 'Week 14 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-10-27', end: '2025-11-02', label: 'Week 15 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-11-03', end: '2025-11-09', label: 'Week 16 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-11-10', end: '2025-11-16', label: 'Week 17 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-11-17', end: '2025-11-23', label: 'Week 18 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2025-11-24', end: '2025-11-30', label: 'Week 19 - Revision Week', type: 'revision', level: 'foundation' },
+    { start: '2025-12-01', end: '2025-12-07', label: 'Week 20 - Final Exam', type: 'exam', level: 'foundation' },
+    { start: '2025-12-08', end: '2025-12-14', label: 'Week 21 - Final Exam', type: 'exam', level: 'foundation' },
+    { start: '2025-12-15', end: '2026-01-11', label: 'End Semester Break', type: 'break', level: 'foundation' },   
+    //FOUNDATION SEMESTER 2
+    { start: '2026-01-12', end: '2026-01-18', label: 'Week 1 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-01-19', end: '2026-01-25', label: 'Week 2 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-01-26', end: '2026-02-01', label: 'Week 3 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-02-02', end: '2026-02-08', label: 'Week 4 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-02-09', end: '2026-02-15', label: 'Week 5 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-02-16', end: '2026-02-22', label: 'Week 6 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-02-23', end: '2026-03-01', label: 'Week 7 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-03-02', end: '2026-03-08', label: 'Week 8 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-03-09', end: '2026-03-15', label: 'Week 9 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-03-16', end: '2026-03-22', label: 'Mid-Semester Break', type: 'break', level: 'foundation' },
+    { start: '2026-03-23', end: '2026-03-29', label: 'Week 10 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-03-30', end: '2026-04-05', label: 'Week 11 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-04-06', end: '2026-04-12', label: 'Week 12 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-04-13', end: '2026-04-19', label: 'Week 13 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-04-20', end: '2026-04-26', label: 'Week 14 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-04-27', end: '2026-05-03', label: 'Week 15 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-05-04', end: '2026-05-10', label: 'Week 16 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-05-11', end: '2026-05-17', label: 'Week 17 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-05-18', end: '2026-05-24', label: 'Week 18 - Lectures', type: 'lecture', level: 'foundation' },
+    { start: '2026-05-25', end: '2026-05-31', label: 'Week 19 - Revision Week', type: 'revision', level: 'foundation' },
+    { start: '2026-06-01', end: '2026-06-07', label: 'Week 20 - Final Exam', type: 'exam', level: 'foundation' },
+    { start: '2026-06-08', end: '2026-06-14', label: 'Week 21 - Final Exam', type: 'exam', level: 'foundation' },
 ].map(p => ({ ...p, startDate: parseDate(p.start), endDate: parseDate(p.end) }));
 
 const publicHolidays = [
@@ -67,28 +124,55 @@ const publicHolidays = [
 ].map(d => ({ dateObj: parseDate(d.date), label: d.label }));
 
 const midSemesterBreaks = {
-    sem1: {
-        start: parseDate('2025-12-01'),
-        end: parseDate('2025-12-07'),
+    bachelor: {
+        sem1: { start: parseDate('2025-12-01'), end: parseDate('2025-12-07') },
+        sem2: { start: parseDate('2026-05-25'), end: parseDate('2026-05-31') }
     },
-    sem2: {
-        start: parseDate('2026-05-25'),
-        end: parseDate('2026-05-31'),
-    },
+    foundation: {
+        sem1: { start: parseDate('2025-09-15'), end: parseDate('2025-09-21') },
+        sem2: { start: parseDate('2026-03-16'), end: parseDate('2026-03-22') }
+    }, 
 };
 
-function getEventForDate(date) { return academicPeriods.find(e => date >= e.startDate && date <= e.endDate); }
 function getHolidayForDate(date) { return publicHolidays.find(h => h.dateObj.toDateString() === date.toDateString()); }
-function getSemesterLabel(y, m) { let d = new Date(y, m, 1); return (d >= parseDate('2025-10-13') && d <= parseDate('2026-02-28')) ? 'SEM 1' : (d >= parseDate('2026-03-23') && d <= parseDate('2026-07-31')) ? 'SEM 2' : null; }
+function getSemesterLabel(y, m) {
+    const d = new Date(y, m, 1);
+    const breaks = midSemesterBreaks[currentLevel] || {};
+
+    // Default Bachelor dates
+    let sem1Start = parseDate('2025-10-13');
+    let sem1End = parseDate('2026-03-22');
+    let sem2Start = parseDate('2026-03-23');
+    let sem2End = parseDate('2026-10-04');
+
+    // Adjust for Foundation
+    if (currentLevel === 'foundation') {
+        sem1Start = parseDate('2025-07-14');
+        sem1End = parseDate('2026-01-11');
+        sem2Start = parseDate('2026-01-12');
+        sem2End = parseDate('2026-06-14');
+    }
+
+    return (d >= sem1Start && d <= sem1End) ? 'SEM 1' :
+           (d >= sem2Start && d <= sem2End) ? 'SEM 2' : null;
+}
 
 function getSemesterStartDate(date) {
-    // SEMESTER 1: Starts on Oct 13, 2025 (Week 1)
-    if (date >= parseDate('2025-10-13') && date < parseDate('2026-03-23')) {
-        return parseDate('2025-10-13');
+    if (currentLevel === 'bachelor') {
+        if (date >= parseDate('2025-10-13') && date < parseDate('2026-03-23')) {
+            return parseDate('2025-10-13');
+        }
+        if (date >= parseDate('2026-03-23')) {
+            return parseDate('2026-03-23');
+        }
     }
-    // SEMESTER 2: Starts on Mar 23, 2026 (Week 1)
-    if (date >= parseDate('2026-03-23')) {
-        return parseDate('2026-03-23');
+    else if (currentLevel === 'foundation') {
+        if (date >= parseDate('2025-07-14') && date < parseDate('2026-01-12')) {
+            return parseDate('2025-07-14');
+        }
+        if (date >= parseDate('2026-01-12')) {
+            return parseDate('2026-01-12');
+        }
     }
     return null;
 }
@@ -110,46 +194,44 @@ function getWeekNumberAfterBreak(date, semesterStart, breakStart, breakEnd) {
 function getWeekNumberForDate(date, event) {
     if (date.getDay() !== 1) return null; // Only show on Mondays
     if (!event) return null;
+    if (event.type === 'break') return null;
 
     const semesterStart = getSemesterStartDate(date);
     if (!semesterStart) return null;
 
-    // Check if the date is in Semester 1 or Semester 2
-    const isSem1 = date >= parseDate('2025-10-13') && date < parseDate('2026-03-23');
-    const isSem2 = date >= parseDate('2026-03-23');
+    const breaks = midSemesterBreaks[currentLevel] || {};
+    const isSem1 =
+        (currentLevel === 'bachelor' && date >= parseDate('2025-10-13') && date < parseDate('2026-03-23')) ||
+        (currentLevel === 'foundation' && date >= parseDate('2025-07-14') && date < parseDate('2026-01-12'));
 
-    if (isSem1) {
-        const breakStart = midSemesterBreaks.sem1.start;
-        const breakEnd = midSemesterBreaks.sem1.end;
+    const isSem2 =
+        (currentLevel === 'bachelor' && date >= parseDate('2026-03-23')) ||
+        (currentLevel === 'foundation' && date >= parseDate('2026-01-12'));
 
+    if (isSem1 && breaks.sem1) {
+        const breakStart = breaks.sem1.start;
+        const breakEnd = breaks.sem1.end;
         if (date < breakStart) {
-            // Before mid-semester break
-            const weekNum = getWeekNumberBeforeBreak(date, semesterStart);
-            return (weekNum >= 1 && weekNum <= 17) ? weekNum : null;
+            return getWeekNumberBeforeBreak(date, semesterStart);
         } else if (date > breakEnd) {
-            // After mid-semester break
-            const weekNum = getWeekNumberAfterBreak(date, semesterStart, breakStart, breakEnd);
-            return (weekNum >= 1 && weekNum <= 17) ? weekNum : null;
+            return getWeekNumberAfterBreak(date, semesterStart, breakStart, breakEnd);
         } else {
-            // During break (skip week number)
             return null;
         }
-    } else if (isSem2) {
-        const breakStart = midSemesterBreaks.sem2.start;
-        const breakEnd = midSemesterBreaks.sem2.end;
-
+    }
+    else if (isSem2 && breaks.sem2) {
+        const breakStart = breaks.sem2.start;
+        const breakEnd = breaks.sem2.end;
         if (date < breakStart) {
-            // Before mid-semester break
-            const weekNum = getWeekNumberBeforeBreak(date, semesterStart);
-            return (weekNum >= 1 && weekNum <= 17) ? weekNum : null;
+            return getWeekNumberBeforeBreak(date, semesterStart);
         } else if (date > breakEnd) {
-            // After mid-semester break
-            const weekNum = getWeekNumberAfterBreak(date, semesterStart, breakStart, breakEnd);
-            return (weekNum >= 1 && weekNum <= 17) ? weekNum : null;
+            return getWeekNumberAfterBreak(date, semesterStart, breakStart, breakEnd);
         } else {
-            // During break (skip week number)
             return null;
         }
+    }
+    else if (isSem1 || isSem2) {
+        return getWeekNumberBeforeBreak(date, semesterStart);
     }
 
     return null;
@@ -247,8 +329,13 @@ function renderCalendar() {
     const today = new Date();
     if (!grid) return;
     grid.innerHTML = '';
-    for (let m = 9; m <= 11; m++) grid.appendChild(createMonthCard(2025, m, today));
-    for (let m = 0; m <= 9; m++) grid.appendChild(createMonthCard(2026, m, today));
+    if (currentLevel === 'foundation') {
+        for (let m = 6; m <= 11; m++) grid.appendChild(createMonthCard(2025, m, today));
+        for (let m = 0; m <= 5; m++) grid.appendChild(createMonthCard(2026, m, today));
+    } else {
+        for (let m = 9; m <= 11; m++) grid.appendChild(createMonthCard(2025, m, today));
+        for (let m = 0; m <= 9; m++) grid.appendChild(createMonthCard(2026, m, today));
+    }
 }
 
 let hideDayInfoTimeout = null;
@@ -339,8 +426,11 @@ function renderPeriodBadge() {
     if (!badge) return;
     const today = new Date();
     const currentPeriod = getEventForDate(today);
+    const semLabel = getSemesterLabel(today.getFullYear(), today.getMonth());
     if (currentPeriod) {
-        badge.textContent = currentPeriod.label;
+        badge.textContent = `${semLabel} • ${currentPeriod.label}`;
+    } else if (semLabel) {
+        badge.textContent = `${semLabel} • No Active Period`;
     } else {
         badge.textContent = 'No Active Period';
     }
@@ -359,8 +449,11 @@ function renderCalendarSummary() {
     const today = new Date();
     if (!summary) return;
     const currentPeriod = getEventForDate(today);
-    const nextEvent = academicPeriods.find(event => event.startDate > today);
-    summary.innerHTML = (currentPeriod ? `Current academic period: <strong>${currentPeriod.label}</strong>. ` : 'No active academic period today. ') +
+    const nextEvent = academicPeriods.find(
+        event => event.startDate > today && event.level === currentLevel
+    );
+    summary.innerHTML =
+        (currentPeriod ? `Current academic period: <strong>${currentPeriod.label}</strong>. ` : 'No active academic period today. ') +
         (nextEvent ? `Next: <strong>${nextEvent.label}</strong> period starts on ${nextEvent.startDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}.` : 'No upcoming academic periods in this academic year.');
 }
 
@@ -631,13 +724,14 @@ document.addEventListener('DOMContentLoaded', () => {
      renderTodayBlock();
      renderLegend();
      renderCalendarSummary();
+     renderPeriodBadge();
      
      // Auto-scroll to today after 1 second
      setTimeout(() => {
          const todayCell = document.querySelector('.date-cell.today');
          if (todayCell) {
              const monthCard = todayCell.closest('.month-card');
-             if (monthCard) monthCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+             if (monthCard) monthCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
          }
      }, 1000);
      
@@ -653,6 +747,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addSemesterBtn) {
         addSemesterBtn.addEventListener('click', addNewSemester);
     }
+    
+    // Study level filter
+    const studyLevelSelect = document.getElementById('studyLevelSelect');
+    if (studyLevelSelect) {
+        const trigger = studyLevelSelect.querySelector('.custom-select-trigger');
+        const options = studyLevelSelect.querySelectorAll('.custom-select-option');
+        
+        trigger.addEventListener('click', () => {
+            studyLevelSelect.classList.toggle('open');
+        });
+        
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                const span = trigger.querySelector('span');
+                if (span) {
+                    span.textContent = option.textContent;
+                }
+                currentLevel = option.dataset.value;
+                studyLevelSelect.classList.remove('open');
+                renderCalendar();
+                renderPeriodBadge();
+                renderCalendarSummary();
+            });
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!studyLevelSelect.contains(e.target)) {
+                studyLevelSelect.classList.remove('open');
+            }
+        });
+    }
+
+    
     
     initializeNav();
     initializeSidebar();
@@ -723,4 +850,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const s = Math.floor(sec % 60);
         return `${m}:${s.toString().padStart(2, '0')}`;
     }
+
+    setTimeout(() => {
+        const todayCell = document.querySelector('.date-cell.today');
+        if (todayCell) {
+            const monthCard = todayCell.closest('.month-card');
+            if (monthCard) {
+                monthCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // After scrolling, trigger the blinking animation
+                setTimeout(() => {
+                    todayCell.classList.add('blink-today');
+                    // Remove the class after animation completes
+                    setTimeout(() => {
+                        todayCell.classList.remove('blink-today');
+                    }, 1500); // 0.5s * 3 = 1.5s
+                }, 500); // Wait 500ms after scrolling completes
+            }
+        }
+    }, 100);// Small delay to ensure the cell is rendered
 });
+
