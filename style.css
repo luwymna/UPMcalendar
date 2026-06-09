@@ -66,13 +66,24 @@ html {
     cursor: pointer;
 }
 
-.sidebar-toggle.mobile-toggle:active {
+.sidebar-toggle.mobile-toggle:active,
+.sidebar-toggle.mobile-toggle.sidebar-expanded {
     background: #1a1a1a;
 }
 
 .sidebar-toggle.mobile-toggle svg {
     transition: transform 0.3s ease;
-    fill: white;
+    stroke: white;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.sidebar-toggle.mobile-toggle svg line,
+.sidebar-toggle.mobile-toggle:active svg line,
+.sidebar-toggle.mobile-toggle.sidebar-expanded svg line {
+    stroke: white !important;
+    fill: none !important;
 }
 
 .sidebar-toggle.mobile-toggle.sidebar-expanded svg {
@@ -1366,6 +1377,9 @@ body::after {
         transform: none;
         box-shadow: none;
     }
+    .sidebar-toggle.mobile-toggle svg {
+        stroke: white;
+    }
     .custom-select:hover .custom-select-trigger {
         background: rgb(0, 0, 0);
         color: #ffffff;
@@ -1402,6 +1416,15 @@ body::after {
     .date-cell:hover .period-indicator,
     .date-cell:hover .week-number {
         transform: inherit;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar-toggle {
+        display: none;
+    }
+    .sidebar-toggle.mobile-toggle {
+        display: flex;
     }
 }
 
