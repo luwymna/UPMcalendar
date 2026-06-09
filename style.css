@@ -1355,5 +1355,51 @@ body::after {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
 }
 
+@media (hover: none) {
+    .sidebar-toggle:hover,
+    .sidebar-toggle.mobile-toggle:hover {
+        background: inherit;
+        transform: none;
+        box-shadow: none;
+    }
+    .custom-select:hover .custom-select-trigger {
+        background: rgb(0, 0, 0);
+        color: #ffffff;
+    }
+    .custom-select-option:hover {
+        background: inherit;
+        color: #ffffff;
+    }
+    .add-semester-btn:hover,
+    .btn-primary:hover,
+    .btn-danger:hover,
+    .semester-gpa:hover,
+    .delete-semester:hover {
+        background: inherit;
+        color: inherit;
+        transform: none;
+        box-shadow: none;
+        filter: none;
+    }
+    .month-card:hover {
+        border-color: inherit;
+        box-shadow: inherit;
+    }
+    .date-cell:hover,
+    .date-cell.event-lecture:hover,
+    .date-cell.event-exam:hover,
+    .date-cell.event-revision:hover,
+    .date-cell.event-break:hover,
+    .date-cell.event-holiday:hover {
+        filter: inherit;
+        transform: inherit;
+        z-index: inherit;
+    }
+    .date-cell:hover .period-indicator,
+    .date-cell:hover .week-number {
+        transform: inherit;
+    }
+}
+
 
 
