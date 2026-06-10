@@ -680,44 +680,44 @@ function initializeNav() {
 
 function initializeSidebar() {
     const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('toggleSidebarBtn');
-    const mobileToggleBtn = document.getElementById('mobileToggleBtn');
     const mainContent = document.getElementById('mainContent');
+    const toggleBtns = document.querySelectorAll('.sidebar-toggle'); // Select all toggle buttons
 
     if (!sidebar || !mainContent) return;
 
+    // Toggle sidebar function
     function toggleSidebar() {
-    // Use requestAnimationFrame for smoother transitions
-    requestAnimationFrame(() => {
-        sidebar.classList.toggle('expanded');
-        mainContent.classList.toggle('sidebar-expanded');
-        if (toggleBtn) toggleBtn.classList.toggle('sidebar-expanded');
-        if (mobileToggleBtn) mobileToggleBtn.classList.toggle('sidebar-expanded');
+        requestAnimationFrame(() => {
+            const isExpanded = sidebar.classList.toggle('expanded');
+            mainContent.classList.toggle('sidebar-expanded', isExpanded);
+
+            // Toggle the 'sidebar-expanded' class for all toggle buttons
+            toggleBtns.forEach(btn => {
+                btn.classList.toggle('sidebar-expanded', isExpanded);
+            });
+        });
+    }
+
+    // Add click event to all toggle buttons
+    toggleBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleSidebar();
+        });
     });
-}
-
-    // Desktop toggle button
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleSidebar();
-        });
-    }
-
-    // Mobile toggle button
-    if (mobileToggleBtn) {
-        mobileToggleBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleSidebar();
-        });
-    }
 
     // Collapse sidebar when clicking outside (on main content)
     mainContent.addEventListener('click', () => {
-        sidebar.classList.remove('expanded');
-        mainContent.classList.remove('sidebar-expanded');
-        if (toggleBtn) toggleBtn.classList.remove('sidebar-expanded');
-        if (mobileToggleBtn) mobileToggleBtn.classList.remove('sidebar-expanded');
+        const isExpanded = sidebar.classList.contains('expanded');
+        if (isExpanded) {
+            requestAnimationFrame(() => {
+                sidebar.classList.remove('expanded');
+                mainContent.classList.remove('sidebar-expanded');
+                toggleBtns.forEach(btn => {
+                    btn.classList.remove('sidebar-expanded');
+                });
+            });
+        }
     });
 }
 
