@@ -19,7 +19,7 @@ html {
     overflow-x: hidden;
 }
 
-/* Apply to all sidebar toggles */
+/* Unified toggle button styling */
 .sidebar-toggle {
     position: fixed;
     left: 0;
@@ -32,7 +32,7 @@ html {
     border: none;
     cursor: pointer;
     font-size: 1.5rem;
-    z-index: 101;
+    z-index: 102; /* Higher than sidebar (z-index: 100) */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -40,45 +40,47 @@ html {
     will-change: transform;
 }
 
-/* Hide the mobile toggle on desktop (if using two buttons) */
-@media (min-width: 769px) {
-    #mobileToggleBtn {
-        display: none;
-    }
-}
-
-/* Show the mobile toggle on mobile (if using two buttons) */
-@media (max-width: 768px) {
-    #toggleSidebarBtn {
-        display: none;
-    }
-}
-
-/* Expanded state for all toggles */
+/* Move toggle button to the right when sidebar is expanded */
 .sidebar-toggle.sidebar-expanded {
     transform: translateX(260px);
 }
 
+/* Ensure sidebar is above main content but below toggle button */
 .sidebar {
-      width: 260px;
-      background: #1a1a1a;
-      display: flex;
-      flex-direction: column;
-      padding: 60px 16px 20px 16px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      overflow-y: auto;
-      z-index: 100;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      will-change: transform;
-    }
+    width: 260px;
+    background: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    padding: 60px 16px 20px 16px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    will-change: transform;
+}
 
-  .sidebar.expanded {
+.sidebar.expanded {
     transform: translateX(0);
-  }
+}
+
+/* Push main content to the right on ALL devices when sidebar is expanded */
+.main-content {
+    flex: 1;
+    margin-left: 0;
+    padding: 20px;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease;
+    background: #000000;
+    min-height: 100vh;
+}
+
+.main-content.sidebar-expanded {
+    margin-left: 260px; /* Apply to ALL screen sizes */
+}
 
 .sidebar-nav {
     display: flex;
@@ -147,22 +149,6 @@ html {
     color: #000000;
     border-radius: 25px;
 }
-
-.main-content {
-    flex: 1;
-    margin-left: 0;
-    padding: 20px;
-    overflow-y: auto;
-    transition: margin-left 0.3s ease;
-    background: #000000;
-    min-height: 100vh;
-}
- 
- @media (min-width: 769px) {
-     .main-content.sidebar-expanded {
-         margin-left: 260px;
-     }
- }
 
 .view-pane {
     display: none;
@@ -1404,6 +1390,5 @@ body::after {
         transform: inherit;
     }
 }
-
 
 

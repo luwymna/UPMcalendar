@@ -681,17 +681,14 @@ function initializeNav() {
 function initializeSidebar() {
     const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('mainContent');
-    const toggleBtns = document.querySelectorAll('.sidebar-toggle'); // Select all toggle buttons
+    const toggleBtns = document.querySelectorAll('.sidebar-toggle');
 
     if (!sidebar || !mainContent) return;
 
-    // Toggle sidebar function
     function toggleSidebar() {
         requestAnimationFrame(() => {
             const isExpanded = sidebar.classList.toggle('expanded');
             mainContent.classList.toggle('sidebar-expanded', isExpanded);
-
-            // Toggle the 'sidebar-expanded' class for all toggle buttons
             toggleBtns.forEach(btn => {
                 btn.classList.toggle('sidebar-expanded', isExpanded);
             });
@@ -706,8 +703,12 @@ function initializeSidebar() {
         });
     });
 
-    // Collapse sidebar when clicking outside (on main content)
-    mainContent.addEventListener('click', () => {
+    // Collapse sidebar ONLY when clicking outside (on mainContent)
+    mainContent.addEventListener('click', (e) => {
+        // Check if the click target is inside the sidebar
+        if (sidebar.contains(e.target)) {
+            return; // Ignore clicks inside the sidebar
+        }
         const isExpanded = sidebar.classList.contains('expanded');
         if (isExpanded) {
             requestAnimationFrame(() => {
@@ -873,4 +874,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 100);// Small delay to ensure the cell is rendered
 });
-
