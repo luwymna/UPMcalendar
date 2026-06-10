@@ -45,19 +45,6 @@ html {
     color: white;
 }
 
-.sidebar-toggle.mobile-toggle {
-    display: none;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    top: 12px;
-    right: 12px;
-    left: auto;
-    background: #1a1a1a;
-    border: none;
-    cursor: pointer;
-}
-
 .sidebar {
       width: 260px;
       background: #1a1a1a;
@@ -70,12 +57,13 @@ html {
       bottom: 0;
       overflow-y: auto;
       z-index: 100;
-      transition: left 0.3s ease;
-      left: -260px;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      will-change: transform;
     }
 
   .sidebar.expanded {
-      left: 0;
+    transform: translateX(0);
   }
 
 .sidebar-nav {
@@ -630,6 +618,20 @@ html {
         font-size: 1.6rem;
         line-height: 1.3;
     }
+    .info-right {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%; /* Ensures it takes full width */
+    }
+    .today-block {
+        text-align: center;
+        min-width: 220px;
+    }
+    .today-date {
+        color: #ffffff;
+        font-size: 1.5rem;
+    }
     .calendar-title {
         margin-left: 100px;
         display: block;
@@ -921,6 +923,7 @@ html {
 
 .info-left h1 {
     margin-top: 40px;
+    margin-left: 10px;
     font-size: 3rem;
     line-height: 1.2;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -939,6 +942,7 @@ html {
     .info-left h1 {
         margin-top: 20px;
         font-size: 2rem;
+        text-align: center;
     }
     .calendar-title {
         display: block;
@@ -954,18 +958,23 @@ html {
 .today-block {
     text-align: center;
     min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px; /* Adds spacing between date and badge */
 }
 
 .today-date, .today-time {
     border-radius: 12px;
     padding: 10px 12px;
-    font-weight: 700;
+    font-weight: 200;
     text-align: center;
 }
 
 .today-date {
     color: #ffffff;
-    font-size: 2.1rem;
+    font-size: 1.5rem;
 }
 
 .today-time {
@@ -1382,15 +1391,6 @@ body::after {
     .date-cell:hover .period-indicator,
     .date-cell:hover .week-number {
         transform: inherit;
-    }
-}
-
-@media (max-width: 768px) {
-    .sidebar-toggle {
-        display: none;
-    }
-    .sidebar-toggle.mobile-toggle {
-        display: flex;
     }
 }
 

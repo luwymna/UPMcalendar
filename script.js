@@ -687,11 +687,14 @@ function initializeSidebar() {
     if (!sidebar || !mainContent) return;
 
     function toggleSidebar() {
+    // Use requestAnimationFrame for smoother transitions
+    requestAnimationFrame(() => {
         sidebar.classList.toggle('expanded');
         mainContent.classList.toggle('sidebar-expanded');
         if (toggleBtn) toggleBtn.classList.toggle('sidebar-expanded');
         if (mobileToggleBtn) mobileToggleBtn.classList.toggle('sidebar-expanded');
-    }
+    });
+}
 
     // Desktop toggle button
     if (toggleBtn) {
