@@ -242,7 +242,7 @@ html {
 
 .add-semester-btn {
     background: rgba(0, 0, 0, 0.15);
-    border: 1px solid #ffffff;
+    border: 2px solid #ffffff;
     color: white;
     padding: 8px 14px;
     border-radius: 20px;
@@ -265,7 +265,7 @@ html {
 
 .semester-card {
     background: rgb(0, 0, 0);
-    border: 1px solid rgb(255, 255, 255);
+    border: 2px solid rgb(255, 255, 255);
     border-radius: 20px;
     margin-bottom: 20px;
     backdrop-filter: blur(5px);
@@ -282,7 +282,7 @@ html {
 }
 
 .semester-card:not(:has(.semester-content.collapsed)) .semester-header {
-    border-bottom: 1px solid rgb(255, 255, 255);
+    border-bottom: 2px solid rgb(255, 255, 255);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
@@ -412,7 +412,7 @@ html {
     text-align: center;
     flex: 1 0 0;
     padding: 20px 16px;
-    border: 1px solid rgb(255, 255, 255);
+    border: 2px solid rgb(255, 255, 255);
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.03);
 }
