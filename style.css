@@ -23,7 +23,6 @@ html {
 .sidebar-toggle {
     position: fixed;
     top: 20px;
-    left: 0;
     width: 50px;
     height: 50px;
     background: #1a1a1a;
@@ -36,15 +35,16 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: left 0.3s ease, transform 0.3s ease;
-    will-change: transform, left;
+    transition: transform 0.3s ease;
+    will-change: transform;
     transform: translate(0);
 }
 
 /* Move toggle button to the right when sidebar is expanded */
 .sidebar-toggle.sidebar-expanded {
-    left: 260px;
+    transform: translateX(260px);
     background: #1a1a1a;
+    color: #ffffff;
 }
 
 /* Sidebar */
@@ -945,6 +945,15 @@ html {
         margin-top: 20px;
         font-size: 2rem;
         text-align: center;
+    }
+    /* Make sidebar toggle white on mobile instead of black */
+    .sidebar-toggle {
+        background: #ffffff;
+        color: #1a1a1a;
+    }
+    .sidebar-toggle.sidebar-expanded {
+        background: #1a1a1a;
+        color: #ffffff;
     }
     .calendar-title {
         display: block;
