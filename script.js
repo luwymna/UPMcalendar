@@ -499,7 +499,7 @@ function calculateCGPA() {
 function updateCGPA() {
     let cgpa = calculateCGPA();
     document.getElementById('cgpaValue').textContent = cgpa.toFixed(2);
-    let status = cgpa >= 4.00 ? 'TNC Award' : cgpa >= 3.75 ? 'Dean\'s List' : (cgpa >= 3.0 ? 'Good Standing' : (cgpa >= 2.0 ? 'Satisfactory' : '⚠️ Need Improvement'));
+    let status = cgpa >= 4.00 ? 'ANC Award' : cgpa >= 3.75 ? 'Dean\'s List' : (cgpa >= 3.0 ? 'Good Standing' : (cgpa >= 2.0 ? 'Satisfactory' : '⚠️ Need Improvement'));
     document.getElementById('cgpaStatus').textContent = status;
 }
 
@@ -681,14 +681,13 @@ function initializeNav() {
 function initializeSidebar() {
     const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('mainContent');
-    const toggleBtns = document.querySelectorAll('.sidebar-toggle');
+    const toggleBtns = document.querySelectorAll('.sidebar-toggle, .mobile-sidebar-toggle');
 
     if (!sidebar || !mainContent) return;
 
     function toggleSidebar() {
         requestAnimationFrame(() => {
             const isExpanded = sidebar.classList.toggle('expanded');
-            // Only toggle button class when clicking the button
             toggleBtns.forEach(btn => {
                 btn.classList.toggle('sidebar-expanded', isExpanded);
             });
