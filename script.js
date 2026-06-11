@@ -688,7 +688,7 @@ function initializeSidebar() {
     function toggleSidebar() {
         requestAnimationFrame(() => {
             const isExpanded = sidebar.classList.toggle('expanded');
-            mainContent.classList.toggle('sidebar-expanded', isExpanded);
+            // Only toggle button class when clicking the button
             toggleBtns.forEach(btn => {
                 btn.classList.toggle('sidebar-expanded', isExpanded);
             });
@@ -703,17 +703,15 @@ function initializeSidebar() {
         });
     });
 
-    // Collapse sidebar ONLY when clicking outside (on mainContent)
+    // Collapse sidebar when clicking OUTSIDE (not on sidebar or button)
     mainContent.addEventListener('click', (e) => {
-        // Check if the click target is inside the sidebar
-        if (sidebar.contains(e.target)) {
-            return; // Ignore clicks inside the sidebar
+        if (sidebar.contains(e.target) || Array.from(toggleBtns).some(btn => btn.contains(e.target))) {
+            return; // Ignore clicks inside sidebar or on buttons
         }
         const isExpanded = sidebar.classList.contains('expanded');
         if (isExpanded) {
             requestAnimationFrame(() => {
                 sidebar.classList.remove('expanded');
-                mainContent.classList.remove('sidebar-expanded');
                 toggleBtns.forEach(btn => {
                     btn.classList.remove('sidebar-expanded');
                 });

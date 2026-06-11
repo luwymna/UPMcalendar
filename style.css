@@ -19,10 +19,9 @@ html {
     overflow-x: hidden;
 }
 
-/* Unified toggle button styling */
+/* Toggle Button */
 .sidebar-toggle {
     position: fixed;
-    left: 0;
     top: 20px;
     width: 50px;
     height: 50px;
@@ -38,14 +37,16 @@ html {
     justify-content: center;
     transition: transform 0.3s ease;
     will-change: transform;
+    transform: translate(0);
 }
 
 /* Move toggle button to the right when sidebar is expanded */
 .sidebar-toggle.sidebar-expanded {
     transform: translateX(260px);
+    background: #1a1a1a;
 }
 
-/* Ensure sidebar is above main content but below toggle button */
+/* Sidebar */
 .sidebar {
     width: 260px;
     background: #1a1a1a;
@@ -67,19 +68,19 @@ html {
     transform: translateX(0);
 }
 
-/* Push main content to the right on ALL devices when sidebar is expanded */
+/* Main Content - No margin shift on mobile */
 .main-content {
     flex: 1;
-    margin-left: 0;
+    margin-left: 0; /* No margin shift */
     padding: 20px;
     overflow-y: auto;
-    transition: margin-left 0.3s ease;
     background: #000000;
     min-height: 100vh;
 }
 
+/* Remove margin-left transition for all screen sizes */
 .main-content.sidebar-expanded {
-    margin-left: 260px; /* Apply to ALL screen sizes */
+    margin-left: 0; /* Override desktop rule */
 }
 
 .sidebar-nav {
