@@ -117,7 +117,7 @@ const publicHolidays = [
     { date: '2026-05-31', label: 'Wesak Day' },
     { date: '2026-06-01', label: 'Wesak Holiday & YDP Agong\'s Birthday' },
     { date: '2026-06-02', label: 'Gawai Day' },
-    { date: '2026-06-16', label: 'Awal Muharam' },
+    { date: '2026-06-17', label: 'Awal Muharam' },
     { date: '2026-07-22', label: 'Hari Sarawak' },
     { date: '2026-08-31', label: 'Merdeka Day' },
     { date: '2026-09-16', label: 'Malaysia Day' }
