@@ -147,14 +147,8 @@
 
 
 
-    <script>
-      const CACHE_BUST = '20260616';
-      ['script.js', 'pwa.js'].forEach(f => {
-        const s = document.createElement('script');
-        s.src = f + '?v=' + CACHE_BUST;
-        document.head.appendChild(s);
-      });
-    </script>
+    <script src="script.js"></script>
+    <script src="pwa.js"></script>
     <!-- Floating Mobile Toggle Button -->
     <button class="mobile-sidebar-toggle" id="mobileToggleSidebarBtn">▶</button>
 </body>
