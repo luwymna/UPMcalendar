@@ -1430,4 +1430,43 @@ body::after {
         transform: inherit;
     }
 }
+/* Progress Bar Styles */
+.progress-container {
+    width: 100%;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: #4a90e2; /* Blue color for progress */
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    min-width: 50px;
+    text-align: right;
+}
+
+.progress-bar::after {
+    width: var(--progress-width, 0%);
+}

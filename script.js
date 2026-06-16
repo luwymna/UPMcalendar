@@ -134,6 +134,81 @@ const midSemesterBreaks = {
     }, 
 };
 
+function getSemesterProgress() {
+    const today = new Date();
+    const semesterStart = getSemesterStartDate(today);
+    if (!semesterStart) return { percentage: 0 };
+
+    // Determine the end date of the current semester
+    let semesterEnd;
+    const semLabel = getSemesterLabel(today.getFullYear(), today.getMonth());
+
+    if (currentLevel === 'bachelor') {
+        if (semLabel === 'SEM 1') {
+            semesterEnd = parseDate('2026-02-15'); // Last day of final exams for Semester 1
+        } else if (semLabel === 'SEM 2') {
+            semesterEnd = parseDate('2026-07-26'); // Last day of final exams for Semester 2
+        }
+    } else if (currentLevel === 'foundation') {
+        if (semLabel === 'SEM 1') {
+            semesterEnd = parseDate('2025-12-14'); // Last day of final exams for Foundation Semester 1
+        } else if (semLabel === 'SEM 2') {
+            semesterEnd = parseDate('2026-06-14'); // Last day of final exams for Foundation Semester 2
+        }
+    }
+
+    if (!semesterEnd) return { percentage: 0 };
+
+    const msPerDay = 24 * 60 * 60 * 1000;
+
+    // Calculate total days in the semester (including breaks)
+    const totalDaysInSemester = Math.floor((semesterEnd - semesterStart) / msPerDay);
+
+    // Calculate break days for the current semester
+    let breakDays = 0;
+    const breaks = midSemesterBreaks[currentLevel] || {};
+    if (semLabel === 'SEM 1' && breaks.sem1) {
+        breakDays = Math.floor((breaks.sem1.end - breaks.sem1.start) / msPerDay) + 1; // +1 to include both start and end dates
+    } else if (semLabel === 'SEM 2' && breaks.sem2) {
+        breakDays = Math.floor((breaks.sem2.end - breaks.sem2.start) / msPerDay) + 1;
+    }
+
+    // Calculate actual lecture days (total days - break days)
+    const actualLectureDays = totalDaysInSemester - breakDays;
+
+    // Calculate days passed (excluding break days)
+    let daysPassed = Math.floor((today - semesterStart) / msPerDay);
+
+    // Subtract break days if today is after the break
+    if (semLabel === 'SEM 1' && breaks.sem1 && today > breaks.sem1.end) {
+        daysPassed -= Math.floor((breaks.sem1.end - breaks.sem1.start) / msPerDay) + 1;
+    } else if (semLabel === 'SEM 2' && breaks.sem2 && today > breaks.sem2.end) {
+        daysPassed -= Math.floor((breaks.sem2.end - breaks.sem2.start) / msPerDay) + 1;
+    }
+
+    // Ensure daysPassed is not negative or exceeds actualLectureDays
+    const clampedDaysPassed = Math.max(0, Math.min(daysPassed, actualLectureDays));
+    const percentage = actualLectureDays > 0 ? Math.round((clampedDaysPassed / actualLectureDays) * 100) : 0;
+
+    return { percentage, daysPassed: clampedDaysPassed, totalDaysInSemester: actualLectureDays };
+}
+
+// Function to update progress bar
+function updateProgressBar() {
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+
+    if (!progressBar || !progressText) return;
+
+    const { percentage, daysPassed, totalDaysInSemester } = getSemesterProgress();
+
+    // Update progress bar width
+    progressBar.style.setProperty('--progress-width', `${percentage}%`);
+
+    // Update progress text
+    progressText.textContent = `${percentage}% (${daysPassed}/${totalDaysInSemester} days)`;
+}
+
 function getHolidayForDate(date) { return publicHolidays.find(h => h.dateObj.toDateString() === date.toDateString()); }
 function getSemesterLabel(y, m) {
     const d = new Date(y, m, 1);
@@ -141,16 +216,16 @@ function getSemesterLabel(y, m) {
 
     // Default Bachelor dates
     let sem1Start = parseDate('2025-10-13');
-    let sem1End = parseDate('2026-03-22');
+    let sem1End = parseDate('2026-02-15'); // Last day of final exams for Semester 1
     let sem2Start = parseDate('2026-03-23');
-    let sem2End = parseDate('2026-10-04');
+    let sem2End = parseDate('2026-07-26'); // Last day of final exams for Semester 2
 
     // Adjust for Foundation
     if (currentLevel === 'foundation') {
         sem1Start = parseDate('2025-07-14');
-        sem1End = parseDate('2026-01-11');
+        sem1End = parseDate('2025-12-14'); // Last day of final exams for Foundation Semester 1
         sem2Start = parseDate('2026-01-12');
-        sem2End = parseDate('2026-06-14');
+        sem2End = parseDate('2026-06-14'); // Last day of final exams for Foundation Semester 2
     }
 
     return (d >= sem1Start && d <= sem1End) ? 'SEM 1' :
@@ -160,18 +235,15 @@ function getSemesterLabel(y, m) {
 function getSemesterStartDate(date) {
     if (currentLevel === 'bachelor') {
         if (date >= parseDate('2025-10-13') && date < parseDate('2026-03-23')) {
-            return parseDate('2025-10-13');
+            return parseDate('2025-10-13'); // Semester 1 start
+        } else if (date >= parseDate('2026-03-23')) {
+            return parseDate('2026-03-23'); // Semester 2 start
         }
-        if (date >= parseDate('2026-03-23')) {
-            return parseDate('2026-03-23');
-        }
-    }
-    else if (currentLevel === 'foundation') {
+    } else if (currentLevel === 'foundation') {
         if (date >= parseDate('2025-07-14') && date < parseDate('2026-01-12')) {
-            return parseDate('2025-07-14');
-        }
-        if (date >= parseDate('2026-01-12')) {
-            return parseDate('2026-01-12');
+            return parseDate('2025-07-14'); // Semester 1 start
+        } else if (date >= parseDate('2026-01-12')) {
+            return parseDate('2026-01-12'); // Semester 2 start
         }
     }
     return null;
@@ -448,13 +520,66 @@ function renderCalendarSummary() {
     const summary = document.getElementById('calendarSummary');
     const today = new Date();
     if (!summary) return;
+
     const currentPeriod = getEventForDate(today);
     const nextEvent = academicPeriods.find(
         event => event.startDate > today && event.level === currentLevel
     );
-    summary.innerHTML =
-        (currentPeriod ? `Current academic period: <strong>${currentPeriod.label}</strong>. ` : 'No active academic period today. ') +
-        (nextEvent ? `Next: <strong>${nextEvent.label}</strong> period starts on ${nextEvent.startDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}.` : 'No upcoming academic periods in this academic year.');
+
+    // Get the final exam period for the current semester
+    const semLabel = getSemesterLabel(today.getFullYear(), today.getMonth());
+    let finalExamStart, finalExamEnd;
+
+    if (currentLevel === 'bachelor') {
+        if (semLabel === 'SEM 1') {
+            finalExamStart = parseDate('2026-02-02');
+            finalExamEnd = parseDate('2026-02-15');
+        } else if (semLabel === 'SEM 2') {
+            finalExamStart = parseDate('2026-07-13');
+            finalExamEnd = parseDate('2026-07-26');
+        }
+    } else if (currentLevel === 'foundation') {
+        if (semLabel === 'SEM 1') {
+            finalExamStart = parseDate('2025-12-01');
+            finalExamEnd = parseDate('2025-12-14');
+        } else if (semLabel === 'SEM 2') {
+            finalExamStart = parseDate('2026-06-01');
+            finalExamEnd = parseDate('2026-06-14');
+        }
+    }
+
+    // Calculate days left until final exam
+    let daysLeftUntilFinal = null;
+    if (finalExamStart && finalExamEnd) {
+        if (today <= finalExamEnd) {
+            const msPerDay = 24 * 60 * 60 * 1000;
+            daysLeftUntilFinal = Math.floor((finalExamStart - today) / msPerDay);
+            if (today >= finalExamStart) {
+                daysLeftUntilFinal = 0; // Final exam has started
+            }
+        }
+    }
+
+    // Build the summary HTML
+    let summaryHTML = '';
+    if (currentPeriod) {
+        summaryHTML += `Current academic period: <strong>${currentPeriod.label}</strong>. `;
+    } else {
+        summaryHTML += 'No active academic period today. ';
+    }
+
+    if (nextEvent) {
+        summaryHTML += `Next: <strong>${nextEvent.label}</strong> period starts on ${nextEvent.startDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}.`;
+    } else {
+        summaryHTML += 'No upcoming academic periods in this academic year.';
+    }
+
+    // Add days left until final exam (if applicable)
+    if (daysLeftUntilFinal !== null && daysLeftUntilFinal >= 0 && today < finalExamStart) {
+        summaryHTML += `<br><span style="color: #ff4757; font-weight: 600;">Final exam starts in ${daysLeftUntilFinal} day${daysLeftUntilFinal !== 1 ? 's' : ''}.</span>`;
+    }
+
+    summary.innerHTML = summaryHTML;
 }
 
 // ========== GPA SYSTEM - DYNAMIC SEMESTERS ==========
@@ -726,6 +851,7 @@ document.addEventListener('DOMContentLoaded', () => {
      renderLegend();
      renderCalendarSummary();
      renderPeriodBadge();
+     updateProgressBar();
      
      // Auto-scroll to today after 1 second
      setTimeout(() => {
@@ -736,7 +862,7 @@ document.addEventListener('DOMContentLoaded', () => {
          }
      }, 1000);
      
-     loadFromStorage();
+    loadFromStorage();
     renderAllSemesters();
     updateCGPA();
     semesters.forEach((s, idx) => {
@@ -770,6 +896,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderCalendar();
                 renderPeriodBadge();
                 renderCalendarSummary();
+                updateProgressBar();
             });
         });
         
@@ -792,6 +919,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const timeEl = document.getElementById('clockTime');
         if (dateEl) dateEl.textContent = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
         if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        updateProgressBar(); // Update progress bar every second
     }
     updateClock();
     setInterval(updateClock, 1000);
