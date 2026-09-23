@@ -156,7 +156,7 @@ const midSemesterBreaks = {
 function getSemesterProgress() {
     const today = new Date();
     const semesterStart = getSemesterStartDate(today);
-    if (!semesterStart) return { percentage: 0 };
+    if (!semesterStart) return { percentage: 0, daysPassed: 0, totalDaysInSemester: 0 };
 
     //Determine the end date of the current semester
     let semesterEnd;
@@ -167,6 +167,7 @@ function getSemesterProgress() {
             semesterEnd = parseDate('2027-02-07'); //last day of final exams for Semester 1
         } else if (semLabel === 'SEM 2') {
             semesterEnd = parseDate('2027-07-18'); // last day of final exams for Semester 2
+        }
     } else if (currentLevel === 'foundation') {
         if (semLabel === 'SEM 1') {
             semesterEnd = parseDate('2026-11-22'); // last day of final exams for Foundation Semester 1
@@ -175,7 +176,7 @@ function getSemesterProgress() {
         }
     }
 
-    if (!semesterEnd) return { percentage: 0 };
+    if (!semesterEnd) return { percentage: 0, daysPassed: 0, totalDaysInSemester: 0 };
 
     const msPerDay = 24 * 60 * 60 * 1000;
 
@@ -209,7 +210,6 @@ function getSemesterProgress() {
     const percentage = actualLectureDays > 0 ? Math.round((clampedDaysPassed / actualLectureDays) * 100) : 0;
 
     return { percentage, daysPassed: clampedDaysPassed, totalDaysInSemester: actualLectureDays };
-}
 }
 
 //function to update progress bar
