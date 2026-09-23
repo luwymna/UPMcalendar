@@ -1,4 +1,5 @@
 ![Made with HTML](https://img.shields.io/badge/HTML-5-E34F26?logo=html5&logoColor=white)
+
 ![Made with CSS](https://img.shields.io/badge/CSS-3-1572B6?logo=css3&logoColor=white)
 ![Made with JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
 ![PWA](https://img.shields.io/badge/PWA-enabled-5A0FC8?logo=pwa&logoColor=white)
