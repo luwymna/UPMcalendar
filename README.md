@@ -11,14 +11,6 @@ A Progressive Web App (PWA) that displays the **UPM Academic Calendar for 2026/2
 
 Live site: [https://putracalendar.vercel.app](https://putracalendar.vercel.app)
 
-`![Calendar View](screenshots/calendar.png)`
-
-`![GPAView](screenshots/gpa.png)`
-
-`![Calendar Mobile View](screenshots/mobile_calendar.png)`
-
-`![GPA Mobile View](screenshots/mobile_gpa.png)`
-
 ## Table of Contents
 
 - [Features](#features)
@@ -107,7 +99,6 @@ No npm, no bundler, no framework, just open `index.html`.
 ---
 
 
-
 ## Screenshots
 
 ### Calendar View
@@ -118,13 +109,17 @@ No npm, no bundler, no framework, just open `index.html`.
 
 ![GPA Calculator](screenshots/gpa.png)
 
-### Calendar Mobile View
+### Mobile Calendar View
+
+![Mobile Calendar View](screenshots/mobile_calendar.png)
+
+### Mobile GPA View
+
+![Mobile GPA View](screenshots/mobile_gpa.png)
 
 <p align="center">
   <img src="screenshots/mobile_calendar.png" alt="Mobile view" width="300">
 </p>
-
-### Calendar GPA View
 
 <p align="center">
   <img src="screenshots/mobile_gpa.png" alt="Mobile view" width="300">
