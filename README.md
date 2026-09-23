@@ -11,24 +11,33 @@ A Progressive Web App (PWA) that displays the **UPM Academic Calendar for 2026/2
 
 Live site: [https://putracalendar.vercel.app](https://putracalendar.vercel.app)
 
+`![Calendar View](screenshots/calendar.png)`
+
+`![GPAView](screenshots/gpa.png)`
+
+`![Calendar Mobile View](screenshots/mobile_calendar.png)`
+
+`![GPA Mobile View](screenshots/mobile_gpa.png)`
+
 ## Table of Contents
 
-- [Features](#-features)
-- [Tech Stack](#️-tech-stack)
-- [Project Structure](#-project-structure)
-- [Running Locally](#-running-locally)
-- [Updating the Calendar](#️-updating-the-calendar-yearly)
-- [Cache Busting](#️-important-cache-busting)
-- [Installing as an App](#-installing-as-an-app)
-- [GPA Grade Reference](#-gpa-grade-reference)
-- [Known Limitations](#-known-limitations)
-- [Roadmap](#-roadmap)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Screenshots](#screenshots)
+- [Project Structure](#project-structure)
+- [Running Locally](#running-locally)
+- [Updating the Calendar](#updating-the-calendar-yearly)
+- [Cache Busting](#important-cache-busting)
+- [Installing as an App](#installing-as-an-app)
+- [GPA Grade Reference](#gpa-grade-reference)
+- [Known Limitations](#known-limitations)
+- [Roadmap](#roadmap)
 - [Browser Support](#-browser-support)
-- [FAQ](#-faq)
-- [Privacy](#-privacy)
-- [Credits](#-credits)
-- [License](#-license)
-- [Contributing](#-contributing)
+- [FAQ](#faq)
+- [Privacy](#privacy)
+- [Credits](#credits)
+- [License](#license)
+- [Contributing](#contributing)
 
 ---
 
@@ -94,6 +103,32 @@ Live site: [https://putracalendar.vercel.app](https://putracalendar.vercel.app)
 | Hosting | Vercel                                         |
 
 No npm, no bundler, no framework, just open `index.html`.
+
+---
+
+
+
+## Screenshots
+
+### Calendar View
+
+![Calendar View](screenshots/calendar.png)
+
+### GPA Calculator
+
+![GPA Calculator](screenshots/gpa.png)
+
+### Calendar Mobile View
+
+<p align="center">
+  <img src="screenshots/mobile_calendar.png" alt="Mobile view" width="300">
+</p>
+
+### Calendar GPA View
+
+<p align="center">
+  <img src="screenshots/mobile_gpa.png" alt="Mobile view" width="300">
+</p>
 
 ---
 
