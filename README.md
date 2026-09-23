@@ -1,8 +1,33 @@
+![Made with HTML](https://img.shields.io/badge/HTML-5-E34F26?logo=html5&logoColor=white)
+![Made with CSS](https://img.shields.io/badge/CSS-3-1572B6?logo=css3&logoColor=white)
+![Made with JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
+![PWA](https://img.shields.io/badge/PWA-enabled-5A0FC8?logo=pwa&logoColor=white)
+![Deployed on Vercel](<https://img.shields.io/badge/Deployed%20on-Vercel-000000?logo=vercel&logoColor=white>)
+
 # UPM Academic Calendar & GPA Calculator
 
 A Progressive Web App (PWA) that displays the **UPM Academic Calendar for 2026/2027** alongside a **GPA / CGPA Calculator**. Built with vanilla HTML, CSS, and JavaScript, no frameworks, no build step.
 
 Live site: [https://putracalendar.vercel.app](https://putracalendar.vercel.app)
+
+## Table of Contents
+
+- [Features](#-features)
+- [Tech Stack](#️-tech-stack)
+- [Project Structure](#-project-structure)
+- [Running Locally](#-running-locally)
+- [Updating the Calendar](#️-updating-the-calendar-yearly)
+- [Cache Busting](#️-important-cache-busting)
+- [Installing as an App](#-installing-as-an-app)
+- [GPA Grade Reference](#-gpa-grade-reference)
+- [Known Limitations](#-known-limitations)
+- [Roadmap](#-roadmap)
+- [Browser Support](#-browser-support)
+- [FAQ](#-faq)
+- [Privacy](#-privacy)
+- [Credits](#-credits)
+- [License](#-license)
+- [Contributing](#-contributing)
 
 ---
 
@@ -91,7 +116,6 @@ websiteUPM/
 > **Note:** `music.mp3` is not tracked in the repo. Add your own audio file with that exact filename to enable the music player locally.
 
 ---
-
 
 ## Updating the Calendar (Yearly)
 
@@ -185,4 +209,58 @@ Found a bug or wrong date? Open an issue or submit a pull request:
 
 ---
 
-## **If this helped you, consider giving the repo a star!**
+## Known Limitations
+
+- Calendar data is manually entered, always verify against the official UPM calendar
+- Public holiday dates for 2027 may shift once officially announced
+- Service worker caches aggressively, see Cache Busting section
+
+---
+
+## Roadmap
+
+- [ ] Dark / light theme toggle
+- [ ] Countdown widget on home screen
+- [ ] Push notifications for exam weeks
+
+---
+
+## FAQ
+
+**Q: Why is my calendar showing old data?**
+A: Clear your browser cache or hard-refresh (Ctrl+F5). The service worker caches aggressively.
+
+**Q: Is my GPA data saved online?**
+A: No, it's stored locally in your browser via `localStorage`. Clearing browser data will erase it.
+
+**Q: Can I use this for other universities?**
+A: The calendar data is UPM-specific, but you can edit `academicPeriods` in `script.js` for any institution.
+
+---
+
+## 🌐 Browser Support
+
+| Browser           | Supported |
+| ----------------- | --------- |
+| Chrome / Edge     | ✅        |
+| Firefox           | ✅        |
+| Safari (iOS 14+)  | ✅        |
+| Samsung Internet  | ✅        |
+| Internet Explorer | ❌        |
+
+---
+
+## Privacy
+
+This app does **not** collect any data. All GPA information stays on your device
+(via `localStorage`). No analytics, no tracking, no server.
+
+---
+
+## Acknowledgements
+
+- Fonts by [Google Fonts](https://fonts.google.com)
+- Icons inspired by Material Design
+- Semester structure based on UPM's official academic calendar
+
+## **If this helped you, consider giving the repo a star! THANK YOU**
