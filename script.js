@@ -508,7 +508,7 @@ function renderLegend() {
     if (!legend) return;
     legend.innerHTML = `
         <div class="legend-chip lecture">Lecture / Semester</div>
-        <div class="legend-chip lecture">Final lecture</div>
+        <div class="legend-chip exam">Final Exam</div>
         <div class="legend-chip revision">Revision Week</div>
         <div class="legend-chip break">Break / Holiday Period</div>
         <div class="legend-chip holiday">Public Holiday</div>

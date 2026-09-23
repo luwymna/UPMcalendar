@@ -1074,11 +1074,11 @@ html {
     display: inline-block;
 }
 
-.legend-chip.lecture::before { background: #9fd7ff; }
-.legend-chip.exam::before { background: #ff9b9b; }
-.legend-chip.revision::before { background: #ffc569; }
-.legend-chip.break::before { background: #ffec98; }
-.legend-chip.holiday::before { background: #a9e6a9; }
+.legend-chip.lecture::before { background: #4a90e2; }
+.legend-chip.exam::before { background: #e24a4a; }
+.legend-chip.revision::before { background: #e2904a; }
+.legend-chip.break::before { background: #c9e24a; }
+.legend-chip.holiday::before { background: #4ae28a; } 
 
 .calendar-summary {
     margin-bottom: 20px;
