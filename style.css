@@ -1,1472 +1,1405 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* RESET & VARIABLES */
+:root {
+  --bg: #000000;
+  --bg-elevated: #1a1a1a;
+  --fg: #ffffff;
+  --fg-muted: rgba(255, 255, 255, 0.7);
+  --fg-subtle: rgba(255, 255, 255, 0.95);
+  --border-strong: #ffffff;
+  --border-subtle: rgba(255, 255, 255, 0.2);
+  --border-subtle-er: rgba(255, 255, 255, 0.1);
+
+  --accent-blue: #4a90e2;
+  --accent-red: #e24a4a;
+  --accent-orange: #e2904a;
+  --accent-green: #4ae28a;
+  --accent-yellow: #c9e24a;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-full: 999px;
+  --radius-btn: 25px;
+
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
+
+  --sidebar-w: 260px;
+  --sidebar-z: 100;
+  --toggle-z: 102;
+  --modal-z: 2000;
+  --dayinfo-z: 9999;
 }
 
-body {
-    font-family: 'Poppins', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: #000000;
-    color: #ffffff;
-    -webkit-font-smoothing: antialiased;
-    display: flex;
-    min-height: 100vh;
-    font-size: 0.8rem;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html {
-    max-width: 100vw;
-    overflow-x: hidden;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
-/* Toggle Button */
+body {
+  font-family: 'Poppins', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  min-height: 100vh;
+  font-size: 0.8rem;
+}
+
+/* EDGE GRADIENTS */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 50px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+body::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+}
+
+body::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+}
+
+/* LAYOUT (Sidebar, Toggle, Main) */
 .sidebar-toggle {
-    position: fixed;
-    top: 20px;
-    width: 50px;
-    height: 50px;
-    background: #1a1a1a;
-    color: white;
-    border-radius: 0 10px 10px 0;
-    border: none;
-    cursor: pointer;
-    font-size: 1.5rem;
-    z-index: 102;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
-    will-change: transform;
-    transform: translate(0);
+  position: fixed;
+  top: 20px;
+  width: 50px;
+  height: 50px;
+  background: var(--bg-elevated);
+  color: var(--fg);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  z-index: var(--toggle-z);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-slow);
+  will-change: transform;
+  transform: translate(0);
 }
 
-/* Move toggle button to the right when sidebar is expanded */
 .sidebar-toggle.sidebar-expanded {
-    transform: translateX(260px);
-    background: #1a1a1a;
-    color: #ffffff;
+  transform: translateX(var(--sidebar-w));
+  background: var(--bg-elevated);
+  color: var(--fg);
 }
 
-/* Sidebar */
 .sidebar {
-    width: 260px;
-    background: #1a1a1a;
-    display: flex;
-    flex-direction: column;
-    padding: 60px 16px 20px 16px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    overflow-y: auto;
-    z-index: 100;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    will-change: transform;
+  width: var(--sidebar-w);
+  background: var(--bg-elevated);
+  display: flex;
+  flex-direction: column;
+  padding: 60px 16px 20px 16px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: var(--sidebar-z);
+  transform: translateX(-100%);
+  transition: transform var(--transition-slow);
+  will-change: transform;
 }
 
 .sidebar.expanded {
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
-/* Main Content - No margin shift on mobile */
 .main-content {
-    flex: 1;
-    margin-left: 0; /* No margin shift */
-    padding: 20px;
-    overflow-y: auto;
-    background: #000000;
-    min-height: 100vh;
+  flex: 1;
+  margin-left: 0;
+  padding: 20px;
+  overflow-y: auto;
+  background: var(--bg);
+  min-height: 100vh;
 }
 
-/* Remove margin-left transition for all screen sizes */
 .main-content.sidebar-expanded {
-    margin-left: 0; /* Override desktop rule */
+  margin-left: 0;
 }
 
+.container {
+  max-width: 1400px;
+  margin: auto;
+}
+
+/* NAVIGATION */
 .sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.music-player {
-    margin-top: auto;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-}
-
-.music-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 4px 0 0 0;
-}
-
-.music-btn {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
-}
-
-.music-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .nav-btn {
-    background: transparent;
-    color: #ffffff;
-    padding: 12px 16px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 400;
-    transition: all 200ms ease;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid transparent;
-    border-radius: 25px;
+  background: transparent;
+  color: var(--fg);
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 400;
+  transition: all var(--transition-fast);
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
 }
 
-.nav-btn:hover {
-    background: #ffffff;
-    color: #000000;
-    border-radius: 25px;
-}
-
+.nav-btn:hover,
 .nav-btn.active {
-    background: #ffffff;
-    color: #000000;
-    border-radius: 25px;
+  background: var(--fg);
+  color: var(--bg);
+  border-radius: var(--radius-btn);
 }
 
+/* VIEW PANE */
 .view-pane {
-    display: none;
-    background: transparent; /* Ensure no white background */
+  display: none;
+  background: transparent;
 }
 
 .view-pane.active {
-    display: block;
-    background: transparent; /* Ensure no white background */
-}
-.container {
-    max-width: 1400px;
-    margin: auto;
+  display: block;
+  background: transparent;
 }
 
-/* GPA STYLES */
-.gpa-container {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    overflow-x: hidden;
+/* MUSIC PLAYER */
+.music-player {
+  margin-top: auto;
+  padding: 14px 14px 20px 14px;
+}
+
+.music-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 0 0 0;
+}
+
+.music-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--fg);
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  transition: all var(--transition-slow);
+}
+
+.music-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.music-title {
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--fg-subtle);
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.time-label {
+  font-size: 0.65rem;
+  color: var(--fg-muted);
+  min-width: 28px;
+  text-align: center;
+}
+
+.music-progress {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  outline: none;
+}
+
+.music-progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--fg);
+  cursor: pointer;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.music-progress::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--fg);
+  cursor: pointer;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.study-level-filter {
+  margin-top: 16px;
+  align-self: flex-start;
+}
+
+/* GPA COMPONENTS */
+#gpa-view .gpa-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  overflow-x: hidden;
 }
 
 @media (min-width: 768px) {
-    .gpa-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
+  #gpa-view .gpa-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 }
 
 .gpa-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 
 .gpa-header-row h1 {
-    color: #ffffff;
-    margin-top: 0;
-    font-size: 1.4rem;
-    margin-bottom: 0;
-}
-
-.gpa-header-row .add-semester-btn {
-    margin-bottom: 0;
-    flex-shrink: 0;
-}
-
-#gpa-view {
-    position: relative;
-}
-
-#gpa-view .gpa-header-row {
-    position: relative;
-}
-
-#gpa-view .gpa-container > .grade-system,
-#gpa-view #semestersContainer,
-#gpa-view #cgpaSection {
-    padding-top: 0;
-}
-
-@media (min-width: 768px) {
-    #gpa-view .gpa-header-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 16px;
-        margin-bottom: 16px;
-        flex-wrap: wrap;
-    }
-}
-
-@media (max-width: 768px) {
-    .grade-system table {
-        font-size: 0.7rem;
-        min-width: 500px; /* Ensure scrollability on smaller screens */
-    }
-
-    .grade-system th,
-    .grade-system td {
-        padding: 6px 8px;
-    }
+  color: var(--fg);
+  margin-top: 0;
+  font-size: 1.4rem;
+  margin-bottom: 0;
 }
 
 .add-semester-btn {
-    background: rgba(0, 0, 0, 0.15);
-    border: 2px solid #ffffff;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-bottom: 16px;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.15);
+  border: 2px solid var(--border-strong);
+  color: var(--fg);
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 16px;
+  transition: all var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
 }
 
 .add-semester-btn:hover {
-    background: rgb(255, 255, 255);
-    color: #000000;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3);
+  background: rgb(255, 255, 255);
+  color: var(--bg);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3);
+}
+
+#gpa-view {
+  position: relative;
+}
+
+#gpa-view .gpa-header-row {
+  position: relative;
+}
+
+#gpa-view .gpa-container > .grade-system,
+#gpa-view .gpa-container > #semestersContainer,
+#gpa-view .gpa-container > #cgpaSection {
+  padding-top: 0;
 }
 
 .semester-card {
-    background: rgb(0, 0, 0);
-    border: 2px solid rgb(255, 255, 255);
-    border-radius: 20px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(5px);
+  background: var(--bg);
+  border: 2px solid var(--border-strong);
+  border-radius: 20px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(5px);
 }
 
 .semester-header {
-    background: #000000;
-    padding: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    border-radius: 20px;
+  background: var(--bg);
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 20px;
 }
 
 .semester-card:not(:has(.semester-content.collapsed)) .semester-header {
-    border-bottom: 2px solid rgb(255, 255, 255);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+  border-bottom: 2px solid var(--border-strong);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .semester-title {
-    font-size: 1rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .semester-gpa {
-    position: relative;
-    overflow: hidden;
-    background: #000000;
-    padding: 4px 10px;
-    border-radius: 16px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    display: inline-block;
-    border: 1px solid rgb(255, 255, 255);
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-block;
+  border: 1px solid var(--border-strong);
 }
+
 .semester-gpa:hover {
-    background: #ffffff;
-    color: #000000;
-    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3);
+  background: var(--fg);
+  color: var(--bg);
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3);
 }
 
 .delete-semester {
-    background: rgba(255,71,87,0.8);
-    border: none;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.7rem;
-    transition: all 0.2s;
+  background: rgba(255, 71, 87, 0.8);
+  border: none;
+  color: var(--fg);
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  transition: all var(--transition-normal);
 }
 
 .delete-semester:hover {
-    background: #ff4757;
+  background: var(--accent-red);
 }
 
 .semester-content {
-    padding: 14px;
-    display: block;
+  padding: 14px;
+  display: block;
 }
 
 .semester-content.collapsed {
-    display: none;
+  display: none;
 }
 
 .gpa-form {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.gpa-form input, .gpa-form select {
-    padding: 8px 10px;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 6px;
-    background: rgba(255,255,255,0.05);
-    color: #ffffff;
-    font-size: 0.85rem;
-    flex: 1;
-    min-width: 120px;
+.gpa-form input,
+.gpa-form select {
+  padding: 8px 10px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--fg);
+  font-size: 0.85rem;
+  flex: 1;
+  min-width: 120px;
 }
 
 .gpa-form input::placeholder {
-    color: rgba(255,255,255,0.6);
+  color: var(--fg-muted);
 }
 
 .gpa-form select option {
-    background: #1a1a1a;
-    color: white;
+  background: var(--bg-elevated);
+  color: var(--fg);
 }
 
 .gpa-table {
-    width: 100%;
-    background: #000000;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-    margin-top: 12px;
+  width: 100%;
+  background: var(--bg);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  margin-top: 12px;
 }
 
 .gpa-table table {
-    width: 100%;
-    border-collapse: collapse;
-    color: #ffffff;
-    table-layout: fixed;
-    min-width: auto;
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--fg);
+  table-layout: fixed;
 }
 
 .gpa-table thead {
-    background: #000000;
+  background: var(--bg);
 }
 
-.gpa-table th, .gpa-table td {
-    padding: 12px 3px 4px 3px;
-    font-size: clamp(0.6rem, 2vw, 0.85rem);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-    text-align: center;
+.gpa-table th,
+.gpa-table td {
+  padding: 12px 3px 4px 3px;
+  font-size: clamp(0.6rem, 2vw, 0.85rem);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  text-align: center;
 }
 
 .gpa-table th {
-    font-weight: 700;
-    white-space: nowrap;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .cgpa-section {
-    background: #000000;
-    padding: 20px;
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
+  background: var(--bg);
+  padding: 20px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .cgpa-item {
-    text-align: center;
-    flex: 1 0 0;
-    padding: 20px 16px;
-    border: 2px solid rgb(255, 255, 255);
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.03);
+  text-align: center;
+  flex: 1 0 0;
+  padding: 20px 16px;
+  border: 2px solid var(--border-strong);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .cgpa-item h3 {
-    font-size: 0.75rem;
-    margin-bottom: 5px;
+  font-size: 0.75rem;
+  margin-bottom: 5px;
 }
 
 .cgpa-value {
-    font-size: 2rem;
-    font-weight: 800;
+  font-size: 2rem;
+  font-weight: 800;
 }
 
-/* Calendar Actions */
-.calendar-actions {
-    margin-bottom: 16px;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+.gpa-container h1 {
+  font-size: 1.2rem;
 }
 
-.semester-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.delete-semester {
-    background: rgba(255,71,87,0.8);
-    border: none;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: all 0.2s;
-}
-
-.delete-semester:hover {
-    background: #ff4757;
-}
-
-.btn-primary {
-    background: #000000;
-    border: none;
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: all 200ms ease;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-}
-
-.btn-danger {
-    background: #ff4757;
-    border: none;
-    background: #ff4757;
-    padding: 6px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 150ms ease;
-}
-
-.btn-danger:hover {
-    background: #ff4757;
-}
-
-.btn-primary {
-    background: #000000;
-    border: none;
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: all 200ms ease;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-}
-
-.add-semester-btn {
-    font-size: 0.85rem;
-    padding: 8px 16px;
-    white-space: normal;
-}
-
-.gpa-container h1 { font-size: 1.2rem; }
-.semester-title { font-size: 0.9rem; gap: 6px; }
-.semester-gpa { font-size: 0.7rem; padding: 3px 8px; }
-.delete-semester { font-size: 0.7rem; padding: 4px 8px; }
-
+/* GRADE SYSTEM */
 .grade-system {
-    width: 100%;
-    margin: 20px auto;
-    padding: 16px;
-    background: rgb(0, 0, 0);
-    backdrop-filter: blur(5px);
-    max-width: 100%;
-    text-align: center;
+  width: 100%;
+  margin: 20px auto;
+  padding: 16px;
+  background: var(--bg);
+  backdrop-filter: blur(5px);
+  max-width: 100%;
+  text-align: center;
 }
 
 .grade-system h3 {
-    font-size: 1rem;
-    margin-bottom: 12px;
-    color: #ffffff;
-    text-align: center;
-    white-space: nowrap; /* Prevent title wrapping */
+  font-size: 1rem;
+  margin-bottom: 12px;
+  color: var(--fg);
+  text-align: center;
+  white-space: nowrap;
 }
 
 .grade-table-container {
-    overflow-x: auto; /* Enable horizontal scrolling for the table only */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
 }
 
 .grade-table-container table {
-    width: auto; /* Let the table expand naturally */
-    min-width: 600px; /* Minimum width to ensure scrollability */
-    border-collapse: collapse;
-    font-size: 0.8rem;
-    table-layout: fixed;
-    margin: 0 auto; /* Center the table within the container */
+  width: auto;
+  min-width: 600px;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  table-layout: fixed;
+  margin: 0 auto;
 }
 
 .grade-system th,
 .grade-system td {
-    padding: 8px 12px;
-    text-align: center;
-    color: #ffffff;
-    white-space: nowrap; /* Prevent cell wrapping */
+  padding: 8px 12px;
+  text-align: center;
+  color: var(--fg);
+  white-space: nowrap;
 }
 
 .grade-system th {
-    background: rgb(0, 0, 0);
-    font-weight: 600;
-}
-    
-.semester-card { margin-bottom: 14px; }
-.semester-header { padding: 10px 12px; }
-.semester-content { padding: 12px; }
-.cgpa-value { font-size: 1.3rem !important; }
-
-/* ===== SMALL MOBILE (PORTRAIT) FIXES ===== */
-@media (max-width: 480px) {
-    /* Ensure the delete button fits */
-    .gpa-table thead {
-        display: none;
-    }
-    .gpa-table tbody tr {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        gap: 4px;
-    }
-    .gpa-table tbody td {
-        padding: 6px 4px;
-        text-align: center;
-        font-size: 0.72rem;
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    /* Prevent horizontal scroll on GPA page */
-     .gpa-container {
-        width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
-        padding: 6px 4px;
-    }
-    /* CGPA Section Fixes */
-    .cgpa-section {
-        padding: 12px;
-        flex-direction: column;
-    }
-    .cgpa-item {
-        width: 100%;
-        flex: 0 0 auto;
-        margin-bottom: 12px;
-    }
-    .cgpa-item:last-child {
-        margin-bottom: 0;
-    }
-    .cgpa-item h3 {
-        font-size: 0.75rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .cgpa-value {
-        font-size: 1.5rem !important;
-    }
-    /* Calendar Header Fixes */
-    .info-left h1 {
-        margin-top: 16px;
-        font-size: 1.6rem;
-        line-height: 1.3;
-    }
-    .info-right {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%; /* Ensures it takes full width */
-    }
-    .today-block {
-        text-align: center;
-        min-width: 220px;
-    }
-    .today-date {
-        color: #ffffff;
-        font-size: 1.5rem;
-    }
-    .calendar-title {
-        margin-left: 100px;
-        display: block;
-        font-size: 1.6rem;
-    }
-    .calendar-year {
-        margin-left: 180px;
-        display: block;
-        font-size: 1rem;
-    }
-    /* GPA Form Fixes */
-    .gpa-form {
-        gap: 6px;
-        padding: 10px;
-    }
-    .gpa-form input,
-    .gpa-form select {
-        padding: 8px 10px;
-        font-size: 0.8rem;
-        margin-bottom: 2px;
-    }
-    .gpa-form select {
-        width: 100%;
-    }
-    /* Grade System Table Fixes */
-    .grade-system table {
-        font-size: 0.6rem;
-        min-width: 400px; /* Minimum width for very small screens */
-    }
-
-    .grade-system th,
-    .grade-system td {
-        padding: 4px 6px;
-    }
-}
-/* Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-    align-items: center;
-    justify-content: center;
+  background: var(--bg);
+  font-weight: 600;
 }
 
-.modal.visible {
-    display: flex;
-}
-
-.modal-content {
-    background-color: #ffffff;
-    color: #1a1a1a;
-    padding: 20px;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    animation: modalOpen 0.3s ease;
-}
-
-@keyframes modalOpen {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.close-modal {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-}
-
-/* Calendar Actions */
+/* CALENDAR COMPONENTS */
 .calendar-actions {
-    margin-bottom: 20px;
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .btn-primary {
-    background: #000000;
-    border: 1px solid #ffffff;
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: all 200ms ease;
+  background: var(--bg);
+  border: none;
+  color: var(--fg);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all var(--transition-normal);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    background: #ffffff;
-    color: #000000;
-    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  background: var(--fg);
+  color: var(--bg);
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3);
 }
 
-/* Sidebar Clock */
-.sidebar-clock {
-    text-align: center;
-    padding: 20px 0 6px 0;
-    color: rgba(255,255,255,0.95);
+.btn-danger {
+  background: var(--accent-red);
+  border: none;
+  padding: 6px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all var(--transition-fast);
 }
 
-.clock-date {
-    font-size: 0.7rem;
-    opacity: 0.85;
-    letter-spacing: 0.5px;
+.btn-danger:hover {
+  background: var(--accent-red);
 }
-
-.clock-time {
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-/* Extended Music Player */
-.music-player {
-    padding: 14px 14px 20px 14px;
-}
-
-.music-title {
-    text-align: center;
-    font-weight: 600;
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.95);
-    margin-bottom: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.music-progress-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-
-.time-label {
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.75);
-    min-width: 28px;
-    text-align: center;
-}
-
-.music-progress {
-    -webkit-appearance: none;
-    appearance: none;
-    flex: 1;
-    height: 6px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.2);
-    outline: none;
-}
-
-.music-progress::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #ffffff;
-    cursor: pointer;
-    border: 2px solid rgba(0,0,0,0.2);
-}
-
-.music-progress::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #ffffff;
-    cursor: pointer;
-    border: 2px solid rgba(0,0,0,0.2);
-}
-
-.study-level-filter {
-    margin-top: 16px;
-    align-self: flex-start;
-}
-
-/*CALENDAR STYLES*/
-.info-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-/* Custom Select Dropdown */
-.custom-select {
-    position: relative;
-    display: inline-block;
-    width: 140px;
-    min-width: 140px;
-}
-
-.custom-select:hover .custom-select-trigger {
-    background: #ffffff;
-    color: #000000;
-}
-
-.custom-select-trigger {
-    padding: 8px 12px;
-    background: rgb(0, 0, 0);
-    font-weight: 600;
-    border-radius: 25px;
-    border: 2px solid #ffffff;
-    cursor: pointer;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.custom-select-trigger::after {
-    content: '▼';
-    font-size: 0.7rem;
-    margin-left: 8px;
-    transition: transform 0.3s ease;
-}
-
-.custom-select.open .custom-select-trigger::after {
-    transform: rotate(180deg);
-}
-
-.custom-select.open .custom-select-trigger {
-    background: #ffffff !important;
-    color: #000000 !important;
-}
-
-.custom-select-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: rgb(0, 0, 0);
-    border: 2px solid #ffffff;
-    border-radius: 12px;
-    margin-top: 4px;
-    display: none;
-    z-index: 10;
-    overflow: hidden;
-}
-
-.custom-select.open .custom-select-dropdown {
-    display: block;
-}
-
-.custom-select-option {
-    padding: 8px 12px;
-    cursor: pointer;
-    color: #ffffff;
-}
-
-.custom-select-option:hover {
-    background: #ffffff;
-    color: #000000;
-}
-/* Custom Select Dropdown END*/
 
 .info-left h1 {
-    margin-top: 40px;
-    margin-left: 10px;
-    font-size: 3rem;
-    line-height: 1.2;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-top: 40px;
+  margin-left: 10px;
+  font-size: 3rem;
+  line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .calendar-title {
-    display: inline;
+  display: inline;
 }
 
 .calendar-year {
-    font-size: 1.8rem;
-    display: inline;
+  font-size: 1.8rem;
+  display: inline;
 }
 
-/* Floating Mobile Toggle Button */
-.mobile-sidebar-toggle {
-    display: none; /* Hidden by default (desktop) */
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background: #1a1a1a;
-    color: white;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-    z-index: 1000;
-    transition: transform 0.3s ease;
-    will-change: transform;
-    transform: rotate(0deg);
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.mobile-sidebar-toggle.sidebar-expanded {
-    transform: rotate(180deg);
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 140px;
+  min-width: 140px;
 }
 
-/* Show the floating button only on mobile */
-@media (max-width: 768px) {
-    .mobile-sidebar-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Hide the original toggle button on mobile */
-    .sidebar-toggle {
-        display: none;
-    }
+.custom-select:hover .custom-select-trigger {
+  background: var(--fg);
+  color: var(--bg);
 }
 
-@media (max-width: 768px) {
-    .info-left h1 {
-        margin-top: 20px;
-        font-size: 2rem;
-        text-align: center;
-    }
-    .calendar-title {
-        display: block;
-        font-size: 2rem;
-    }
-    .calendar-year {
-        font-size: 1.2rem;
-        display: block;
-        margin-top: 4px;
-    }
+.custom-select-trigger {
+  padding: 8px 12px;
+  background: var(--bg);
+  font-weight: 600;
+  border-radius: var(--radius-btn);
+  border: 2px solid var(--border-strong);
+  cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.custom-select-trigger::after {
+  content: '\25BC';
+  font-size: 0.7rem;
+  margin-left: 8px;
+  transition: transform var(--transition-normal);
+}
+
+.custom-select.open .custom-select-trigger::after {
+  transform: rotate(180deg);
+}
+
+.custom-select.open .custom-select-trigger {
+  background: var(--fg) !important;
+  color: var(--bg) !important;
+}
+
+.custom-select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: var(--bg);
+  border: 2px solid var(--border-strong);
+  border-radius: 12px;
+  margin-top: 4px;
+  display: none;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.custom-select.open .custom-select-dropdown {
+  display: block;
+}
+
+.custom-select-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--fg);
+}
+
+.custom-select-option:hover {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+/* TODAY BLOCK */
 .today-block {
-    text-align: center;
-    min-width: 220px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px; /* Adds spacing between date and badge */
+  text-align: center;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 }
 
-.today-date, .today-time {
-    border-radius: 12px;
-    padding: 10px 12px;
-    font-weight: 200;
-    text-align: center;
+.today-date,
+.today-time {
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 200;
+  text-align: center;
 }
 
 .today-date {
-    color: #ffffff;
-    font-size: 1.5rem;
+  color: var(--fg);
+  font-size: 1.5rem;
 }
 
 .today-time {
-    margin-top: 6px;
-    color: #f4f8ff;
-    font-size: 2rem;
-    animation: heartbeat 1.5s ease-in-out infinite alternate;
-}
-
-@keyframes blinkToday {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-}
-
-.blink-today {
-    animation: blinkToday 0.5s ease-in-out 3; /* Blink 3 times */
+  margin-top: 6px;
+  color: #f4f8ff;
+  font-size: 2rem;
+  animation: heartbeat 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes heartbeat {
-    from { transform: translateY(0); opacity: 0.92; }
-    to { transform: translateY(-2px); opacity: 1; }
+  from { transform: translateY(0); opacity: 0.92; }
+  to { transform: translateY(-2px); opacity: 1; }
+}
+
+@keyframes blinkToday {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.blink-today {
+  animation: blinkToday 0.5s ease-in-out 3;
 }
 
 .period-badge {
-    border-radius: 24px;
-    padding: 10px 18px;
-    font-weight: 700;
-    background: rgba(255,255,255,0.12);
-    color: #e9f5ff;
-    display: inline-block;
+  border-radius: 24px;
+  padding: 10px 18px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.12);
+  color: #e9f5ff;
+  display: inline-block;
+}
+
+/* CALENDAR GRID */
+#calendar-view {
+  position: relative;
+}
+
+.calendar-summary {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .legend {
-    margin-top: 24px;
-    margin-bottom: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  margin-top: 24px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .legend-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 14px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.16);
-    color: #eef7ff;
-    font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.16);
+  color: #eef7ff;
+  font-size: 0.85rem;
 }
 
 .legend-chip::before {
-    content: '';
-    width: 14px;
-    height: 14px;
-    border-radius: 4px;
-    display: inline-block;
+  content: '';
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  display: inline-block;
 }
 
-.legend-chip.lecture::before { background: #4a90e2; }
-.legend-chip.exam::before { background: #e24a4a; }
-.legend-chip.revision::before { background: #e2904a; }
-.legend-chip.break::before { background: #c9e24a; }
-.legend-chip.holiday::before { background: #4ae28a; } 
-
-.calendar-summary {
-    margin-bottom: 20px;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: rgba(255,255,255,0.92);
-}
-
-#calendar-view {
-    position: relative;
-}
+.legend-chip.lecture::before { background: var(--accent-blue); }
+.legend-chip.exam::before { background: var(--accent-red); }
+.legend-chip.revision::before { background: var(--accent-orange); }
+.legend-chip.break::before { background: var(--accent-yellow); }
+.legend-chip.holiday::before { background: var(--accent-green); }
 
 .calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    background: #000000;
-    padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  background: var(--bg);
+  padding: 0;
 }
 
 .month-card {
-    background: #000000;
-    border-radius: 0;
-    box-shadow: none;
-    overflow: hidden;
+  background: var(--bg);
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
 }
 
 .month-card:hover {
-    transform: none;
+  transform: none;
 }
 
 .month-name {
-    background: #000000;
-    color: #ffffff;
-    text-align: left;
-    padding: 14px;
-    font-weight: 700;
-    font-size: 1.1rem;
+  background: var(--bg);
+  color: var(--fg);
+  text-align: left;
+  padding: 14px;
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
 .calendar-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    background: #000000;
-    font-weight: 700;
-    text-align: center;
-    padding: 8px 0;
-    color: #e0e0e0;
-    font-size: 0.85rem;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: var(--bg);
+  font-weight: 700;
+  text-align: center;
+  padding: 8px 0;
+  color: #e0e0e0;
+  font-size: 0.85rem;
 }
 
 .month-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
 }
 
 .date-cell {
-    min-height: 49.5px;
-    padding: 8px 6px;
-    text-align: right;
-    font-size: 0.85rem;
-    color: #e0e0e0;
-    position: relative;
-    cursor: pointer;
-    background: #000000;
-    border: 2px solid #333333;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-start;
+  min-height: 49.5px;
+  padding: 8px 6px;
+  text-align: right;
+  font-size: 0.85rem;
+  color: #e0e0e0;
+  position: relative;
+  cursor: pointer;
+  background: var(--bg);
+  border: 2px solid #333333;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
 }
 
 .date-cell:hover {
-    background: #ffffff;
-    color: #000000;
-    border-color: #ffffff;
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--border-strong);
 }
 
-.date-cell.event-lecture {
-    border-color: #4a90e2;
-}
-.date-cell.event-exam {
-    border-color: #e24a4a;
-}
-.date-cell.event-revision {
-    border-color: #e2904a;
-}
-.date-cell.event-break {
-    border-color: #c9e24a;
-}
-.date-cell.event-holiday {
-    border-color: #4ae28a;
-}
+.date-cell.event-lecture { border-color: var(--accent-blue); }
+.date-cell.event-exam { border-color: var(--accent-red); }
+.date-cell.event-revision { border-color: var(--accent-orange); }
+.date-cell.event-break { border-color: var(--accent-yellow); }
+.date-cell.event-holiday { border-color: var(--accent-green); }
 
 .date-cell.event-lecture:hover {
-    background: #4a90e2;
-    border-color: #4a90e2;
-    color: #000000;
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: var(--bg);
 }
 .date-cell.event-exam:hover {
-    background: #e24a4a;
-    border-color: #e24a4a;
-    color: #000000;
+  background: var(--accent-red);
+  border-color: var(--accent-red);
+  color: var(--bg);
 }
 .date-cell.event-revision:hover {
-    background: #e2904a;
-    border-color: #e2904a;
-    color: #000000;
+  background: var(--accent-orange);
+  border-color: var(--accent-orange);
+  color: var(--bg);
 }
 .date-cell.event-break:hover {
-    background: #c9e24a;
-    border-color: #c9e24a;
-    color: #000000;
+  background: var(--accent-yellow);
+  border-color: var(--accent-yellow);
+  color: var(--bg);
 }
 .date-cell.event-holiday:hover {
-    background: #4ae28a;
-    border-color: #4ae28a;
-    color: #000000;
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  color: var(--bg);
 }
 
 .date-cell:hover .period-indicator,
 .date-cell:hover .week-number {
-    color: #000000;
+  color: var(--bg);
 }
 
 .date-cell.today.event-lecture {
-    background: #4a90e2;
-    color: #000000;
+  background: var(--accent-blue);
+  color: var(--bg);
 }
 .date-cell.today.event-exam {
-    background: #e24a4a;
-    color: #000000;
+  background: var(--accent-red);
+  color: var(--bg);
 }
 .date-cell.today.event-revision {
-    background: #e2904a;
-    color: #000000;
+  background: var(--accent-orange);
+  color: var(--bg);
 }
 .date-cell.today.event-break {
-    background: #c9e24a;
-    color: #000000;
+  background: var(--accent-yellow);
+  color: var(--bg);
 }
 .date-cell.today.event-holiday {
-    background: #4ae28a;
-    color: #000000;
+  background: var(--accent-green);
+  color: var(--bg);
 }
 .date-cell.today:not(.event-lecture):not(.event-exam):not(.event-revision):not(.event-break):not(.event-holiday) {
-    background: #ffffff;
-    color: #000000;
+  background: var(--fg);
+  color: var(--bg);
 }
 .date-cell.today,
 .date-cell.today .period-indicator,
 .date-cell.today .week-number {
-    color: #000000 !important;
+  color: var(--bg) !important;
 }
 
 .empty-cell {
-    background: #000000;
-    border: 2px solid #000000;
-    border-radius: 8px;
-    cursor: default;
-    pointer-events: none;
+  background: var(--bg);
+  border: 2px solid var(--bg);
+  border-radius: 8px;
+  cursor: default;
+  pointer-events: none;
 }
 
 .period-indicator {
-    position: absolute;
-    top: 25px;
-    right: 4.15px;
-    font-size: 0.5rem;
-    font-weight: 700;
-    color: #e0e0e0;
-    padding: 1px 3px;
-    border-radius: 3px;
+  position: absolute;
+  top: 25px;
+  right: 4.15px;
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: #e0e0e0;
+  padding: 1px 3px;
+  border-radius: 3px;
 }
 
 .week-number {
-    position: absolute;
-    left: 1.5px;
-    top: 22%;
-    transform: translateY(-50%);
-    font-size: 0.4rem;
-    font-weight: 600;
-    color: #e0e0e0;
-    padding: 1px 3px;
-    border-radius: 3px;
+  position: absolute;
+  left: 1.5px;
+  top: 22%;
+  transform: translateY(-50%);
+  font-size: 0.4rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  padding: 1px 3px;
+  border-radius: 3px;
 }
 
-/* Day Info Panel (Slide-up, all devices) */
+/* DAY INFO PANEL */
 .day-info {
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 300ms ease;
+  position: fixed;
+  z-index: var(--dayinfo-z);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
 }
 
 .day-info.visible {
-    opacity: 1;
+  opacity: 1;
 }
 
 .day-info-panel-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 9998;
-    pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  pointer-events: none;
 }
 
 .day-info.visible .day-info-panel-overlay {
-    pointer-events: auto;
+  pointer-events: auto;
 }
 
 .day-info-panel {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #000000fa;
-    backdrop-filter: blur(10px);
-    border-radius: 20px 20px 0 0;
-    padding: 30px 20px;
-    max-width: 100%;
-    pointer-events: auto;
-    transform: translateY(100%);
-    transition: transform 300ms ease-out;
-    z-index: 9999;
-    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.15);
-    color: #ffffff;
-    min-height: 200px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #000000fa;
+  backdrop-filter: blur(10px);
+  border-radius: 20px 20px 0 0;
+  padding: 30px 20px;
+  max-width: 100%;
+  pointer-events: auto;
+  transform: translateY(100%);
+  transition: transform 300ms ease-out;
+  z-index: var(--dayinfo-z);
+  box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.15);
+  color: var(--fg);
+  min-height: 200px;
 }
 
 .day-info.visible .day-info-panel {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 .day-info-panel h3 {
-    margin: 0 0 8px 0;
-    font-size: 1.1rem;
-    color: #ffffff;
-    font-weight: 700;
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  color: var(--fg);
+  font-weight: 700;
 }
 
 .day-info-panel p {
-    margin: 6px 0;
-    font-size: 0.95rem;
-    color: #e0e0e0;
+  margin: 6px 0;
+  font-size: 0.95rem;
+  color: #e0e0e0;
 }
 
 .day-info-panel .holiday-line {
-    color: #4ae28a;
-    font-weight: 700;
+  color: var(--accent-green);
+  font-weight: 700;
 }
-.day-info-panel .period-line.event-lecture {
-    color: #4a90e2;
-    font-weight: 700;
-}
-.day-info-panel .period-line.event-exam {
-    color: #e24a4a;
-    font-weight: 700;
-}
-.day-info-panel .period-line.event-revision {
-    color: #e2904a;
-    font-weight: 700;
-}
-.day-info-panel .period-line.event-break {
-    color: #c9e24a;
-    font-weight: 700;
-}
-.day-info-panel .period-line.event-holiday {
-    color: #4ae28a;
-    font-weight: 700;
+.day-info-panel .period-line.event-lecture { color: var(--accent-blue); font-weight: 700; }
+.day-info-panel .period-line.event-exam { color: var(--accent-red); font-weight: 700; }
+.day-info-panel .period-line.event-revision { color: var(--accent-orange); font-weight: 700; }
+.day-info-panel .period-line.event-break { color: var(--accent-yellow); font-weight: 700; }
+.day-info-panel .period-line.event-holiday { color: var(--accent-green); font-weight: 700; }
+
+/* SIDEBAR CLOCK */
+.sidebar-clock {
+  text-align: center;
+  padding: 20px 0 6px 0;
+  color: var(--fg-subtle);
 }
 
-/* Edge screen effect (gradient fade) */
-body::before,
-body::after {
-    content: '';
-    position: fixed;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 50px; /* Adjust height as needed */
-    z-index: 1000;
-    pointer-events: none; /* Allow scrolling through the effect */
+.clock-date {
+  font-size: 0.7rem;
+  opacity: 0.85;
+  letter-spacing: 0.5px;
 }
 
-/* Top edge gradient */
-body::before {
-    top: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+.clock-time {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
-/* Bottom edge gradient */
-body::after {
-    bottom: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-}
-
-@media (hover: none) {
-    .sidebar-toggle:hover,
-    .sidebar-toggle.mobile-toggle:hover {
-        background: inherit;
-        transform: none;
-        box-shadow: none;
-    }
-    .custom-select:hover .custom-select-trigger {
-        background: rgb(0, 0, 0);
-        color: #ffffff;
-    }
-    .custom-select-option:hover {
-        background: inherit;
-        color: #ffffff;
-    }
-    .add-semester-btn:hover,
-    .btn-primary:hover,
-    .btn-danger:hover,
-    .semester-gpa:hover,
-    .delete-semester:hover {
-        background: inherit;
-        color: inherit;
-        transform: none;
-        box-shadow: none;
-        filter: none;
-    }
-    .month-card:hover {
-        border-color: inherit;
-        box-shadow: inherit;
-    }
-    .date-cell:hover,
-    .date-cell.event-lecture:hover,
-    .date-cell.event-exam:hover,
-    .date-cell.event-revision:hover,
-    .date-cell.event-break:hover,
-    .date-cell.event-holiday:hover {
-        filter: inherit;
-        transform: inherit;
-        z-index: inherit;
-    }
-    .date-cell:hover .period-indicator,
-    .date-cell:hover .week-number {
-        transform: inherit;
-    }
-}
-/* Progress Bar Styles */
+/* PROGRESS BAR */
 .progress-container {
-    width: 100%;
-    margin-top: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .progress-bar {
-    flex: 1;
-    height: 8px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
 }
 
 .progress-bar::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: #4a90e2; /* Blue color for progress */
-    border-radius: 4px;
-    transition: width 0.3s ease;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--accent-blue);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  width: var(--progress-width, 0%);
 }
 
 .progress-text {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 600;
-    min-width: 50px;
-    text-align: right;
+  font-size: 0.75rem;
+  color: var(--fg-subtle);
+  font-weight: 600;
+  min-width: 50px;
+  text-align: right;
 }
 
-.progress-bar::after {
-    width: var(--progress-width, 0%);
+/* MODALS */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: var(--modal-z);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.visible {
+  display: flex;
+}
+
+.modal-content {
+  background-color: var(--fg);
+  color: var(--bg-elevated);
+  padding: 20px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: modalOpen 0.3s ease;
+}
+
+@keyframes modalOpen {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.close-modal {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* MOBILE TOGGLE */
+.mobile-sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: var(--bg-elevated);
+  color: var(--fg);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  z-index: 1000;
+  transition: transform var(--transition-slow);
+  will-change: transform;
+  transform: rotate(0deg);
+}
+
+.mobile-sidebar-toggle.sidebar-expanded {
+  transform: rotate(180deg);
+}
+
+/* TOUCH DEVICE STYLES */
+@media (hover: none) {
+  .sidebar-toggle:hover,
+  .sidebar-toggle.mobile-toggle:hover {
+    background: inherit;
+    transform: none;
+    box-shadow: none;
+  }
+  .custom-select:hover .custom-select-trigger {
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .custom-select-option:hover {
+    background: inherit;
+    color: var(--fg);
+  }
+  .add-semester-btn:hover,
+  .btn-primary:hover,
+  .btn-danger:hover,
+  .semester-gpa:hover,
+  .delete-semester:hover {
+    background: inherit;
+    color: inherit;
+    transform: none;
+    box-shadow: none;
+    filter: none;
+  }
+  .month-card:hover {
+    border-color: inherit;
+    box-shadow: inherit;
+  }
+  .date-cell:hover,
+  .date-cell.event-lecture:hover,
+  .date-cell.event-exam:hover,
+  .date-cell.event-revision:hover,
+  .date-cell.event-break:hover,
+  .date-cell.event-holiday:hover {
+    filter: inherit;
+    transform: inherit;
+    z-index: inherit;
+  }
+  .date-cell:hover .period-indicator,
+  .date-cell:hover .week-number {
+    transform: inherit;
+  }
+}
+
+/* RESPONSIVE: max-width 768px */
+@media (max-width: 768px) {
+  .mobile-sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sidebar-toggle {
+    display: none;
+  }
+  .info-left h1 {
+    margin-top: 20px;
+    font-size: 2rem;
+    text-align: center;
+  }
+  .calendar-title {
+    display: block;
+    font-size: 2rem;
+  }
+  .calendar-year {
+    font-size: 1.2rem;
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* GPA compact sizing */
+  .gpa-container h1 { font-size: 1.2rem; }
+  .semester-title { font-size: 0.9rem; gap: 6px; }
+  .semester-gpa { font-size: 0.7rem; padding: 3px 8px; }
+  .delete-semester { font-size: 0.7rem; padding: 4px 8px; }
+  .semester-card { margin-bottom: 14px; }
+  .semester-header { padding: 10px 12px; }
+  .semester-content { padding: 12px; }
+  .cgpa-value { font-size: 1.3rem !important; }
+  .gpa-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding: 6px 4px;
+  }
+
+  /* Calendar compact sizing */
+  .calendar-actions {
+    margin-bottom: 20px;
+    gap: 12px;
+  }
+
+  /* GPA Table compact */
+  .gpa-table thead {
+    display: none;
+  }
+  .gpa-table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 4px;
+  }
+  .gpa-table tbody td {
+    padding: 6px 4px;
+    text-align: center;
+    font-size: 0.72rem;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* CGPA section mobile */
+  .cgpa-section {
+    padding: 12px;
+    flex-direction: column;
+  }
+  .cgpa-item {
+    width: 100%;
+    flex: 0 0 auto;
+    margin-bottom: 12px;
+  }
+  .cgpa-item:last-child {
+    margin-bottom: 0;
+  }
+  .cgpa-item h3 {
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cgpa-value {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* RESPONSIVE: max-width 480px */
+@media (max-width: 480px) {
+  #gpa-view .gpa-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .grade-system table {
+    font-size: 0.6rem;
+    min-width: 400px;
+  }
+  .grade-system th,
+  .grade-system td {
+    padding: 4px 6px;
+  }
+
+  /* GPA Form */
+  .gpa-form {
+    gap: 6px;
+    padding: 10px;
+  }
+  .gpa-form input,
+  .gpa-form select {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    margin-bottom: 2px;
+  }
+  .gpa-form select {
+    width: 100%;
+  }
+
+  /* Info */
+  .info-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .today-block {
+    text-align: center;
+    min-width: 220px;
+  }
+  .today-date {
+    color: var(--fg);
+    font-size: 1.5rem;
+  }
+  .calendar-title {
+    margin-left: 100px;
+    display: block;
+    font-size: 1.6rem;
+  }
+  .calendar-year {
+    margin-left: 180px;
+    display: block;
+    font-size: 1rem;
+  }
+  .cgpa-value {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* RESPONSIVE: min-width 768px */
+@media (min-width: 768px) {
+  .gpa-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  #gpa-view .gpa-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
 }
