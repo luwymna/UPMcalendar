@@ -115,14 +115,6 @@ No npm, no bundler, no framework, just open `index.html`.
 
 ![Mobile GPA View](screenshots/mobile_gpa.png)
 
-<p align="center">
-  <img src="screenshots/mobile_calendar.png" alt="Mobile view" width="300">
-</p>
-
-<p align="center">
-  <img src="screenshots/mobile_gpa.png" alt="Mobile view" width="300">
-</p>
-
 ---
 
 ## Project Structure
