@@ -17,7 +17,6 @@ Live site: [https://putracalendar.vercel.app](https://putracalendar.vercel.app)
 - [Tech Stack](#tech-stack)
 - [Screenshots](#screenshots)
 - [Project Structure](#project-structure)
-- [Running Locally](#running-locally)
 - [Updating the Calendar](#updating-the-calendar-yearly)
 - [Cache Busting](#important-cache-busting)
 - [Installing as an App](#installing-as-an-app)
@@ -98,7 +97,6 @@ No npm, no bundler, no framework, just open `index.html`.
 
 ---
 
-
 ## Screenshots
 
 ### Calendar View
@@ -130,18 +128,31 @@ No npm, no bundler, no framework, just open `index.html`.
 ## Project Structure
 
 websiteUPM/
+
 ├── index.html # Main HTML entry point
+
 ├── style.css # All styling
+
 ├── script.js # Calendar data, GPA logic, UI rendering
+
 ├── pwa.js # Service worker registration
+
 ├── sw.js # Service worker (offline caching)
+
 ├── site.webmanifest # PWA manifest
+
 ├── favicon.ico
+
 ├── favicon-16x16.png
+
 ├── favicon-32x32.png
+
 ├── apple-touch-icon.png
+
 ├── android-chrome-192x192.png
+
 ├── android-chrome-512x512.png
+
 └── music.mp3 # Background audio (not included in repo)
 
 > **Note:** `music.mp3` is not tracked in the repo. Add your own audio file with that exact filename to enable the music player locally.
